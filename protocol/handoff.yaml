@@ -1,0 +1,10 @@
+handoff:
+  required_sections:
+    - stage
+    - inputs_used
+    - outputs_created
+    - confirmed
+    - open_questions
+    - risks
+    - gate_result
+    - next_stage

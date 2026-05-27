@@ -1,0 +1,12 @@
+workflow: shipkit
+stages:
+  - intake
+  - discover
+  - scope
+  - prd
+  - arch
+  - plan
+  - build
+  - test
+  - release
+  - delivery

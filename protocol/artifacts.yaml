@@ -1,0 +1,16 @@
+artifacts:
+  client_input:
+    path: docs/00-intake/client-raw-input.md
+    visibility: internal
+  prd:
+    path: docs/03-prd/prd.md
+    visibility: internal
+  architecture:
+    path: docs/04-arch/architecture.md
+    visibility: internal
+  acceptance_matrix:
+    path: docs/07-test/acceptance-matrix.md
+    visibility: client-facing
+  delivery_package:
+    path: docs/09-delivery/delivery-package.md
+    visibility: client-facing

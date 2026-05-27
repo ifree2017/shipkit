@@ -1,0 +1,16 @@
+gates:
+  intake:
+    required:
+      - client role
+      - business trigger
+      - desired outcome
+  scope:
+    required:
+      - included scope
+      - excluded scope
+      - acceptance criteria
+  delivery:
+    required:
+      - release notes
+      - acceptance evidence
+      - handover notes

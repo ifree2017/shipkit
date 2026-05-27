@@ -1,0 +1,50 @@
+stages:
+  - id: intake
+    name: Intake
+    output:
+      - docs/00-intake/client-raw-input.md
+      - docs/00-intake/open-questions.md
+  - id: discover
+    name: Discover
+    output:
+      - docs/01-discover/problem-statement.md
+      - docs/01-discover/customer-journey.md
+  - id: scope
+    name: Scope
+    output:
+      - docs/02-scope/module-list.md
+      - docs/02-scope/out-of-scope.md
+  - id: prd
+    name: PRD
+    output:
+      - docs/03-prd/prd.md
+      - docs/03-prd/user-stories.md
+  - id: arch
+    name: Architecture
+    output:
+      - docs/04-arch/architecture.md
+      - docs/04-arch/decisions.md
+  - id: plan
+    name: Plan
+    output:
+      - docs/05-plan/implementation-plan.md
+      - docs/05-plan/task-breakdown.md
+  - id: build
+    name: Build
+    output:
+      - docs/06-build/build-log.md
+  - id: test
+    name: Test
+    output:
+      - docs/07-test/test-plan.md
+      - docs/07-test/acceptance-matrix.md
+  - id: release
+    name: Release
+    output:
+      - docs/08-release/release-plan.md
+      - docs/08-release/rollback-plan.md
+  - id: delivery
+    name: Delivery
+    output:
+      - docs/09-delivery/delivery-package.md
+      - docs/09-delivery/handover.md
