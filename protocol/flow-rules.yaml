@@ -1,0 +1,86 @@
+flows:
+  main:
+    stages: [intake, discover, scope, prd, arch, plan, build, test, release, delivery, retro]
+
+  clarify:
+    trigger: unclear requirement, missing acceptance criteria, ambiguous business rule, unclear user role, unclear data or dependency
+    rule: unclear requirements must be clarified before they become PRD, scope, tasks, or quotes
+    outputs:
+      - clarifications/CL-{id}.md
+      - handoff/clarify-{id}.md
+
+  dependency:
+    trigger: external API, customer account, third-party service, data source, credential, environment, approval, or document is required
+    rule: external dependencies must be recorded as preconditions or risks before quote, plan, release, or delivery
+    outputs:
+      - dependencies/DEP-{id}.md
+
+  blocker:
+    trigger: work cannot continue because of missing input, access, environment, dependency, decision, or approval
+    rule: blockers must have owner, next action, impact, due date, and escalation path
+    outputs:
+      - blockers/BLK-{id}.md
+
+  decision:
+    trigger: product, architecture, scope, release, pricing, or delivery decision with long-term impact
+    rule: important decisions must be recorded as ADR or decision notes with alternatives and consequences
+    outputs:
+      - decisions/ADR-{id}.md
+
+  debt:
+    trigger: shortcut, temporary implementation, missing test, incomplete error handling, weak abstraction, or known product gap
+    rule: debt must be classified by delivery risk and either resolved, accepted, or deferred before delivery
+    outputs:
+      - debt/DEBT-{id}.md
+
+  env:
+    trigger: local, test, staging, or production environment mismatch or readiness issue
+    rule: release requires environment readiness check and rollback readiness check
+    outputs:
+      - env/ENV-{id}.md
+      - release/env-readiness.md
+
+  data:
+    trigger: data format, sample, migration, sync, import, export, validation, privacy, or quality issue
+    rule: data contracts are required for data import, export, sync, migration, or reporting work
+    outputs:
+      - data/DATA-{id}.md
+      - data/data-contract.md
+
+  security:
+    trigger: authentication, authorization, sensitive data, logs, token, file upload, admin operation, or audit trail issue
+    rule: security baseline must pass before release and sensitive client documents must pass redaction before delivery
+    outputs:
+      - security/SEC-{id}.md
+      - security/security-review.md
+
+  incident:
+    trigger: production or delivery-stage failure affecting users, data, integrations, availability, or customer trust
+    rule: incident handling prioritizes containment, recovery, customer communication, root cause, and prevention
+    outputs:
+      - incidents/INC-{id}.md
+      - incidents/postmortem-{id}.md
+
+  scope_drift:
+    trigger: phrases like "also support", "by default", "quick change", "simple addition", "while you're there"
+    rule: scope drift must be classified as existing scope, clarification, change request, bug, or future enhancement
+    outputs:
+      - scope-drift/DRIFT-{id}.md
+
+  risk:
+    trigger: uncertain event that may affect scope, time, cost, quality, security, release, or delivery
+    rule: risks must have probability, impact, mitigation, owner, and trigger
+    outputs:
+      - risks/RISK-{id}.md
+
+  perf:
+    trigger: latency, throughput, load, concurrency, memory, query performance, or scalability concern
+    rule: performance work must define target, measurement method, baseline, and acceptance threshold
+    outputs:
+      - perf/PERF-{id}.md
+
+  handoff:
+    trigger: stage completion, role transfer, delivery checkpoint, or project pause/resume
+    rule: every stage handoff must include inputs used, outputs created, open questions, risks, decisions, and next stage
+    outputs:
+      - handoff/{stage}.handoff.md

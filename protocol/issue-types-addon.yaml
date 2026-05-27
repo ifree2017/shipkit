@@ -1,0 +1,60 @@
+issue_types:
+  clarification:
+    prefix: CL
+    purpose: Track unclear requirements or acceptance gaps before they enter scope, PRD, or build.
+    statuses: [draft, asked, answered, resolved, converted_to_change, closed]
+    required_fields: [question, context, impact_if_unanswered, owner, due_date, resolution]
+
+  dependency:
+    prefix: DEP
+    purpose: Track external inputs, systems, accounts, data, documents, approvals, and third-party conditions.
+    statuses: [open, requested, received, verified, blocked, waived, closed]
+    required_fields: [dependency, owner, needed_by_stage, impact, due_date, fallback]
+
+  blocker:
+    prefix: BLK
+    purpose: Track active blockers preventing progress.
+    statuses: [open, escalated, mitigated, resolved, closed]
+    required_fields: [blocker, stage, owner, impact, next_action, due_date, escalation_path]
+
+  decision:
+    prefix: ADR
+    purpose: Record architecture, product, scope, release, or delivery decisions.
+    statuses: [proposed, accepted, superseded, rejected]
+    required_fields: [context, options, decision, rationale, consequences, owner]
+
+  debt:
+    prefix: DEBT
+    purpose: Track accepted shortcuts, technical debt, product debt, and incomplete workarounds.
+    statuses: [open, accepted, scheduled, resolved, deferred, closed]
+    required_fields: [debt_type, cause, risk, impact, repayment_plan, delivery_allowed]
+
+  env:
+    prefix: ENV
+    purpose: Track environment readiness and environment-related issues.
+    statuses: [open, investigating, fixed, verified, closed]
+    required_fields: [environment, issue, impact, owner, fix_plan, verification]
+
+  data:
+    prefix: DATA
+    purpose: Track data contracts, data quality, migration, sync, import, export, and validation issues.
+    statuses: [open, analyzing, contract_defined, fixed, verified, closed]
+    required_fields: [data_source, fields, format, validation_rules, privacy_requirements, failure_handling]
+
+  security:
+    prefix: SEC
+    purpose: Track auth, permissions, sensitive data, token, upload, logging, and audit risks.
+    statuses: [open, triaged, mitigated, accepted, fixed, verified, closed]
+    required_fields: [risk, affected_asset, severity, mitigation, verification]
+
+  incident:
+    prefix: INC
+    purpose: Track production or delivery-stage incidents.
+    statuses: [open, contained, recovered, investigating, postmortem_done, closed]
+    required_fields: [started_at, impact, severity, containment, recovery, root_cause, prevention]
+
+  scope_drift:
+    prefix: DRIFT
+    purpose: Track unplanned scope expansion signals and classify them before they enter work.
+    statuses: [detected, classified, converted, accepted, rejected, deferred, closed]
+    required_fields: [signal, source, classification, scope_reference, decision]
