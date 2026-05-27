@@ -1,0 +1,65 @@
+version: 0.1
+name: shipkit-platform-capabilities
+purpose: Map ShipKit concepts to platform-specific harness capabilities.
+
+platforms:
+  openclaw:
+    instruction_entry: AGENTS.md
+    persona_entry: SOUL.md
+    skills_path: skills/
+    project_path: arbitrary
+    supports_hooks: platform_specific
+    supports_subagents: true
+    supports_shell: true
+    supports_workspace: true
+    recommended_use: First runner for full ShipKit workspace.
+  codex:
+    instruction_entry: AGENTS.md
+    persona_entry: none
+    skills_path: .agents/skills/
+    project_path: repository_root
+    supports_hooks: true
+    supports_subagents: true
+    supports_shell: true
+    supports_workspace: repository
+    recommended_use: Repo-scoped engineering execution and PR workflows.
+  claude:
+    instruction_entry: CLAUDE.md
+    persona_entry: CLAUDE.md
+    skills_path: .claude/skills/
+    agents_path: .claude/agents/
+    project_path: repository_root
+    supports_hooks: true
+    supports_subagents: true
+    supports_shell: true
+    supports_workspace: repository
+    recommended_use: Subagents, hooks, review, verification, and agent-team flows.
+  cursor:
+    instruction_entry: .cursor/rules/
+    skills_path: docs/skills/ or platform_specific
+    project_path: repository_root
+    supports_hooks: limited
+    supports_subagents: limited
+    supports_shell: user_terminal
+    supports_workspace: repository
+    recommended_use: IDE-local coding assistance.
+  hermes:
+    instruction_entry: hermes.profile.md
+    workflow_entry: hermes.workflow.yaml
+    skills_path: skills/
+    project_path: arbitrary
+    supports_hooks: implementation_specific
+    supports_subagents: implementation_specific
+    supports_shell: implementation_specific
+    recommended_use: Productized business workflow runner if available.
+  wangyuyan:
+    instruction_entry: adapter_defined
+    workflow_entry: adapter_defined
+    skills_path: adapter_defined
+    project_path: arbitrary
+    supports_hooks: unknown
+    supports_subagents: unknown
+    supports_shell: unknown
+    recommended_use: Pending repository inspection; use mapping adapter as placeholder.
+
+design_rule: Keep ShipKit core platform-neutral. Adapters translate core concepts into platform-specific files.

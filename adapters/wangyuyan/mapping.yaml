@@ -1,0 +1,25 @@
+version: 0.1
+platform: wangyuyan
+status: placeholder
+requires_repo_inspection: true
+
+shipkit_concepts:
+  instruction_entry:
+    candidate: unknown
+  persona_entry:
+    candidate: unknown
+  skills_path:
+    candidate: unknown
+  workflow_entry:
+    candidate: unknown
+  gates_path:
+    candidate: unknown
+  project_registry:
+    candidate: unknown
+
+migration_policy:
+  - inspect_repository_structure
+  - identify_existing_agent_contract
+  - map_shipkit_core_without_modifying_core
+  - implement_adapter_files_only
+  - run_platform_capability_report

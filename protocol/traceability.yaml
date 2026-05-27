@@ -1,0 +1,71 @@
+version: 0.1
+name: shipkit-traceability
+purpose: Define required links from requirements to delivery evidence.
+
+id_prefixes:
+  requirement: REQ
+  module: MOD
+  user_story: US
+  acceptance: AC
+  architecture_decision: ADR
+  task: TASK
+  change: CR
+  bug: BUG
+  refactor: RF
+  test_case: TC
+  release: REL
+  delivery_item: DEL
+  risk: RISK
+
+required_trace:
+  requirement:
+    must_link_to:
+      - module
+      - acceptance
+      - prd_section
+  module:
+    must_link_to:
+      - architecture_component
+      - task
+      - test_case
+  change:
+    must_link_to:
+      - original_scope_reference
+      - impact_analysis
+      - decision
+      - updated_artifacts
+  bug:
+    must_link_to:
+      - related_requirement_or_acceptance
+      - reproduction_steps
+      - fix_commit_or_task
+      - regression_test
+  refactor:
+    must_link_to:
+      - affected_component
+      - risk_analysis
+      - approval
+      - regression_test
+  release:
+    must_link_to:
+      - version
+      - included_tasks
+      - known_issues
+      - rollback_plan
+      - verification_evidence
+  delivery:
+    must_link_to:
+      - release
+      - acceptance_matrix
+      - client_delivery_package
+      - internal_handoff_package
+
+gate_rules:
+  - id: no_orphan_requirement
+    description: Every requirement must link to at least one acceptance criterion.
+  - id: no_orphan_task
+    description: Every implementation task must link to a requirement, bug, change, or refactor.
+  - id: no_unverified_release
+    description: Every release must have verification evidence and rollback plan.
+  - id: no_client_delivery_without_audit
+    description: Every client-facing delivery package must pass audit.

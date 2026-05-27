@@ -1,0 +1,55 @@
+version: 0.1
+name: shipkit-control-policies
+purpose: Define autonomy, approval, and escalation policies.
+
+autonomy_levels:
+  L0_manual:
+    description: Agent may only analyze and draft. Human executes.
+  L1_assisted:
+    description: Agent may edit docs and propose actions. Human approves state-changing actions.
+  L2_bounded_execution:
+    description: Agent may run checks, update non-client docs, and create structured issues within project boundaries.
+  L3_repo_execution:
+    description: Agent may implement changes, run tests, and open PRs, but cannot merge or release without approval.
+  L4_release_assisted:
+    description: Agent may prepare release and rollback plans. Human approves release.
+  L5_autonomous_maintenance:
+    description: Agent may run scheduled cleanup and open low-risk PRs under strict gates.
+
+human_approval_required:
+  - final_quote
+  - contract_boundary
+  - client_commitment
+  - scope_acceptance
+  - paid_change_decision
+  - production_release
+  - data_migration
+  - destructive_operation
+  - security_exception
+  - public_client_document
+  - access_to_external_customer_system
+
+escalation_triggers:
+  - gate_failed_twice
+  - blocker_open_over_policy_limit
+  - dependency_p0_missing
+  - release_without_rollback_plan
+  - traceability_missing_for_delivery
+  - client_doc_redline_detected
+  - agent_uncertain_about_scope_or_commitment
+  - production_or_security_action_requested
+
+agent_default_policy:
+  default_autonomy_level: L2_bounded_execution
+  may_update:
+    - internal_docs
+    - trace_maps
+    - issue_records
+    - draft_artifacts
+  may_not_update_without_approval:
+    - final_quote
+    - contract_terms
+    - production_config
+    - customer_data
+    - client_facing_documents
+    - release_state

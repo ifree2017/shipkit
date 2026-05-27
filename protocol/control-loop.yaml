@@ -1,0 +1,93 @@
+version: 0.1
+name: shipkit-control-loop
+purpose: Define ShipKit as a closed-loop engineering control system.
+
+loop:
+  sense:
+    description: Collect current project signals.
+    signals:
+      - client_feedback
+      - open_questions
+      - change_requests
+      - defects
+      - test_results
+      - release_status
+      - dependency_status
+      - risk_status
+      - code_quality
+      - delivery_readiness
+  compare:
+    description: Compare actual state with expected state.
+    references:
+      - scope
+      - prd
+      - architecture
+      - plan
+      - acceptance_matrix
+      - release_plan
+      - contract_boundary
+  detect:
+    description: Classify deviation.
+    deviation_types:
+      - unclear_requirement
+      - scope_drift
+      - missing_dependency
+      - implementation_defect
+      - architecture_drift
+      - quality_regression
+      - release_risk
+      - delivery_redline
+      - missing_traceability
+  decide:
+    description: Select corrective control action.
+    actions:
+      - clarify
+      - change
+      - bug
+      - refactor
+      - risk
+      - dependency
+      - decision
+      - debt
+      - rollback
+      - audit
+      - escalate
+  act:
+    description: Execute bounded correction.
+    rules:
+      - action_must_have_owner
+      - action_must_have_scope
+      - action_must_have_verification
+      - client_commitment_requires_human_approval
+      - production_action_requires_release_gate
+  verify:
+    description: Confirm whether corrective action restored expected state.
+    evidence:
+      - passing_gate
+      - passing_tests
+      - updated_artifacts
+      - updated_trace_map
+      - customer_confirmation
+      - release_verification
+  learn:
+    description: Convert repeated issues into durable harness improvements.
+    updates:
+      - docs
+      - skills
+      - templates
+      - gates
+      - workflows
+      - platform_adapters
+
+control_concepts:
+  feedback: Correct output based on measured deviation.
+  error: Difference between expected state and actual state.
+  disturbance: External factor that changes project state, such as client delay or API change.
+  noise: Ambiguous, stale, or unreliable signal.
+  filter: Process for removing noise before decision.
+  stability: Ability to continue delivery despite disturbance.
+  controllability: Ability to influence project state through available actions.
+  observability: Ability to infer true project state from available artifacts and signals.
+  time_delay: Delay between signal, decision, action, and observed result.
+  saturation: State where adding more agent work no longer improves throughput because gates, approvals, or human attention are bottlenecked.
+  adaptive_control: Updating ShipKit itself when repeated failure patterns appear.

@@ -1,0 +1,60 @@
+version: 0.1
+name: shipkit-quality-model
+purpose: Define quality dimensions and grading for ShipKit projects.
+
+grades:
+  A: Clear, verified, traceable, low risk.
+  B: Mostly clear, minor gaps, manageable risk.
+  C: Usable but has open gaps requiring tracking.
+  D: Risky; cannot move to next major stage without correction.
+  E: Unsafe or unfit for delivery.
+
+dimensions:
+  scope_clarity:
+    question: Are scope, exclusions, assumptions, and acceptance criteria clear?
+  traceability:
+    question: Can every requirement be traced to implementation, test, release, and delivery evidence?
+  architecture_integrity:
+    question: Does implementation follow approved architecture and dependency boundaries?
+  correctness:
+    question: Does the system satisfy functional requirements?
+  reliability:
+    question: Does it handle errors, retries, timeouts, and failure paths?
+  security:
+    question: Are authentication, authorization, secrets, logs, and sensitive data handled safely?
+  performance:
+    question: Are latency, throughput, resource use, and scalability risks acceptable?
+  maintainability:
+    question: Is code legible, modular, documented, and testable?
+  operability:
+    question: Can the system be deployed, monitored, debugged, backed up, and rolled back?
+  client_doc_safety:
+    question: Are client-facing documents free of internal pricing, sensitive details, and overcommitment?
+  agent_legibility:
+    question: Can future agents understand the project state from repository-local artifacts?
+
+stage_thresholds:
+  quote:
+    minimum:
+      scope_clarity: B
+      client_doc_safety: A
+  prd:
+    minimum:
+      scope_clarity: B
+      traceability: B
+  architecture:
+    minimum:
+      scope_clarity: B
+      architecture_integrity: B
+  release:
+    minimum:
+      correctness: B
+      reliability: B
+      security: B
+      operability: B
+  delivery:
+    minimum:
+      correctness: B
+      traceability: B
+      client_doc_safety: A
+      agent_legibility: B

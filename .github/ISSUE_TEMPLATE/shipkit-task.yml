@@ -1,0 +1,45 @@
+name: ShipKit Task
+about: Track a requirement, change, bug, refactor, risk, or delivery task
+labels: [shipkit]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type
+      options:
+        - requirement
+        - change
+        - bug
+        - refactor
+        - risk
+        - dependency
+        - blocker
+        - decision
+        - release
+        - delivery
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true
+  - type: textarea
+    id: trace
+    attributes:
+      label: Traceability
+      description: Link related requirement, PRD, architecture, task, test, release, and delivery evidence.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance / Verification
+  - type: checkboxes
+    id: gates
+    attributes:
+      label: Gates
+      options:
+        - label: Impact analyzed
+        - label: Trace map updated
+        - label: Tests updated
+        - label: Human approval recorded if required
