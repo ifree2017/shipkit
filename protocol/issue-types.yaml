@@ -1,0 +1,100 @@
+issue_types:
+  change:
+    name: Change Request
+    id_prefix: CR
+    purpose: New or changed requirement after scope, PRD, architecture, planning, build, test, or delivery has started.
+    default_directory: changes
+    states:
+      - draft
+      - triaged
+      - impact_done
+      - approved
+      - in_progress
+      - done
+      - closed
+      - rejected
+      - deferred
+    must_include:
+      - requester
+      - original_scope_reference
+      - requested_change
+      - business_reason
+      - impact_on_scope
+      - impact_on_timeline
+      - impact_on_price
+      - impact_on_prd
+      - impact_on_architecture
+      - impact_on_test
+      - impact_on_acceptance
+      - decision
+    routing:
+      if_already_in_scope: clarification
+      if_failed_existing_acceptance: defect
+      if_new_expectation: change
+      if_future_value_only: backlog
+
+  defect:
+    name: Defect
+    id_prefix: BUG
+    purpose: A bug or failed acceptance case found during build, test, UAT, release, delivery, or customer review.
+    default_directory: defects
+    states:
+      - draft
+      - triaged
+      - confirmed
+      - in_progress
+      - fixed
+      - regression_passed
+      - closed
+      - rejected
+      - converted_to_change
+    must_include:
+      - found_in_stage
+      - related_requirement
+      - expected_result
+      - actual_result
+      - reproduction_steps
+      - severity
+      - root_cause
+      - fix_plan
+      - regression_tests
+    routing:
+      if_expected_behavior_undefined: change
+      if_test_data_issue: environment_or_data_issue
+      if_environment_issue: environment_issue
+      if_regression: defect
+
+  refactor:
+    name: Refactor
+    id_prefix: RF
+    purpose: Internal technical improvement that may affect architecture, maintainability, delivery risk, or regression scope.
+    default_directory: refactors
+    states:
+      - draft
+      - impact_done
+      - approved
+      - in_progress
+      - regression_passed
+      - closed
+      - rejected
+      - deferred
+    must_include:
+      - reason
+      - affected_modules
+      - risk_if_not_done
+      - risk_if_done
+      - scope_impact
+      - timeline_impact
+      - public_behavior_impact
+      - api_contract_impact
+      - data_migration_impact
+      - test_plan
+      - rollback_plan
+      - approval_required
+    approval_required_if:
+      - changes_public_behavior
+      - changes_api_contract
+      - changes_data_model
+      - affects_timeline
+      - affects_acceptance_criteria
+      - touches_release_or_deployment

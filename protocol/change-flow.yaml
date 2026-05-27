@@ -1,0 +1,37 @@
+flows:
+  change:
+    trigger: New or modified requirement appears after scope is confirmed.
+    stages:
+      - create_change_request
+      - classify_request
+      - impact_analysis
+      - decision
+      - update_scope_prd_plan_tests
+      - implement_or_defer
+      - regression_and_acceptance
+    gate: check_change_impact
+
+  bug:
+    trigger: Defect or failed acceptance case is found during build, test, release, or delivery.
+    stages:
+      - create_defect
+      - triage
+      - confirm_against_acceptance
+      - root_cause
+      - fix_plan
+      - fix
+      - regression_test
+      - close
+    gate: check_bug_traceability
+
+  refactor:
+    trigger: Technical debt or architecture risk is found during implementation or review.
+    stages:
+      - create_refactor_proposal
+      - impact_analysis
+      - approval
+      - architecture_update
+      - implementation
+      - regression_test
+      - close
+    gate: check_refactor_approval

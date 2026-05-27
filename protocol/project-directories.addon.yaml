@@ -1,0 +1,15 @@
+project_directories_addon:
+  changes:
+    purpose: Change requests after scope confirmation.
+    file_pattern: CR-XXXX.md
+  defects:
+    purpose: Bugs and failed acceptance cases.
+    file_pattern: BUG-XXXX.md
+  refactors:
+    purpose: Refactor proposals and technical impact analysis.
+    file_pattern: RF-XXXX.md
+  decisions:
+    purpose: Architecture and delivery decisions.
+    file_pattern: ADR-XXXX.md
+  trace:
+    purpose: Traceability maps for requirements, changes, defects, tests, and acceptance.
