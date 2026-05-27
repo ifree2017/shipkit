@@ -1,0 +1,50 @@
+version: 1
+name: process-validation-test
+purpose: Verify that ShipKit itself can run a complete delivery loop on a small sample project.
+
+frequency:
+  manual: true
+  before_major_release: true
+  scheduled: optional
+
+sample_project_requirements:
+  - small_scope
+  - includes_ui_or_api
+  - includes_at_least_one_test
+  - includes_delivery_artifact
+
+phases:
+  - intake
+  - discover
+  - scope
+  - prd
+  - arch
+  - plan
+  - build
+  - test
+  - release
+  - delivery
+
+artifacts_required:
+  - STATE.md
+  - docs/00-intake/client-raw-input.md
+  - docs/03-prd/prd.md
+  - docs/04-arch/architecture.md
+  - docs/05-plan/task-breakdown.md
+  - docs/07-test/test-report.md
+  - docs/09-delivery/client-delivery-package.md
+  - handoff/delivery.handoff.md
+  - trace/trace-map.md
+
+pass_criteria:
+  - all_required_artifacts_exist
+  - no_client_doc_redlines
+  - traceability_gate_passes
+  - at_least_one_test_or_validation_evidence_exists
+  - STATE_updated_to_delivery_or_retro
+
+failure_handling:
+  - create_harness_gap
+  - record_in_memory
+  - add_or_update_gate
+  - rerun_pvt_after_fix

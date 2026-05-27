@@ -1,25 +1,51 @@
-version: 0.1
-platform: wangyuyan
-status: placeholder
-requires_repo_inspection: true
+version: 1
+adapter: wangyuyan
+source_type: openclaw_workspace_snapshot
 
-shipkit_concepts:
-  instruction_entry:
-    candidate: unknown
-  persona_entry:
-    candidate: unknown
-  skills_path:
-    candidate: unknown
-  workflow_entry:
-    candidate: unknown
-  gates_path:
-    candidate: unknown
-  project_registry:
-    candidate: unknown
+mappings:
+  identity:
+    from: main-context/IDENTITY.md
+    to: skills/lead and adapter persona
+    mode: derive_only
+  operating_rules:
+    from: main-context/AGENTS.md
+    to: adapters/openclaw/AGENTS.md and protocol policies
+    mode: derive_only
+  soul:
+    from: main-context/SOUL.md
+    to: adapter persona
+    mode: derive_only
+  memory:
+    from:
+      - memory/
+      - main-context/memory/
+    to:
+      - protocol/context-fabric.yaml
+      - skills/memory
+    mode: schema_only
+  tasks:
+    from: tasks/schema.json
+    to: protocol/task-registry.yaml
+    mode: schema_derive
+  process_docs:
+    from: docs/PROCESS*.md
+    to:
+      - workflows/
+      - protocol/
+      - gates/
+    mode: derive_only
+  skills:
+    from: skills/*/SKILL.md
+    to: ShipKit skills
+    mode: selective_rewrite
+  scripts:
+    from: scripts/
+    to: gates or adapter helpers
+    mode: audit_before_import
 
-migration_policy:
-  - inspect_repository_structure
-  - identify_existing_agent_contract
-  - map_shipkit_core_without_modifying_core
-  - implement_adapter_files_only
-  - run_platform_capability_report
+redlines:
+  - do_not_import_credentials
+  - do_not_import_private_paths
+  - do_not_import_personal_logs
+  - do_not_import_raw_client_data
+  - do_not_import_server_ips_without_redaction

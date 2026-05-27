@@ -1,0 +1,63 @@
+version: 1
+name: review-loop
+purpose: Make agent output reviewable through planner, builder, evaluator, evidence, and retry cycles.
+
+pattern: planner -> builder -> evaluator -> fix_or_accept
+
+roles:
+  planner:
+    purpose: turn requirement into spec, task list, and acceptance criteria
+    outputs:
+      - SPEC.md or PRD section
+      - task list
+      - acceptance criteria
+  builder:
+    purpose: implement according to task and spec
+    outputs:
+      - code or document changes
+      - handoff artifact
+      - self assessment
+      - test output
+  evaluator:
+    purpose: independently verify against spec and quality gates
+    outputs:
+      - review report
+      - scorecard
+      - evidence
+      - accept_or_rework_decision
+
+scorecard:
+  spec_compliance:
+    weight: 40
+    min: 60
+  code_quality:
+    weight: 25
+    min: 60
+  test_coverage:
+    weight: 20
+    min: 60
+  originality:
+    weight: 10
+    min: 50
+  functionality:
+    weight: 5
+    min: 60
+
+required_evidence:
+  code_change:
+    - diff_summary
+    - tests_run
+    - lint_or_typecheck_if_available
+  ui_change:
+    - screenshots_or_playwright_report_if_available
+    - browser_console_notes_if_available
+  release:
+    - env_readiness
+    - rollback_plan
+    - smoke_test
+
+retry_policy:
+  max_review_cycles: 3
+  if_same_failure_repeats: create_harness_gap
+  if_spec_is_unclear: route_to_clarify
+  if_requirement_changed: route_to_change

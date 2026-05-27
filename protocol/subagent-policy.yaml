@@ -1,0 +1,51 @@
+version: 1
+name: subagent-policy
+purpose: Define when to delegate, how to brief subagents, and how to collect durable outputs.
+
+lead_rule: judge -> dispatch -> synthesize -> report
+
+spawn_when:
+  - task_crosses_multiple_domains
+  - task_touches_more_than_three_files
+  - task_requires_independent_review
+  - task_requires_research_before_implementation
+  - estimated_iterations_more_than_two
+  - high_risk_release_or_data_change
+
+do_not_spawn_when:
+  - simple_typo_or_formatting
+  - no_success_criteria
+  - no_file_or_project_context
+  - context_budget_above_stop_spawning_threshold
+  - operation_requires_human_approval_first
+
+parallel_limit: 4
+
+brief_required_sections:
+  - task
+  - background
+  - input_files
+  - output_artifacts
+  - success_criteria
+  - constraints
+  - forbidden_actions
+  - verification
+  - handoff_format
+
+handoff_required_sections:
+  - task_id
+  - summary
+  - files_read
+  - files_changed
+  - artifacts_created
+  - tests_or_checks_run
+  - risks
+  - unresolved_questions
+  - next_steps
+
+rules:
+  - subagents_are_disposable_artifacts_persist
+  - each_subagent_task_must_be_self_contained
+  - implementation_on_same_files_should_not_be_parallelized
+  - lead_must_synthesize_outputs_before_reporting
+  - lead_must_not_forward_raw_unverified_subagent_claims

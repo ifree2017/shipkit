@@ -1,0 +1,49 @@
+version: 1
+name: tool-policy
+purpose: Keep tool use legible, safe, and portable across agent platforms.
+
+capability_levels:
+  L1_read_only: read files and inspect state
+  L2_write_files: create or edit local project files
+  L3_execute: run local commands
+  L4_spawn_agent: create or message subagents
+  L5_network: access external network or APIs
+  L6_external_action: send messages, deploy, publish, or mutate external systems
+
+rules:
+  - prefer_read_before_write
+  - prefer_dry_run_before_mutation
+  - destructive_operations_require_human_approval
+  - external_actions_require_human_approval
+  - secrets_must_never_be_echoed_or_committed
+  - use_trash_or_backup_before_delete
+
+standard_tools:
+  discover:
+    purpose: discover resources, projects, stages, or capabilities
+  list:
+    purpose: list known items
+  get:
+    purpose: retrieve one item
+  create:
+    purpose: create a new tracked item
+  update:
+    purpose: update a tracked item
+  search:
+    purpose: search files or project memory
+  execute:
+    purpose: run a local command or stage
+  validate:
+    purpose: run a check or gate
+  diff:
+    purpose: compare current and target state
+
+human_approval_required_for:
+  - quote_or_price_commitment
+  - contract_commitment
+  - production_release
+  - data_migration
+  - credential_rotation
+  - deleting_files
+  - sending_client_message
+  - public_publish

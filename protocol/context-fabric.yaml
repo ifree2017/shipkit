@@ -1,0 +1,77 @@
+version: 1
+name: context-fabric
+purpose: Keep long-running agent delivery work legible, resumable, and platform-neutral.
+
+principles:
+  - conversation_is_not_state
+  - project_files_are_authoritative
+  - every_long_task_requires_handoff
+  - every_milestone_updates_state
+  - memory_is_indexed_not_dumped
+
+files:
+  workspace_index:
+    path: shipkit.workspace.yaml
+    scope: workspace
+    purpose: registry of known projects and platform adapter settings
+  project_config:
+    path: shipkit.yaml
+    scope: project
+    purpose: project id, client, stage, policy, and adapter metadata
+  project_state:
+    path: STATE.md
+    scope: project
+    purpose: current authoritative project status
+    required_sections:
+      - current_stage
+      - current_goal
+      - confirmed_scope
+      - open_questions
+      - open_blockers
+      - active_changes
+      - active_bugs
+      - active_refactors
+      - active_risks
+      - key_decisions
+      - next_actions
+  memory_index:
+    path: MEMORY.md
+    scope: project
+    purpose: compact index of durable decisions and lessons
+    max_lines: 200
+    max_size_kb: 25
+  daily_log:
+    path: memory/YYYY-MM-DD.md
+    scope: project
+    purpose: daily work log, raw enough for recovery but summarized enough for readability
+  handoff:
+    path: handoff/{stage}.handoff.md
+    scope: project
+    purpose: phase transition artifact
+  trace_map:
+    path: trace/trace-map.md
+    scope: project
+    purpose: requirement to task to test to delivery traceability
+
+context_budget:
+  warn_at_percent: 60
+  flush_at_percent: 70
+  stop_spawning_at_percent: 80
+  action_when_flush_needed:
+    - update_STATE
+    - write_handoff
+    - append_daily_log
+    - summarize_open_tasks
+
+agent_startup_order:
+  - read_project_config
+  - read_STATE
+  - read_current_stage_handoff
+  - read_relevant_protocol
+  - read_relevant_skill
+
+forbidden:
+  - using_chat_history_as_only_source
+  - continuing_when_STATE_is_stale
+  - spawning_new_subagents_after_stop_spawning_threshold
+  - dumping_large_raw_session_logs_into_MEMORY

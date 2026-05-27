@@ -1,43 +1,37 @@
-# Wangyuyan Adapter Placeholder
+# Wangyuyan Adapter
 
-This adapter is intentionally conservative because the repository structure was not available during add-on creation.
+This adapter maps prior Wangyuyan OpenClaw workspace patterns into ShipKit. It is not a direct copy of that workspace.
 
-Use this adapter to map ShipKit into `wangyuyan` once the repository layout is inspected.
+## Mapping
 
-## Mapping Targets
+| Wangyuyan pattern | ShipKit equivalent |
+|---|---|
+| RD Lead identity | `skills/lead` |
+| AGENTS.md operating rules | OpenClaw adapter `AGENTS.md` plus `protocol/*` |
+| SOUL.md persona | adapter persona file |
+| MEMORY.md / daily logs | `skills/memory`, `protocol/context-fabric.yaml` |
+| STATE.md per project | `templates/STATE.md` |
+| task-manager and task schema | `protocol/task-registry.yaml`, `skills/registry` |
+| coordinator skill | `skills/coord` |
+| subagent spawn standards | `protocol/subagent-policy.yaml`, `skills/spawn` |
+| subagent review v2 | `protocol/review-loop.yaml`, `skills/review` |
+| process validation test | `protocol/pvt.yaml`, `skills/pvt` |
+| tool vocabulary | `protocol/tool-policy.yaml`, `skills/toolmap` |
+| hard-coded secret incident | `skills/secrets`, `gates/check-secret-redlines.js` |
 
-Identify the closest Wangyuyan concepts for:
+## Import policy
 
-- instruction entry
-- role/persona entry
-- skill directory
-- workflow/state machine
-- tool policy
-- project registry
-- artifact directory
-- gate/check mechanism
+Do not import:
 
-## Recommended Mapping
+- personal identity files
+- private memory logs
+- hard-coded secrets
+- user-specific server paths
+- one-off project lists
 
-If Wangyuyan supports agent roles:
+Import only:
 
-```text
-ShipKit agents/       -> Wangyuyan roles/agents
-ShipKit skills/       -> Wangyuyan skills/tools
-ShipKit protocol/     -> Wangyuyan workflow/state definitions
-ShipKit gates/        -> Wangyuyan validators/checkers
-ShipKit templates/    -> Wangyuyan templates/prompts
-ShipKit projects      -> Wangyuyan project workspace
-```
-
-If Wangyuyan is prompt-only:
-
-```text
-AGENTS.md or profile prompt -> point to ShipKit protocol and workflows
-skills/                     -> keep as markdown references
-sk CLI                      -> use for install/check/project operations
-```
-
-## Rule
-
-Do not copy platform-specific assumptions from OpenClaw, Codex, or Claude into Wangyuyan. Keep ShipKit core neutral and build a thin adapter.
+- process patterns
+- protocol ideas
+- templates after redaction
+- platform capability lessons

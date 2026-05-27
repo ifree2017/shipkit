@@ -1,0 +1,68 @@
+version: 1
+name: task-registry
+purpose: Track work items across agents, stages, artifacts, and evidence.
+
+task_id_format: t-YYYYMMDD-NNN
+
+status:
+  - pending
+  - running
+  - blocked
+  - review
+  - completed
+  - failed
+  - cancelled
+
+types:
+  execution: implementation or operational work
+  research: investigation or discovery work
+  review: evaluator or audit work
+  coordination: decomposition, synthesis, or reporting work
+  change: accepted change request work
+  bug: defect fix work
+  refactor: approved refactor work
+  release: release or deployment work
+
+required_fields:
+  - id
+  - type
+  - title
+  - description
+  - status
+  - priority
+  - created_at
+  - updated_at
+
+recommended_fields:
+  - project
+  - parent
+  - source_ref
+  - requirement_ref
+  - change_ref
+  - bug_ref
+  - refactor_ref
+  - assigned_to
+  - expected_artifacts
+  - produced_artifacts
+  - verification
+  - result
+  - notes
+
+assignment:
+  assigned_to:
+    agent_id: string
+    platform: openclaw|codex|claude|cursor|hermes|wangyuyan|generic
+    session_key: optional string
+    spawned_at: optional datetime
+
+completion_gate:
+  require_result_summary: true
+  require_artifacts: true
+  require_verification: true
+  require_trace_link: true
+
+anti_patterns:
+  - task_without_requirement_or_source_ref
+  - task_marked_complete_without_artifacts
+  - task_marked_complete_without_verification
+  - task_assigned_to_agent_without_self_contained_brief

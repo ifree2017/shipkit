@@ -1,0 +1,19 @@
+{
+  "id": "t-YYYYMMDD-NNN",
+  "type": "execution",
+  "title": "",
+  "description": "",
+  "parent": null,
+  "source_ref": null,
+  "requirement_ref": null,
+  "status": "pending",
+  "priority": 3,
+  "assigned_to": null,
+  "expected_artifacts": [],
+  "produced_artifacts": [],
+  "verification": [],
+  "result": null,
+  "notes": [],
+  "created_at": "",
+  "updated_at": ""
+}
