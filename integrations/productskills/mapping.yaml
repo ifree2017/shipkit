@@ -1,0 +1,16 @@
+name: productskills
+type: pm_skill_source
+shipkit_layer: skills
+import_mode: rewrite
+copy_content: false
+
+maps_to:
+  user-interview: discover
+  problem-validation: discover
+  jtbd-analysis: discover
+  research-synthesis: discover
+  scope-cutting: scope
+  prd-writing: prd
+  launch-plan: release
+  metrics-framework: measure
+  roadmap-planning: plan

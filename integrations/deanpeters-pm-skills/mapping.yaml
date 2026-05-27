@@ -1,0 +1,10 @@
+name: deanpeters-pm-skills
+type: methodology_reference
+shipkit_layer: skills
+import_mode: reference
+copy_content: false
+
+patterns_to_learn:
+  component_skills: [prd, scope, test, audit]
+  interactive_skills: [clarify, decision, risk, change]
+  workflow_skills: [project-flow, release-flow, incident-flow]

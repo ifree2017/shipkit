@@ -1,0 +1,28 @@
+name: wshobson-agents
+type: plugin_catalog
+shipkit_layer: tools
+import_mode: adapter
+copy_content: false
+
+plugins:
+  conductor:
+    stages: [plan, build]
+    evidence: evidence/planning/conductor-report.md
+  full-stack-orchestration:
+    stages: [build, test]
+    evidence: evidence/build/full-stack-orchestration.md
+  security-scanning:
+    stages: [arch, build, release]
+    evidence: evidence/security/security-scan.md
+  git-pr-workflows:
+    stages: [build, review, delivery]
+    evidence: evidence/build/pr-workflow.md
+  comprehensive-review:
+    stages: [test, release]
+    evidence: evidence/review/comprehensive-review.md
+  deployment-validation:
+    stages: [release]
+    evidence: evidence/release/deployment-validation.md
+  code-documentation:
+    stages: [arch, delivery]
+    evidence: evidence/delivery/documentation-report.md

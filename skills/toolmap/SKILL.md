@@ -1,38 +1,24 @@
 ---
 name: toolmap
-description: Use when mapping ShipKit actions to platform tools, evaluating tool permissions, reducing tool surface area, or creating adapter capability reports.
+description: Use when selecting, reviewing, or routing external tools, MCP servers, plugins, or capability packs for a ShipKit stage or issue flow.
 ---
 
 # Toolmap
 
-Keep tool use small, explicit, and safe.
+Use `protocol/toolmap.yaml`, `tools/plugin-map.yaml`, `tools/mcp-map.yaml`, and `tools/tool-policy.yaml` to choose tools safely.
 
-## Capability levels
+## Required Checks
 
-- L1 read-only
-- L2 write files
-- L3 execute commands
-- L4 spawn agents
-- L5 network
-- L6 external action
+Before using an external tool:
 
-## Platform adapter must declare
+1. Is it allowlisted?
+2. Which stage or flow may use it?
+3. What can it read?
+4. What can it write?
+5. Where must evidence be stored?
+6. Does it require human approval?
+7. Which gate evaluates its output?
 
-- can read files
-- can write files
-- can execute shell
-- can spawn subagents
-- can access network
-- can send external messages
-- supports human approval
-- supports hooks
-- supports scheduled tasks
+## Rule
 
-## Default rules
-
-- Read before write.
-- Dry-run before mutation.
-- Approval before external action.
-- Never commit secrets.
-- Prefer generic actions over many specialized tools.
-
+External tools do not decide stage progression. They only produce evidence.

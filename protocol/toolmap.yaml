@@ -1,0 +1,84 @@
+version: 0.1
+name: ShipKit Toolmap
+
+purpose: >
+  Map ShipKit stages and issue flows to external tools, MCP servers, plugins, and capability packs.
+  Toolmap entries describe when a tool may be used, what it can read/write, and where evidence must be stored.
+
+stages:
+  intake:
+    recommended_tools: []
+    write_evidence_to: evidence/intake/
+  discover:
+    recommended_tools:
+      - productskills:user-interview
+      - productskills:problem-validation
+    write_evidence_to: evidence/discovery/
+  prd:
+    recommended_tools:
+      - productskills:prd-writing
+      - pm-agent-workflow:interaction-to-prd
+    write_evidence_to: evidence/prd/
+  arch:
+    recommended_tools:
+      - codegraph:graph-build
+      - wshobson:c4-architecture
+    write_evidence_to: evidence/architecture/
+  plan:
+    recommended_tools:
+      - wshobson:conductor
+      - codegraph:impact-map
+    write_evidence_to: evidence/planning/
+  build:
+    recommended_tools:
+      - wshobson:full-stack-orchestration
+      - wshobson:git-pr-workflows
+    write_evidence_to: evidence/build/
+  test:
+    recommended_tools:
+      - wshobson:unit-testing
+      - wshobson:qa-orchestra
+      - openspec:acceptance-spec
+    write_evidence_to: evidence/test/
+  release:
+    recommended_tools:
+      - wshobson:security-scanning
+      - wshobson:deployment-validation
+      - openspec:release-spec
+    write_evidence_to: evidence/release/
+  delivery:
+    recommended_tools:
+      - wshobson:code-documentation
+    write_evidence_to: evidence/delivery/
+
+issue_flows:
+  change:
+    recommended_tools:
+      - codegraph:impact-map
+      - openspec:spec-diff
+  bug:
+    recommended_tools:
+      - codegraph:related-tests
+      - wshobson:debugging-toolkit
+  refactor:
+    recommended_tools:
+      - codegraph:dependency-map
+      - wshobson:comprehensive-review
+  security:
+    recommended_tools:
+      - wshobson:security-scanning
+
+permissions:
+  default_mode: read_only_first
+  external_write_requires:
+    - allowlist
+    - evidence_output_path
+    - gate_review
+  human_approval_required_for:
+    - quote
+    - contract
+    - client_facing_delivery
+    - production_deploy
+    - database_migration
+    - secret_access
+    - destructive_file_operation

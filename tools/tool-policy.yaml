@@ -1,0 +1,38 @@
+version: 0.1
+name: ShipKit Tool Policy
+
+allowlist_required: true
+
+modes:
+  read_only_first:
+    allowed:
+      - read_files
+      - inspect_code
+      - generate_evidence
+    denied:
+      - write_client_docs
+      - deploy
+      - delete_files
+      - access_secrets
+  approval_required:
+    allowed_after_approval:
+      - production_deploy
+      - database_migration
+      - secret_access
+      - external_api_write
+      - publish_client_artifact
+
+redlines:
+  - no_tool_may_write_quote_contract_or_client_delivery_directly_without_audit
+  - no_tool_may_deploy_to_production_without_human_approval
+  - no_tool_may_rotate_or_read_secrets_without_human_approval
+  - no_tool_may_delete_project_artifacts_without_backup
+  - no_external_tool_output_is_client_facing_until_audited
+
+required_evidence_fields:
+  - tool
+  - inputs
+  - outputs
+  - limitations
+  - confidence
+  - gate_result

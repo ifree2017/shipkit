@@ -1,0 +1,27 @@
+version: 0.1
+required_files:
+  - evidence/codegraph/graph.json
+recommended_files:
+  - evidence/codegraph/symbols.json
+  - evidence/codegraph/dependencies.json
+  - evidence/codegraph/api-map.json
+  - evidence/codegraph/test-map.json
+  - evidence/impact/impact-map.json
+
+node_types:
+  - file
+  - module
+  - symbol
+  - api
+  - database_table
+  - test
+  - external_dependency
+
+edge_types:
+  - imports
+  - calls
+  - reads
+  - writes
+  - tests
+  - implements
+  - depends_on

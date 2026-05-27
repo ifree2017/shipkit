@@ -1,0 +1,13 @@
+name: superpower
+type: capability_pack
+shipkit_layer: tools
+import_mode: adapter
+copy_content: false
+
+maps_to:
+  memory: protocol/context-fabric.yaml
+  code_search: evidence/codegraph/
+  browser: evidence/ui/
+  code_execution: evidence/build/
+  subagents: protocol/subagent-policy.yaml
+  ui_validation: evidence/testing/

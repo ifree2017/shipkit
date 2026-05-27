@@ -1,0 +1,10 @@
+confidence_labels:
+  code_confirmed: behavior directly visible in code
+  inferred: inferred from UI/API/code structure
+  needs_confirmation: likely business logic not directly confirmed
+  unknown: missing information
+
+rules:
+  - reverse_prd_is_evidence_not_confirmed_scope
+  - inferred_requirements_must_create_clarification_items
+  - missing_backend_logic_must_create_gap_analysis

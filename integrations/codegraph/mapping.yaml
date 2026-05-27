@@ -1,0 +1,21 @@
+name: codegraph
+type: code_evidence
+shipkit_layer: evidence
+import_mode: adapter
+copy_content: false
+
+outputs:
+  graph: evidence/codegraph/graph.json
+  symbols: evidence/codegraph/symbols.json
+  dependencies: evidence/codegraph/dependencies.json
+  api_map: evidence/codegraph/api-map.json
+  test_map: evidence/codegraph/test-map.json
+  impact_map: evidence/impact/impact-map.json
+
+maps_to:
+  arch: arch
+  plan: plan
+  bug: bug
+  refactor: refactor
+  change: change
+  test: test

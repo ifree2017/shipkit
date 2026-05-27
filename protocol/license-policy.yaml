@@ -1,0 +1,49 @@
+version: 0.1
+name: ShipKit License Policy
+
+rules:
+  permissive_allowed:
+    - MIT
+    - Apache-2.0
+    - BSD-2-Clause
+    - BSD-3-Clause
+    - ISC
+  restrictive_reference_only:
+    - CC-BY-NC-SA-4.0
+    - CC-BY-NC-4.0
+    - GPL-3.0
+    - AGPL-3.0
+    - unknown
+  commercial_use_requires_review:
+    - CC-BY-SA-4.0
+    - LGPL-3.0
+
+requirements:
+  - preserve_attribution_when_rewriting_or_referencing
+  - do_not_copy_non_commercial_content_into_distributed_package
+  - store_third_party_license_notes_under_integrations
+  - document_whether_content_is_referenced_rewritten_or_vendored
+  - review_license_before_publishing_to_npm
+
+integration_defaults:
+  wshobson-agents:
+    mode: adapter
+    copy_content: false
+  productskills:
+    mode: rewrite
+    copy_content: false
+  deanpeters-pm-skills:
+    mode: reference
+    copy_content: false
+  pm-agent-workflow:
+    mode: adapter
+    copy_content: false
+  codegraph:
+    mode: adapter
+    copy_content: false
+  openspec:
+    mode: protocol
+    copy_content: false
+  superpower:
+    mode: capability_pack
+    copy_content: false

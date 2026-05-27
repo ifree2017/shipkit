@@ -1,0 +1,46 @@
+version: 0.1
+name: ShipKit Plugin Map
+
+plugins:
+  wshobson:conductor:
+    stages: [plan, build, review]
+    trust_level: allowlisted_tool
+    mode: external
+    writes_to: evidence/planning/
+    requires_human_approval: false
+  wshobson:full-stack-orchestration:
+    stages: [build, test]
+    trust_level: allowlisted_tool
+    mode: external
+    writes_to: evidence/build/
+    requires_human_approval: false
+  wshobson:security-scanning:
+    stages: [arch, build, release]
+    trust_level: allowlisted_tool
+    mode: read_only_first
+    writes_to: evidence/security/
+    requires_human_approval: false
+  wshobson:git-pr-workflows:
+    stages: [build, review, delivery]
+    trust_level: allowlisted_tool
+    mode: external
+    writes_to: evidence/build/
+    requires_human_approval: false
+  wshobson:deployment-validation:
+    stages: [release]
+    trust_level: approval_required
+    mode: external
+    writes_to: evidence/release/
+    requires_human_approval: true
+  wshobson:comprehensive-review:
+    stages: [test, release]
+    trust_level: allowlisted_tool
+    mode: external
+    writes_to: evidence/review/
+    requires_human_approval: false
+  wshobson:code-documentation:
+    stages: [arch, delivery]
+    trust_level: allowlisted_tool
+    mode: external
+    writes_to: evidence/delivery/
+    requires_human_approval: false

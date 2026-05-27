@@ -1,0 +1,11 @@
+recommended_plugins:
+  - conductor
+  - full-stack-orchestration
+  - security-scanning
+  - git-pr-workflows
+  - comprehensive-review
+  - deployment-validation
+  - code-documentation
+
+usage_rule: >
+  Plugins can execute implementation or review tasks, but ShipKit remains responsible for scope, approval, gates, and customer-facing artifacts.

@@ -1,0 +1,19 @@
+capabilities:
+  memory:
+    supported: unknown
+    requires_policy: context-fabric
+  code_search:
+    supported: unknown
+    writes_to: evidence/codegraph/
+  browser:
+    supported: unknown
+    requires_approval: true
+  shell:
+    supported: unknown
+    requires_approval_for:
+      - deploy
+      - delete
+      - secret_access
+  subagents:
+    supported: unknown
+    requires_handoff_artifacts: true

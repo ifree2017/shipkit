@@ -1,0 +1,43 @@
+version: 0.1
+name: ShipKit Spec Layer
+
+purpose: >
+  Define machine-readable project specifications that supplement PRD and architecture documents.
+  PRD remains human-readable truth. Spec files are executable or checkable projections of confirmed decisions.
+
+spec_files:
+  requirements:
+    path: spec/requirements.yaml
+    required_from_stage: scope
+  api:
+    path: spec/api.openapi.yaml
+    required_when: project_has_http_api
+  data_model:
+    path: spec/data-model.yaml
+    required_when: project_has_database_or_data_import
+  events:
+    path: spec/events.yaml
+    required_when: project_has_async_or_integrations
+  permissions:
+    path: spec/permissions.yaml
+    required_when: project_has_roles_or_sensitive_data
+  acceptance:
+    path: spec/acceptance.yaml
+    required_from_stage: test
+  release:
+    path: spec/release.yaml
+    required_from_stage: release
+
+rules:
+  - specs_must_reference_requirement_ids
+  - specs_must_mark_confirmed_inferred_and_unknown_fields
+  - spec_drift_must_create_change_or_decision_record
+  - api_contract_changes_require_impact_analysis
+  - acceptance_spec_must_match_delivery_acceptance_matrix
+
+statuses:
+  - draft
+  - needs_confirmation
+  - confirmed
+  - superseded
+  - rejected

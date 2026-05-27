@@ -1,0 +1,17 @@
+name: pm-agent-workflow
+type: brownfield_reverse_prd
+shipkit_layer: evidence
+import_mode: adapter
+copy_content: false
+
+outputs:
+  gap_analysis: evidence/reverse-prd/gap-analysis.md
+  interview_questions: evidence/reverse-prd/interview-questions.md
+  reverse_prd: evidence/reverse-prd/reverse-prd.md
+  confidence_map: evidence/reverse-prd/confidence-map.md
+
+maps_to:
+  brownfield_intake: reverse-prd
+  prd: prd
+  clarify: clarify
+  scope: scope

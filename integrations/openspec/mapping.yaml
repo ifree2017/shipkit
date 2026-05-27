@@ -1,0 +1,21 @@
+name: openspec
+type: spec_layer
+shipkit_layer: protocol
+import_mode: adapter
+copy_content: false
+
+outputs:
+  requirements: spec/requirements.yaml
+  api: spec/api.openapi.yaml
+  data_model: spec/data-model.yaml
+  events: spec/events.yaml
+  permissions: spec/permissions.yaml
+  acceptance: spec/acceptance.yaml
+  release: spec/release.yaml
+
+maps_to:
+  prd: spec
+  arch: spec
+  test: spec-test
+  change: spec-diff
+  release: spec

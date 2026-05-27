@@ -1,0 +1,58 @@
+version: 0.1
+name: ShipKit Integration Policy
+
+principles:
+  - core_must_remain_platform_neutral
+  - third_party_repositories_are_references_by_default
+  - do_not_vendor_third_party_skills_without_license_review
+  - external_outputs_must_land_in_evidence_before_being_used
+  - gates_decide_whether_external_evidence_can_progress
+  - human_approval_required_for_contract_price_release_and_customer_commitments
+
+integration_modes:
+  reference:
+    description: Keep external repo as documented reference only.
+    allowed_for:
+      - restrictive_license
+      - unclear_license
+      - unstable_tooling
+  rewrite:
+    description: Rebuild the method as a ShipKit internal skill without copying text.
+    allowed_for:
+      - PM_methodology
+      - workflow_patterns
+  adapter:
+    description: Map external capability to ShipKit protocol without copying implementation.
+    allowed_for:
+      - tools
+      - plugins
+      - MCP_servers
+      - codegraph_tools
+  evidence:
+    description: External tool output is stored under evidence and evaluated by gates.
+    allowed_for:
+      - scans
+      - graphs
+      - reverse_prd
+      - security_reports
+      - test_reports
+  vendor:
+    description: Copy code/content into ShipKit package.
+    allowed_only_when:
+      - license_allows_commercial_redistribution
+      - attribution_is_preserved
+      - security_review_passed
+      - version_is_pinned
+
+required_files_per_integration:
+  - README.md
+  - mapping.yaml
+  - import-policy.md
+  - trust-policy.md
+
+redlines:
+  - never_copy_non_commercial_skill_content_into_core
+  - never_execute_unreviewed_third_party_scripts
+  - never_allow_external_plugins_to_write_client_facing_docs_directly
+  - never_allow_external_plugins_to_deploy_to_production_without_approval
+  - never_treat_inferred_code_behavior_as_confirmed_scope

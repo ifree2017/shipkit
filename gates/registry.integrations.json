@@ -1,0 +1,51 @@
+{
+  "aliases": {
+    "vendor": "check-third-party-skill.js",
+    "third-party": "check-third-party-skill.js",
+    "third-party-skill": "check-third-party-skill.js",
+    "plugin-trust": "check-plugin-trust.js",
+    "plugin": "check-plugin-trust.js",
+    "license": "check-license-policy.js",
+    "licenses": "check-license-policy.js",
+    "tool-allowlist": "check-tool-allowlist.js",
+    "toolmap": "check-tool-allowlist.js",
+    "spec": "check-spec-completeness.js",
+    "spec-completeness": "check-spec-completeness.js",
+    "spec-drift": "check-spec-drift.js",
+    "codegraph": "check-codegraph-freshness.js",
+    "graph": "check-codegraph-freshness.js",
+    "impact": "check-impact-map.js"
+  },
+  "suites": {
+    "integrations": [
+      "vendor",
+      "license",
+      "plugin-trust",
+      "toolmap"
+    ],
+    "spec": [
+      "spec-completeness",
+      "spec-drift"
+    ],
+    "evidence": [
+      "codegraph",
+      "impact"
+    ],
+    "vendor": [
+      "third-party-skill",
+      "license",
+      "plugin-trust",
+      "tool-allowlist"
+    ],
+    "extended": [
+      "vendor",
+      "license",
+      "plugin-trust",
+      "toolmap",
+      "spec-completeness",
+      "spec-drift",
+      "codegraph",
+      "impact"
+    ]
+  }
+}

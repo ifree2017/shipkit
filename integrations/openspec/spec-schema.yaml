@@ -1,0 +1,24 @@
+version: 0.1
+required_fields:
+  requirement:
+    - id
+    - title
+    - status
+    - source
+    - acceptance
+  acceptance_case:
+    - id
+    - requirement_id
+    - scenario
+    - expected
+    - evidence
+  permission_rule:
+    - role
+    - resource
+    - action
+    - allowed
+statuses:
+  - draft
+  - needs_confirmation
+  - confirmed
+  - deprecated

@@ -1,0 +1,30 @@
+version: 0.1
+name: ShipKit MCP Map
+
+servers:
+  codegraph:
+    purpose: Code graph, symbol graph, dependency graph, and impact analysis.
+    allowed_stages: [arch, plan, build, test, refactor, bug, change]
+    default_permissions: read_only
+    writes_to: evidence/codegraph/
+  spec:
+    purpose: Spec validation, spec diff, API contract, acceptance contract.
+    allowed_stages: [prd, arch, test, release, change]
+    default_permissions: read_only
+    writes_to: evidence/spec/
+  security:
+    purpose: Security scanning and dependency review.
+    allowed_stages: [arch, build, release]
+    default_permissions: read_only
+    writes_to: evidence/security/
+  browser:
+    purpose: UI validation and customer-facing evidence capture.
+    allowed_stages: [test, release, delivery]
+    default_permissions: approval_required
+    writes_to: evidence/ui/
+
+rules:
+  - mcp_server_must_be_allowlisted_before_use
+  - mcp_server_outputs_must_be_written_to_evidence
+  - mcp_server_cannot_access_secrets_unless_explicitly_approved
+  - browser_and_deployment_servers_require_human_approval_for_external_actions
