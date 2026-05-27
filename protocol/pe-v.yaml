@@ -1,0 +1,51 @@
+name: pev
+version: 0.1.0
+summary: Plan Execute Verify Handoff protocol for every ShipKit stage.
+
+stage_contract:
+  required_sections:
+    - plan
+    - execution
+    - evidence
+    - verification
+    - handoff
+
+plan:
+  required:
+    - stage
+    - objective
+    - inputs
+    - expected_outputs
+    - constraints
+    - gates
+    - risks
+    - approval_requirements
+
+execute:
+  required:
+    - artifacts_created_or_updated
+    - tools_used
+    - runner
+    - assumptions
+
+evidence:
+  required:
+    - evidence_paths
+    - logs_or_reports
+    - source_references
+
+verify:
+  required:
+    - gates_run
+    - passed
+    - failed
+    - warnings
+    - required_actions
+
+handoff:
+  required:
+    - confirmed
+    - open_questions
+    - risks
+    - next_stage
+    - gate_result

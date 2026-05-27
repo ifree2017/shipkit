@@ -1,0 +1,44 @@
+name: observability
+version: 0.1.0
+summary: Required telemetry and evidence for ShipKit runs.
+
+run_artifacts:
+  required:
+    - state.json
+    - events.ndjson
+    - artifacts.json
+    - gate-results.json
+    - report.md
+
+required_event_fields:
+  - timestamp
+  - run_id
+  - stage
+  - actor
+  - event_type
+  - summary
+
+recommended_event_types:
+  - run.started
+  - stage.planned
+  - stage.started
+  - artifact.created
+  - tool.called
+  - gate.started
+  - gate.completed
+  - human.input.required
+  - stage.completed
+  - run.failed
+  - run.completed
+
+failure_attribution:
+  categories:
+    - missing_context
+    - bad_instruction
+    - tool_failure
+    - permission_denied
+    - gate_failure
+    - external_dependency
+    - model_error
+    - human_blocker
+    - unknown

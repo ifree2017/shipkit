@@ -1,0 +1,27 @@
+{
+  "gates": {
+    "pev": {
+      "script": "gates/check-pev-stage.js",
+      "description": "Verify that stage handoff files follow Plan -> Execute -> Verify -> Handoff."
+    },
+    "permissions": {
+      "script": "gates/check-permission-policy.js",
+      "description": "Verify that permission/tool policy exists."
+    },
+    "observability": {
+      "script": "gates/check-observability.js",
+      "description": "Verify run observability files exist under .shipkit/runs."
+    },
+    "evidence-package": {
+      "script": "gates/check-evidence-package.js",
+      "description": "Verify evidence package directory exists and is non-empty."
+    }
+  },
+  "suites": {
+    "harness": ["pev", "permissions", "observability", "evidence-package"],
+    "pev": ["pev"],
+    "permissions": ["permissions"],
+    "observability": ["observability"],
+    "evidence": ["evidence-package"]
+  }
+}

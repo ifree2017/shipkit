@@ -1,0 +1,33 @@
+name: lifecycle-hooks
+version: 0.1.0
+summary: Hook points for ShipKit runners and adapters.
+
+hooks:
+  before_stage:
+    purpose: Validate inputs, policy, current state, and approvals before a stage starts.
+  before_tool:
+    purpose: Enforce tool allowlist, permission mode, secret policy, and risk classification.
+  after_tool:
+    purpose: Capture tool output into evidence and detect unsafe side effects.
+  before_gate:
+    purpose: Ensure required artifacts exist before running gates.
+  after_gate:
+    purpose: Write gate results, update state, and produce required remediation.
+  before_handoff:
+    purpose: Ensure handoff contains required sections and unresolved risks.
+  after_handoff:
+    purpose: Update project state and recommend next stage.
+  on_failure:
+    purpose: Capture failure attribution and recovery suggestions.
+  on_human_approval_required:
+    purpose: Pause execution and emit approval request.
+
+risk_actions_requiring_approval:
+  - production_deploy
+  - schema_migration
+  - deleting_data
+  - changing_quote_or_contract
+  - sending_client_facing_document
+  - accessing_external_customer_system
+  - changing_auth_or_permission_logic
+  - rotating_or_reading_secrets

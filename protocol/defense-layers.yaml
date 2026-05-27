@@ -1,0 +1,39 @@
+name: defense-layers
+version: 0.1.0
+summary: ShipKit constraints, feedback, and gates model.
+
+layers:
+  constraints:
+    purpose: Prevent invalid work before generation.
+    examples:
+      - AGENTS.md
+      - SOUL.md
+      - protocol/*.yaml
+      - coding standards
+      - architecture invariants
+      - tool policy
+      - project policy
+  feedback:
+    purpose: Convert errors and observations into structured signals.
+    examples:
+      - lint report
+      - test report
+      - security scan
+      - review scorecard
+      - failure attribution
+      - incident report
+      - feedback log
+  gates:
+    purpose: Enforce progression rules.
+    examples:
+      - sk check
+      - CI gates
+      - human approval
+      - release approval
+      - client document audit
+
+rules:
+  - Agent confidence is not a gate.
+  - Third-party tools produce evidence first.
+  - High-risk actions require approval.
+  - Stage progression requires evidence-backed verification.

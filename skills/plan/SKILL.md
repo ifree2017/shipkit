@@ -1,23 +1,39 @@
 ---
 name: plan
-description: ShipKit plan skill for moving software projects from requirements to shipped delivery.
+description: Use when preparing a ShipKit stage, SDLC task, runner execution, or agent work package. Produces a stage plan with inputs, outputs, constraints, gates, risks, and approval needs before execution.
 ---
 
-# plan
+# Plan
 
-Use this skill as part of the ShipKit delivery flow.
+## Purpose
 
-## Inputs
+Create the plan section of a ShipKit Plan -> Execute -> Verify -> Handoff loop.
 
-Read the relevant files from `protocol/stages.yaml`, `workflows/`, and `docs/`.
+## Required Plan Fields
 
-## Outputs
-
-Create or update the stage artifacts defined in `protocol/stages.yaml`.
+- stage
+- objective
+- inputs
+- expected outputs
+- constraints
+- applicable skills
+- applicable tools
+- applicable gates
+- evidence to collect
+- risks
+- approval requirements
 
 ## Rules
 
-- Keep project facts in files.
-- Record open questions and risks.
-- Do not expose internal assumptions in client-facing documents.
-- End with a stage handoff when applicable.
+- Do not execute before defining expected outputs.
+- Do not include unapproved scope.
+- Identify missing inputs as blockers or clarifications.
+- Identify human approval before risky actions.
+
+## Output
+
+Produce a stage plan suitable for saving to:
+
+```text
+handoff/<stage>.plan.md
+```

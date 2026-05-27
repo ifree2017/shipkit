@@ -1,0 +1,46 @@
+name: permissions
+version: 0.1.0
+summary: Permission model for ShipKit runner adapters.
+
+permission_levels:
+  read_only:
+    allowed:
+      - read_files
+      - inspect_code
+      - read_evidence
+    denied:
+      - write_files
+      - run_shell
+      - deploy
+  workspace_write:
+    allowed:
+      - read_files
+      - write_project_artifacts
+      - update_docs
+    denied:
+      - production_actions
+      - secret_access
+      - destructive_commands
+  tool_limited:
+    allowed:
+      - run_allowlisted_tools
+      - run_tests
+      - generate_reports
+    denied:
+      - non_allowlisted_network
+      - production_deploy
+      - destructive_commands
+  approval_required:
+    allowed_after_approval:
+      - production_deploy
+      - schema_migration
+      - client_send
+      - external_system_change
+      - secret_rotation
+
+rules:
+  - Default to least privilege.
+  - Deny destructive actions unless explicitly approved.
+  - Production access must never be automatic.
+  - Client-facing commitments require human approval.
+  - Secrets must be passed by environment or secret manager, never hardcoded.
