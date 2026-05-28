@@ -1,0 +1,23 @@
+task_status:
+  allowed:
+    - todo
+    - ready
+    - in_progress
+    - blocked
+    - in_review
+    - in_test
+    - integration
+    - done
+    - accepted
+    - deferred
+    - cancelled
+  transitions:
+    todo: [ready, deferred, cancelled]
+    ready: [in_progress, blocked, deferred, cancelled]
+    in_progress: [blocked, in_review, in_test, done]
+    blocked: [ready, in_progress, deferred, cancelled]
+    in_review: [in_progress, in_test, done]
+    in_test: [in_progress, integration, done]
+    integration: [in_progress, done, blocked]
+    done: [accepted, in_test]
+    accepted: []

@@ -1,0 +1,24 @@
+workload_model:
+  member_fields:
+    - id
+    - name
+    - role
+    - capacity_per_week
+    - skills
+    - availability
+  load_bands:
+    overloaded: ">100%"
+    full: "80-100%"
+    normal: "50-80%"
+    under_allocated: "<50%"
+  assignment_policy:
+    prefer:
+      - skill_match
+      - module_owner
+      - available_capacity
+      - lower_dependency_risk
+      - delivery_priority
+    disallow:
+      - assignment_without_owner
+      - in_progress_without_estimate
+      - done_without_evidence

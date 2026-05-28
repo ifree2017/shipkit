@@ -1,0 +1,10 @@
+id: MOD-001
+name: Module Name
+owner: member-id
+status: not_started
+stage: scope
+progress: 0
+related_requirements: []
+related_tasks: []
+risks: []
+blockers: []

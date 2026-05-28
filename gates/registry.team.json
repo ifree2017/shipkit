@@ -1,0 +1,32 @@
+{
+  "aliases": {
+    "task-ownership": "check-task-ownership.js",
+    "ownership": "check-task-ownership.js",
+    "task-traceability": "check-task-traceability.js",
+    "workload": "check-workload-balance.js",
+    "workload-balance": "check-workload-balance.js",
+    "module-progress": "check-module-progress.js",
+    "integration-readiness": "check-integration-readiness.js",
+    "status-report": "check-status-report.js"
+  },
+  "suites": {
+    "team": [
+      "task-ownership",
+      "task-traceability",
+      "workload",
+      "module-progress",
+      "integration-readiness",
+      "status-report"
+    ],
+    "execution": [
+      "task-ownership",
+      "task-traceability",
+      "workload",
+      "module-progress"
+    ],
+    "sync": [
+      "integration-readiness",
+      "status-report"
+    ]
+  }
+}

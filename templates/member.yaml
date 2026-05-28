@@ -1,0 +1,9 @@
+id: member-id
+name: Member Name
+role: frontend
+capacity_per_week: 24
+skills:
+  - skill-name
+availability:
+  status: available
+  notes: ""

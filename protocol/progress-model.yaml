@@ -1,0 +1,24 @@
+progress_model:
+  task_progress:
+    formula: done_weight / total_weight
+    default_weight_field: estimate_hours
+    done_statuses: [done, accepted]
+  module_progress:
+    fields:
+      - task_progress
+      - test_progress
+      - integration_status
+      - gate_status
+  stage_weights:
+    scope: 10
+    prd: 10
+    arch: 15
+    plan: 10
+    build: 30
+    test: 15
+    release: 5
+    delivery: 5
+  reporting:
+    write_to:
+      - modules/progress.md
+      - reports/progress-report.md

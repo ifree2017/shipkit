@@ -1,0 +1,26 @@
+team_execution:
+  purpose: "Coordinate people, modules, tasks, workload, integration, and progress evidence for multi-person delivery."
+  required_project_dirs:
+    - team
+    - modules
+    - tasks
+    - sync
+    - reports
+    - evidence/commits
+    - evidence/tests
+    - evidence/reviews
+    - evidence/integrations
+  required_files:
+    - team/members.yaml
+    - team/ownership.yaml
+    - team/workload.yaml
+    - modules/module-map.yaml
+    - tasks/board.yaml
+    - sync/integration-log.md
+    - reports/status-report.md
+  principles:
+    - every_in_progress_task_requires_owner
+    - every_task_requires_module_and_requirement_trace
+    - every_development_test_integration_action_requires_evidence
+    - progress_is_computed_from_tasks_tests_integration_and_gates_not_chat
+    - integration_failures_must_be_classified_as_bug_dependency_env_data_change_or_clarification

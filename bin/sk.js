@@ -168,6 +168,14 @@ function createProject(name, target) {
     "dependencies",
     "blockers",
     "risks",
+    "team",
+    "modules",
+    "sync",
+    "reports",
+    "evidence/commits",
+    "evidence/tests",
+    "evidence/reviews",
+    "evidence/integrations",
     "spec",
     "spec/examples",
     ".shipkit",
@@ -181,6 +189,19 @@ function createProject(name, target) {
   writeIfMissing(path.join(out, "trace", "trace-map.md"), `# Trace Map\n\n| Requirement | Module | PRD | Architecture | Task | Test | Delivery Evidence | Status |\n|---|---|---|---|---|---|---|---|\n`);
   writeIfMissing(path.join(out, "spec", "requirements.yaml"), `requirements: []\n`);
   writeIfMissing(path.join(out, "spec", "acceptance.yaml"), `acceptance: []\n`);
+  writeIfMissing(path.join(out, "team", "members.yaml"), `members: []\n`);
+  writeIfMissing(path.join(out, "team", "ownership.yaml"), `ownership: []\n`);
+  writeIfMissing(path.join(out, "team", "workload.yaml"), `workload: []\n`);
+  writeIfMissing(path.join(out, "team", "allocation.md"), `# Team Allocation\n\n| Member | Role | Capacity | Assigned | Load | Risk |\n|---|---|---:|---:|---:|---|\n`);
+  writeIfMissing(path.join(out, "modules", "module-map.yaml"), `modules: []\n`);
+  writeIfMissing(path.join(out, "modules", "progress.md"), `# Module Progress\n\n| Module | Owner | Stage | Progress | Status | Blockers |\n|---|---|---|---:|---|---|\n`);
+  writeIfMissing(path.join(out, "tasks", "board.yaml"), `tasks: []\n`);
+  writeIfMissing(path.join(out, "sync", "integration-plan.md"), `# Integration Plan\n\n## Scope\n\nTBD\n\n## Modules\n\n- TBD\n`);
+  writeIfMissing(path.join(out, "sync", "integration-log.md"), `# Integration Log\n\n| Date | Modules | Participants | Status | Issues | Next Action |\n|---|---|---|---|---|---|\n`);
+  writeIfMissing(path.join(out, "sync", "daily-log.md"), `# Daily Log\n\n| Date | Member | Done | Next | Blockers | Evidence |\n|---|---|---|---|---|---|\n`);
+  writeIfMissing(path.join(out, "reports", "status-report.md"), `# Project Status Report\n\n## Summary\n\n- Overall status: TBD\n- Overall progress: TBD\n- Current stage: TBD\n- Delivery risk: TBD\n\n## Module Progress\n\n| Module | Owner | Stage | Progress | Status | Blockers |\n|---|---|---|---:|---|---|\n\n## Workload\n\n| Member | Role | Capacity | Assigned | Load | Risk |\n|---|---|---:|---:|---:|---|\n\n## Open Risks\n\n| ID | Risk | Owner | Impact | Action |\n|---|---|---|---|---|\n\n## Blockers\n\n| ID | Blocker | Owner | Since | Required Action |\n|---|---|---|---|---|\n\n## Decisions Needed\n\n- TBD\n`);
+  writeIfMissing(path.join(out, "reports", "workload-report.md"), `# Workload Report\n\n| Member | Role | Capacity | Assigned | Available | Load | Risk |\n|---|---|---:|---:|---:|---:|---|\n`);
+  writeIfMissing(path.join(out, "reports", "progress-report.md"), `# Progress Report\n\n| Module | Owner | Stage | Task Progress | Test Progress | Integration | Risk |\n|---|---|---|---:|---:|---|---|\n`);
   writeIfMissing(path.join(out, ".shipkit", "runs", ".gitkeep"), ``);
   writeIfMissing(path.join(out, ".shipkit", "events", ".gitkeep"), ``);
   writeIfMissing(path.join(out, ".shipkit", "approvals", ".gitkeep"), ``);

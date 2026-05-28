@@ -1,0 +1,26 @@
+integration_sync:
+  statuses:
+    - not_ready
+    - waiting_dependency
+    - ready
+    - in_progress
+    - failed
+    - passed
+    - done
+  required_before_integration:
+    - module_owner_confirmed
+    - api_or_contract_ready
+    - test_environment_ready
+    - test_data_ready
+    - blockers_reviewed
+  failure_classification:
+    - bug
+    - dependency
+    - env
+    - data
+    - clarification
+    - change
+  artifacts:
+    plan: sync/integration-plan.md
+    log: sync/integration-log.md
+    evidence_dir: evidence/integrations
