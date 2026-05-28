@@ -1,0 +1,9 @@
+{
+  "aliases": {
+    "openclaw-workspace": "check-openclaw-workspace.js"
+  },
+  "suites": {
+    "openclaw-runner": ["openclaw-workspace"],
+    "openclaw-support": ["openclaw-workspace"]
+  }
+}

@@ -1,0 +1,51 @@
+runner: openclaw
+role: workspace_runner
+status: alpha
+
+principles:
+  - ShipKit remains the control layer.
+  - OpenClaw executes inside a workspace and uses ShipKit artifacts as source of truth.
+  - Customer projects may live anywhere; projects.yaml binds project IDs to paths.
+  - OpenClaw output must land in project artifacts, not only chat history.
+
+workspace:
+  default_path: ~/.openclaw/workspaces/shipkit
+  required_files:
+    - AGENTS.md
+    - SOUL.md
+    - protocol/stages.yaml
+    - skills/intake/SKILL.md
+    - workflows/01-intake.md
+    - gates/registry.json
+    - projects.yaml
+
+project_binding:
+  registry: projects.yaml
+  fields:
+    - id
+    - path
+    - profile
+    - status
+    - client
+    - updated_at
+
+stage_invocation:
+  required_context:
+    - project shipkit.yaml
+    - project STATE.md
+    - protocol/stages.yaml
+    - relevant workflow
+    - relevant skill
+  output_rules:
+    - write artifacts under the project directory
+    - update handoff when a stage completes
+    - record blockers and open questions as structured files
+    - run or request relevant gates before recommending stage progression
+
+risk_controls:
+  high_risk_requires_human_approval:
+    - quote or contract boundary changes
+    - production deployment
+    - destructive shell commands
+    - secret or credential access
+    - client-facing document publication

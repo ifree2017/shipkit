@@ -7,6 +7,7 @@ import { createProject } from "../commands/new.js";
 import { classifyCommand } from "../commands/classify.js";
 import { checkCommand } from "../commands/check.js";
 import { upCommand } from "../commands/up.js";
+import { openclawCommand } from "../commands/openclaw.js";
 
 const args = process.argv.slice(2);
 const parsed = parseArgs(args);
@@ -20,6 +21,7 @@ Usage:
   sk classify --project <path> [--features <n>] [--modules <n>] [--contributors <n>]
   sk check [gate|suite] [--to <path>] [--project <name|path>] [--json] [--strict]
   sk check list
+  sk openclaw <init|doctor|bind|status|prompt>
   sk up
 
 Profiles:
@@ -39,6 +41,9 @@ Examples:
   sk new erp --auto --features 18 --modules 8 --contributors 6 --external --data --production
   sk classify --project ~/Projects/crm
   sk check --project ~/Projects/crm
+  sk openclaw init --workspace ~/.openclaw/workspaces/shipkit
+  sk openclaw bind acme-crm --project ~/Projects/acme-crm --profile standard-team
+  sk openclaw prompt intake --project acme-crm
 `;
 
 function printHelpAndExit(code = 0) {
@@ -72,6 +77,10 @@ switch (command) {
   case "check": {
     const requested = parsed.positional[1] || "default";
     checkCommand(requested, parsed.flags);
+    break;
+  }
+  case "openclaw": {
+    openclawCommand(parsed);
     break;
   }
   case "up": {
