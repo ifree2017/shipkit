@@ -1,42 +1,54 @@
-version: 0.1
-name: source-vetting
-purpose: Evaluate third-party repositories before ShipKit references, maps, or adapts them.
-
-verdicts:
-  - accept-as-tool
-  - accept-as-reference
-  - rewrite-as-internal-skill
-  - adapter-only
-  - reject
-  - needs-human-review
+version: 1
+purpose: Evaluate third-party repositories before they affect ShipKit core, skills, tools, runners, or project status.
 
 required_checks:
-  existence:
-    description: Repository exists and URL is accessible.
-    required: true
-  maintenance:
-    description: Recent commits, releases, issues, or maintainer activity are reviewed.
-    required: true
+  identity:
+    - repository_exists
+    - canonical_url_recorded
+    - owner_recorded
+    - description_recorded
   license:
-    description: License allows the intended usage and redistribution policy.
-    required: true
-  scripts:
-    description: Install scripts, postinstall hooks, binaries, and generated files are inspected.
-    required: true
-  secrets:
-    description: Candidate repository is scanned for committed secrets or credential patterns.
-    required: true
-  permissions:
-    description: Required filesystem, shell, browser, network, and deployment permissions are documented.
-    required: true
-  trust:
-    description: Maintainer, release, dependency, and supply-chain risks are summarized.
-    required: true
+    - license_detected
+    - commercial_use_allowed
+    - redistribution_allowed
+    - attribution_required_recorded
+  supply_chain:
+    - install_scripts_reviewed
+    - postinstall_scripts_reviewed
+    - binary_downloads_reviewed
+    - network_calls_reviewed
+    - invisible_unicode_scan
+    - secret_scan
   fit:
-    description: Candidate is classified as runner, tool, skill source, reference, design source, or evidence adapter.
-    required: true
+    - shipkit_layer_identified
+    - integration_mode_identified
+    - overlap_with_shipkit_recorded
+    - output_artifacts_defined
+  governance:
+    - human_approval_required_for_risky_actions
+    - tool_policy_mapping_defined
+    - gate_mapping_defined
+    - evidence_contract_defined
 
-required_artifacts:
-  - integrations/<candidate>/README.md
-  - integrations/<candidate>/mapping.yaml
-  - templates/source-vet-report.md
+decisions:
+  - accept_as_evidence_adapter
+  - accept_as_runner_candidate
+  - accept_as_reference_only
+  - rewrite_as_internal_skill
+  - reject
+  - needs_human_review
+
+risk_levels:
+  low:
+    description: Static reference or low-risk local-only tool with permissive license.
+  medium:
+    description: Executable tool, runner, or skill with filesystem or shell access.
+  high:
+    description: Tool requiring broad permissions, network access, secrets, deployment, or production access.
+
+policy:
+  default_decision: needs_human_review
+  direct_vendor_to_core: forbidden
+  third_party_runner_default: forbidden
+  copy_skill_verbatim: discouraged
+  evidence_first: required

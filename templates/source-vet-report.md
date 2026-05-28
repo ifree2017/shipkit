@@ -1,49 +1,56 @@
 # Source Vet Report
 
-## Repository
+## Candidate
 
-- Name:
+- Repository:
+- Owner:
 - URL:
-- Evaluated at:
-- Evaluator:
+- Date reviewed:
+- Reviewer:
 
-## Claimed Purpose
-
-## ShipKit Fit
+## Intended ShipKit Role
 
 - Layer:
-- Candidate role:
 - Integration mode:
+- Candidate priority:
 
 ## License
 
-- License:
+- License detected:
 - Commercial use:
 - Redistribution:
+- Attribution required:
 - Notes:
 
-## Maintenance Signal
+## Supply Chain Review
 
-- Recent commits:
-- Releases:
-- Issues/PRs:
-- Maintainers:
+- Install scripts reviewed:
+- Network access reviewed:
+- Binary downloads reviewed:
+- Secret scan:
+- Invisible Unicode scan:
+- Risk notes:
 
-## Security Review
+## Fit Review
 
-- Install scripts:
-- Postinstall hooks:
-- Binaries:
-- Network access:
-- Filesystem access:
-- Secret risk:
+- ShipKit stage(s):
+- Expected inputs:
+- Expected outputs:
+- Evidence path:
+- Gate mapping:
+- Human approval required:
 
-## Required Permissions
+## Decision
 
-## Expected Outputs
+Choose one:
 
-## Risks
+- accept_as_evidence_adapter
+- accept_as_runner_candidate
+- accept_as_reference_only
+- rewrite_as_internal_skill
+- reject
+- needs_human_review
 
-## Recommendation
+## Rationale
 
-Verdict: `needs-human-review`
+## Follow-up Actions

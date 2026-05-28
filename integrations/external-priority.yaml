@@ -1,0 +1,106 @@
+# ShipKit external candidate priority map
+# External projects must not be vendored into ShipKit core by default.
+# They enter through source-vet, mapping, evidence, gates, and optional adapters.
+
+version: 1
+updated: 2026-05-28
+
+priority:
+  p0:
+    - id: codegraph
+      repo: colbymchenry/codegraph
+      mode: evidence_adapter
+      layer: evidence/code-intelligence
+      reason: Code intelligence and impact analysis are core to ShipKit's SDLC execution layer.
+      recommended_next_step: build ShipKit graph/impact commands and evidence/codegraph contract
+      allowed_actions:
+        - reference
+        - adapter
+        - internal_skill_rewrite
+      disallowed_actions:
+        - vendor_entire_repo
+        - treat_agent_text_as_fact
+
+  p1:
+    - id: design-md
+      repo: VoltAgent/awesome-design-md
+      mode: reference_only
+      layer: design/spec
+      reason: DESIGN.md supports UI consistency and design-to-delivery evidence.
+      recommended_next_step: generate ShipKit DESIGN.md and design review artifacts, do not copy brand docs by default
+      allowed_actions:
+        - reference
+        - template_inspiration
+      disallowed_actions:
+        - copy_brand_design_docs_without_review
+
+    - id: ui-ux-pro-max
+      repo: nextlevelbuilder/ui-ux-pro-max-skill
+      mode: rewrite_internal_skill
+      layer: design/ui-review
+      reason: UI/UX review and design-system generation can strengthen ShipKit's frontend delivery loop.
+      recommended_next_step: rewrite into ShipKit skills/ui-spec, skills/ui-review, and skills/visual-review
+      allowed_actions:
+        - reference
+        - internal_skill_rewrite
+      disallowed_actions:
+        - direct_skill_copy
+
+    - id: superpowers
+      repo: obra/superpowers
+      mode: methodology_reference
+      layer: methodology/skills-hooks
+      reason: Brainstorm, TDD, review, worktree, and subagent-review patterns align with ShipKit's PEV and review loops.
+      recommended_next_step: extract patterns into internal ShipKit skills such as brainstorm, tdd, review-loop, worktree-plan
+      allowed_actions:
+        - reference
+        - internal_method_rewrite
+      disallowed_actions:
+        - replace_shipkit_flow
+        - vendor_full_skill_framework
+
+  p2:
+    - id: ecc
+      repo: affaan-m/ECC
+      mode: reference_only
+      layer: cross-harness/capability-catalog
+      reason: High value but high overlap with ShipKit; useful for doctor, repair, status, uninstall, cross-harness packaging, memory, and security patterns.
+      recommended_next_step: keep as reference-only and extract selected patterns after source-vet
+      allowed_actions:
+        - reference
+        - capability_mapping
+      disallowed_actions:
+        - vendor_skills
+        - clone_operator_surface
+
+    - id: ruflo
+      repo: ruvnet/ruflo
+      mode: runner_candidate
+      layer: runner/multi-agent
+      reason: Multi-agent runner candidate that overlaps with Hive; must be compared against Hive before adoption.
+      recommended_next_step: run runner-vet against event stream, state persistence, artifacts, approvals, and gate result export
+      allowed_actions:
+        - runner_vet
+        - adapter_candidate
+      disallowed_actions:
+        - make_default_runner_without_vet
+
+    - id: opencode
+      repo: anomalyco/opencode
+      mode: runner_candidate
+      layer: runner/coding-agent
+      reason: Complete coding agent runtime, not a ShipKit skill source.
+      recommended_next_step: evaluate as optional runner adapter for build/review/test stages
+      allowed_actions:
+        - runner_vet
+        - adapter_candidate
+      disallowed_actions:
+        - copy_agent_behaviors_into_skills
+        - bypass_shipkit_gates
+
+rules:
+  - external_repositories_do_not_enter_core_without_source_vet
+  - third_party_skills_must_be_rewritten_to_shipkit_io_contracts
+  - runner_candidates_must_emit_events_state_artifacts_and_gate_results
+  - tools_write_evidence_first_then_shipkit_gates_decide
+  - license_and_supply_chain_risk_must_be_checked_before_distribution

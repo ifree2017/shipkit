@@ -1,0 +1,8 @@
+{
+  "aliases": {
+    "external-priority": "check-external-priority.js"
+  },
+  "suites": {
+    "external-priority": ["external-priority"]
+  }
+}
