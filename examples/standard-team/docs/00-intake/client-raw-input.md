@@ -1,3 +1,3 @@
-# Raw Intake
+# Client Raw Input
 
-Customer wants a CRM dashboard with automation triggers and basic UAT signoff.
+The client wants a CRM intake workflow for inbound leads. Staff should receive notifications, leads should be stored for review, and operations should be able to mark reviewed leads.

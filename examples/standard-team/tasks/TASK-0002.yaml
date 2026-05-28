@@ -1,0 +1,8 @@
+id: TASK-0002
+title: Implement lead API and storage
+module: MOD-002
+owner: be
+status: in_test
+estimate_hours: 12
+actual_hours: 10
+related_requirement: REQ-002

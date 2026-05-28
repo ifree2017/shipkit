@@ -1,3 +1,7 @@
 acceptance:
-  - requirement: REQ-001
-    criteria: Page shows status, blockers, and last updated time.
+  - id: ACC-001
+    requirement: REQ-001
+    evidence: evidence/tests/sample-test-report.md
+  - id: ACC-002
+    requirement: REQ-002
+    evidence: evidence/tests/sample-test-report.md

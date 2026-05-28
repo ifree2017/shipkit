@@ -1,7 +1,22 @@
 project:
-  id: simple-solo-example
-  name: Simple Solo Example
-  profile: simple-solo
+  id: contact-form-automation
+  name: Contact Form Automation
+  stage: delivery
   mode: simple
   team_mode: solo
-  stage: plan
+  profile: simple-solo
+
+classification:
+  score: 8
+  decided_by: manual
+  reasons:
+    - one contributor
+    - one module
+    - no data migration
+    - simple client acceptance
+
+policy:
+  require_traceability: true
+  require_handoff: true
+  require_client_doc_audit: true
+  profile_driven_checks: true

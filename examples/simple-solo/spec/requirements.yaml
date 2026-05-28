@@ -1,3 +1,10 @@
 requirements:
   - id: REQ-001
-    title: Static status page
+    title: Validate required fields
+    module: MOD-001
+  - id: REQ-002
+    title: Send email notification
+    module: MOD-001
+  - id: REQ-003
+    title: Write CSV backup
+    module: MOD-001

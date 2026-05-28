@@ -1,13 +1,21 @@
 members:
-  - id: alice
-    name: Alice
+  - id: pm
+    name: Priya
+    role: pm
+    capacity_per_week: 12
+    skills: [requirements, delivery]
+  - id: fe
+    name: Alex
     role: frontend
     capacity_per_week: 24
-  - id: bob
-    name: Bob
+    skills: [react, ui, testing]
+  - id: be
+    name: Ben
     role: backend
     capacity_per_week: 24
-  - id: cara
-    name: Cara
+    skills: [api, database, integration]
+  - id: qa
+    name: Quinn
     role: qa
     capacity_per_week: 16
+    skills: [test, uat, regression]

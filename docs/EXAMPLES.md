@@ -1,36 +1,45 @@
-# Examples
+# ShipKit Examples
 
-ShipKit examples are illustrative project workspaces for testing profiles, gates, evidence, and reports.
+ShipKit examples are small, file-based projects that demonstrate how a profile changes the amount of governance required for delivery.
 
 ## Available Examples
 
-### `examples/simple-solo`
+| Example | Profile | Use case | What it shows |
+|---|---|---|---|
+| `examples/simple-solo` | `simple-solo` | One-person small feature | Lightweight scope, task board, test evidence, delivery handoff |
+| `examples/standard-team` | `standard-team` | Multi-person project | Team ownership, modules, workload, integration log, status report, trace map |
 
-A one-person feature delivery example.
-
-Use for:
+## Try the examples
 
 ```bash
 sk check --project examples/simple-solo
-```
-
-### `examples/standard-team`
-
-A multi-person standard project example with modules, tasks, team ownership, sync notes, and reports.
-
-Use for:
-
-```bash
 sk check --project examples/standard-team
 ```
 
-## Example Goals
+If validation/scoring is installed:
 
-Examples should show:
+```bash
+sk score --project examples/simple-solo --write
+sk score --project examples/standard-team --write
+```
 
-- why a profile was chosen
-- which directories matter
-- how tasks and modules are tracked
-- how evidence is recorded
-- what `sk check` means
-- what is still intentionally incomplete
+## What a good example should include
+
+Each example should include enough evidence to explain the project without reading chat history:
+
+- `shipkit.yaml`
+- intake/scope/PRD or equivalent docs
+- task board
+- trace map
+- test evidence
+- handoff
+- status or score report
+
+## Adding a new example
+
+Create a new directory under `examples/` and include a README that answers:
+
+1. What project is being demonstrated?
+2. Which profile is used and why?
+3. Which ShipKit commands should users run?
+4. Which artifacts should users inspect first?

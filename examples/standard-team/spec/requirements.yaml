@@ -1,5 +1,10 @@
 requirements:
   - id: REQ-001
-    title: Customer list page
+    title: Visitor submits lead form
+    module: MOD-001
   - id: REQ-002
-    title: Customer API service
+    title: System stores lead and notifies staff
+    module: MOD-002
+  - id: REQ-003
+    title: Operator reviews lead
+    module: MOD-003

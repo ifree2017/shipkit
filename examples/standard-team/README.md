@@ -1,24 +1,34 @@
-# Standard Team Example
+# Standard Team Example: CRM Intake Automation
 
-This example shows a standard multi-person ShipKit project.
-
-Profile: `standard-team`
-
-Run:
-
-```bash
-sk check --project examples/standard-team
-```
+This example demonstrates a standard multi-person ShipKit project with modules, owners, task tracking, integration notes, test evidence, risks, dependencies, and a delivery handoff.
 
 ## Scenario
 
-A small team is building a customer-facing CRM automation feature with frontend, backend, and QA ownership.
+A client wants an internal CRM intake workflow. A web form captures leads, validates fields, stores records, sends a notification, and exposes a simple operations review list.
 
-## What this example demonstrates
+## Why `standard-team`
 
-- module ownership
-- task traceability
-- workload tracking
-- integration notes
-- status reporting
-- evidence-driven delivery
+- Multiple modules
+- Multiple contributors
+- Backend/frontend coordination
+- External email dependency
+- Formal test and delivery evidence
+- Lightweight release and status reporting
+
+## Try it
+
+```bash
+sk check --project examples/standard-team
+# If scoring is installed:
+sk score --project examples/standard-team --write
+```
+
+## What to inspect
+
+- `team/members.yaml` — contributors and capacity
+- `modules/module-map.yaml` — module ownership and progress
+- `tasks/board.yaml` — task board
+- `sync/integration-log.md` — integration trace
+- `reports/status-report.md` — project status
+- `trace/trace-map.md` — requirement-to-delivery trace
+- `evidence/tests/sample-test-report.md` — validation evidence

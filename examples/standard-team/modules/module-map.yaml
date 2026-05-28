@@ -1,11 +1,19 @@
 modules:
   - id: MOD-001
-    name: CRM Dashboard
-    owner: alice
-    status: building
-    progress: 60
+    name: Lead Intake UI
+    owner: fe
+    stage: test
+    status: testing
+    progress: 80
   - id: MOD-002
-    name: Automation API
-    owner: bob
-    status: building
-    progress: 50
+    name: Lead API and Storage
+    owner: be
+    stage: test
+    status: testing
+    progress: 75
+  - id: MOD-003
+    name: Review List and Acceptance
+    owner: qa
+    stage: test
+    status: in_progress
+    progress: 60

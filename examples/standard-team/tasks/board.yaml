@@ -1,22 +1,37 @@
 tasks:
   - id: TASK-0001
-    title: Build dashboard shell
+    title: Build lead intake form
     module: MOD-001
-    owner: alice
-    status: in_progress
+    owner: fe
+    status: done
+    priority: P1
     estimate_hours: 8
+    actual_hours: 7
     related_requirement: REQ-001
+    evidence:
+      tests:
+        - evidence/tests/sample-test-report.md
   - id: TASK-0002
-    title: Implement automation API endpoint
+    title: Implement lead API and storage
     module: MOD-002
-    owner: bob
-    status: in_progress
-    estimate_hours: 10
+    owner: be
+    status: in_test
+    priority: P1
+    estimate_hours: 12
+    actual_hours: 10
     related_requirement: REQ-002
+    evidence:
+      tests:
+        - evidence/tests/sample-test-report.md
   - id: TASK-0003
-    title: Prepare UAT test cases
-    module: MOD-001
-    owner: cara
-    status: todo
-    estimate_hours: 4
-    related_requirement: REQ-001
+    title: Build review list acceptance flow
+    module: MOD-003
+    owner: qa
+    status: in_progress
+    priority: P2
+    estimate_hours: 10
+    actual_hours: 4
+    related_requirement: REQ-003
+    evidence:
+      reviews:
+        - evidence/reviews/review-notes.md

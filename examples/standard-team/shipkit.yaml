@@ -1,7 +1,22 @@
 project:
-  id: standard-team-example
-  name: Standard Team Example
-  profile: standard-team
+  id: crm-intake-automation
+  name: CRM Intake Automation
+  stage: test
   mode: standard
   team_mode: team
-  stage: build
+  profile: standard-team
+
+classification:
+  score: 34
+  decided_by: manual
+  reasons:
+    - four contributors
+    - three modules
+    - external email dependency
+    - client acceptance required
+
+policy:
+  require_traceability: true
+  require_handoff: true
+  require_client_doc_audit: true
+  profile_driven_checks: true

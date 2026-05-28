@@ -1,20 +1,26 @@
 # Project State
 
 ## Current goal
-Demonstrate a simple-solo ShipKit project shape.
+Deliver a lightweight contact form automation example using the simple-solo profile.
 
 ## Confirmed scope
-- Static status page.
-- Basic task and handoff trace.
+- Contact form validation
+- Email payload generation
+- CSV backup behavior
+- Test evidence and delivery handoff
 
 ## Open questions
-- Confirm whether authentication is needed.
+- Confirm final sales inbox.
+- Confirm CSV retention path.
 
 ## Open blockers
-- None.
+No hard blockers.
 
 ## Key decisions
-- Use simple-solo profile.
+- Use `simple-solo` profile to keep governance lightweight.
+- Exclude CRM integration and admin dashboard.
 
 ## Next actions
-- Confirm scope and build the page.
+- Confirm production inbox.
+- Confirm CSV location.
+- Regenerate score report if scoring is installed.

@@ -1,5 +1,10 @@
 acceptance:
-  - requirement: REQ-001
-    criteria: Customer list renders expected fields.
-  - requirement: REQ-002
-    criteria: API returns customer records.
+  - id: ACC-001
+    requirement: REQ-001
+    evidence: evidence/tests/sample-test-report.md
+  - id: ACC-002
+    requirement: REQ-002
+    evidence: evidence/tests/sample-test-report.md
+  - id: ACC-003
+    requirement: REQ-003
+    evidence: evidence/tests/sample-test-report.md

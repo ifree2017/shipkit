@@ -1,9 +1,17 @@
 # Module List
 
-## MOD-001 CRM Dashboard
+## MOD-001 Lead Intake UI
+Collect lead name, email, company, and message with validation.
 
-Dashboard view for automation status.
+## MOD-002 Lead API and Storage
+Validate payload, store lead record, and send notification.
 
-## MOD-002 Automation API
+## MOD-003 Review List and Acceptance
+Allow internal operator to review leads and mark reviewed.
 
-Backend endpoint for triggering automation.
+## Exclusions
+
+- Full CRM replacement
+- Marketing automation
+- Role-based admin console
+- Historical migration
