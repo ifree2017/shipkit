@@ -1,35 +1,47 @@
 # Standard Team Example
 
-This example shows a normal team delivery shape with modules, owners, tasks, progress, and reports.
+This example shows the recommended ShipKit profile for a normal team project.
 
-Use this profile for:
+Use it for:
 
-- client/internal systems
-- 2-5 contributors
-- several modules
-- customer acceptance
-- release and delivery steps
+- client/internal web app projects
+- multi-module feature delivery
+- frontend/backend collaboration
+- projects with testing and release coordination
+- projects that need progress reporting and task ownership
 
-## Profile
+Recommended profile:
 
 ```text
 standard-team
 ```
 
-## Suggested commands
+Create a similar project:
 
 ```bash
-sk check --project examples/standard-team --soft
-sk check team --project examples/standard-team --soft
-sk score --project examples/standard-team --soft
+sk new crm --profile standard-team --to ./crm
+sk check --project ./crm
 ```
 
-## Notes
+Expected structures include:
 
-A standard team project should answer:
+```text
+team/
+modules/
+tasks/
+sync/
+reports/
+evidence/
+changes/
+defects/
+blockers/
+dependencies/
+```
 
-- Who owns each module?
-- What tasks are in progress?
-- What is blocked?
-- What has been tested?
-- What evidence supports delivery?
+A standard team project should be able to answer:
+
+- who owns each module?
+- what is each task's status?
+- which tasks are blocked?
+- where are test and review evidence stored?
+- what is the current project status?

@@ -1,59 +1,84 @@
 # Examples
 
-The examples directory is intentionally small. Examples should demonstrate how ShipKit projects are structured, not contain full application source code.
+ShipKit examples are intended to show how different project profiles affect workflow weight, directory structure, checks, and evidence expectations.
 
-## Included examples
+## Available Examples
 
-### `examples/simple-solo`
+### Simple Solo
 
-A lightweight one-person project profile.
-
-Use this when the work is a small feature, script, landing page, or automation task.
-
-Suggested checks:
-
-```bash
-sk check --project examples/simple-solo --soft
-```
-
-### `examples/standard-team`
-
-A normal team delivery project profile with modules, tasks, ownership, progress, and status reports.
-
-Suggested checks:
-
-```bash
-sk check --project examples/standard-team --soft
-sk check team --project examples/standard-team --soft
-```
-
-## Example rules
-
-Examples should:
-
-- stay small
-- avoid secrets
-- include `shipkit.yaml`
-- include a README
-- show the intended profile
-- show where artifacts should live
-- demonstrate evidence and reports without requiring real customer data
-
-Examples should not:
-
-- include production credentials
-- include large application source trees
-- depend on private external services
-- imply that agent-generated content is automatically trusted
-
-## Roadmap for examples
-
-Planned examples:
+Path:
 
 ```text
 examples/simple-solo/
-examples/standard-team/
-examples/brownfield-reverse-prd/
-examples/ui-delivery-dashboard/
-examples/complex-multi-integration/
 ```
+
+Use this profile for a small single-owner project such as a landing page, script, internal utility, or one-off automation.
+
+Expected command:
+
+```bash
+sk new landing-page --profile simple-solo --to ./landing-page
+sk check --project ./landing-page
+```
+
+### Standard Team
+
+Path:
+
+```text
+examples/standard-team/
+```
+
+Use this profile for a normal team project with multiple modules, shared ownership, task tracking, sync logs, and status reports.
+
+Expected command:
+
+```bash
+sk new crm --profile standard-team --to ./crm
+sk check --project ./crm
+```
+
+### Change / Bug / Refactor
+
+Path:
+
+```text
+examples/change-bug-refactor/
+```
+
+Use this example to understand how non-linear project work should be captured.
+
+## Example Expansion Plan
+
+Each example should eventually include:
+
+```text
+shipkit.yaml
+docs/
+tasks/
+evidence/
+handoff/
+reports/
+README.md
+```
+
+For richer examples, also include:
+
+```text
+changes/
+defects/
+refactors/
+team/
+modules/
+sync/
+```
+
+## Example Quality Bar
+
+An example is useful when a user can answer:
+
+- what profile is this using?
+- what kind of project does it represent?
+- what should `sk check` verify?
+- what artifacts should agents update?
+- what would make this project ready to ship?

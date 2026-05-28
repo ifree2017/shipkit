@@ -1,19 +1,21 @@
 project:
   id: standard-team-example
   name: Standard Team Example
-  profile: standard-team
+  stage: intake
   mode: standard
   team_mode: team
-  stage: plan
+  profile: standard-team
+
 classification:
   decided_by: example
   reasons:
     - multiple contributors
     - multiple modules
-    - customer acceptance required
-enabled_layers:
-  - core
-  - team
-  - changes
-  - dependency
-  - trace
+    - team execution required
+    - delivery progress must be visible
+
+policy:
+  require_traceability: true
+  require_handoff: true
+  require_client_doc_audit: true
+  profile_driven_checks: true

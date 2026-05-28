@@ -1,34 +1,40 @@
 # Simple Solo Example
 
-This example shows the lightest practical ShipKit project shape.
+This example shows the lightest useful ShipKit workflow.
 
-Use this profile for:
+Use it for:
 
-- one-person tasks
-- small scripts
-- landing pages
-- small automations
-- short delivery windows
+- a small script
+- a landing page
+- a simple internal tool
+- a one-person feature
+- a short project with low delivery risk
 
-## Profile
+Recommended profile:
 
 ```text
 simple-solo
 ```
 
-## Suggested commands
+Create a similar project:
 
 ```bash
-sk check --project examples/simple-solo --soft
-sk score --project examples/simple-solo --soft
+sk new landing-page --profile simple-solo --to ./landing-page
+sk check --project ./landing-page
 ```
 
-## Notes
+The project should keep only enough structure to preserve facts, scope, tasks, evidence, and delivery notes.
 
-A simple project should still leave enough trace to answer:
+Minimum expected artifacts:
 
-- What was requested?
-- What scope was accepted?
-- What was built?
-- How was it checked?
-- What was delivered?
+```text
+shipkit.yaml
+docs/00-intake/
+docs/02-scope/
+tasks/
+evidence/
+delivery/
+handoff/
+```
+
+Simple projects should not be forced into heavy team governance unless they become standard or complex projects.
