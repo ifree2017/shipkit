@@ -12,12 +12,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Check CLI syntax
         run: node --check bin/sk.js
+
       - name: List ShipKit gates
         run: node bin/sk.js check list --to .
+
       - name: Run package-safe ShipKit checks
         run: |
           node bin/sk.js check secrets --to .
           node bin/sk.js check integrations --to . --soft
           node bin/sk.js check harness --to . --soft
+
+      - name: Smoke create standard-team project
+        run: |
+          node bin/sk.js new demo --to /tmp/shipkit-demo --profile standard-team
+          node bin/sk.js check --project /tmp/shipkit-demo
+
+      - name: Dry run npm package
+        run: npm pack --dry-run
