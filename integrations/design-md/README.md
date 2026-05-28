@@ -1,6 +1,6 @@
-# codegraph Integration
+# design-md Integration
 
-This integration records how ShipKit should evaluate and optionally connect the external project `codegraph`.
+This integration records how ShipKit should evaluate and optionally connect the external project `design-md`.
 
 Status: candidate
 

@@ -1,0 +1,13 @@
+name: VoltAgent/awesome-design-md
+type: design-reference
+priority: P1
+shipkit_layer: design
+recommended_action: use-as-design-md-reference
+outputs:
+  - design/DESIGN.md
+  - design/ui-spec.md
+  - design/visual-review.md
+rules:
+  - do not copy third-party brand design docs blindly
+  - use as inspiration or reference only
+  - generate project-specific DESIGN.md

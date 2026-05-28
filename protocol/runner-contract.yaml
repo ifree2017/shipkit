@@ -1,0 +1,49 @@
+version: 0.1
+name: runner-contract
+purpose: Define the minimum contract for external execution runtimes such as Hive, OpenCode, Ruflo, OpenClaw, Codex, or Claude Code.
+
+runner_must_produce:
+  - .shipkit/runs/<run-id>/state.json
+  - .shipkit/runs/<run-id>/events.ndjson
+  - .shipkit/runs/<run-id>/artifacts.json
+  - .shipkit/runs/<run-id>/gate-results.json
+  - .shipkit/runs/<run-id>/report.md
+
+event_types:
+  - run.started
+  - run.completed
+  - run.failed
+  - stage.started
+  - stage.completed
+  - artifact.created
+  - gate.status
+  - human.input.required
+  - progress.updated
+
+required_fields:
+  state:
+    - shipkit_run_id
+    - runner
+    - runner_run_id
+    - project_path
+    - status
+    - started_at
+    - last_event_at
+  gate_status:
+    - gate_id
+    - passed
+    - severity
+    - evidence
+  artifact_created:
+    - path
+    - type
+    - visibility
+    - produced_by
+
+approval_required_for:
+  - production_deploy
+  - database_migration
+  - destructive_file_operation
+  - external_customer_message
+  - quote_or_contract_change
+  - secret_access

@@ -1,0 +1,42 @@
+version: 0.1
+name: source-vetting
+purpose: Evaluate third-party repositories before ShipKit references, maps, or adapts them.
+
+verdicts:
+  - accept-as-tool
+  - accept-as-reference
+  - rewrite-as-internal-skill
+  - adapter-only
+  - reject
+  - needs-human-review
+
+required_checks:
+  existence:
+    description: Repository exists and URL is accessible.
+    required: true
+  maintenance:
+    description: Recent commits, releases, issues, or maintainer activity are reviewed.
+    required: true
+  license:
+    description: License allows the intended usage and redistribution policy.
+    required: true
+  scripts:
+    description: Install scripts, postinstall hooks, binaries, and generated files are inspected.
+    required: true
+  secrets:
+    description: Candidate repository is scanned for committed secrets or credential patterns.
+    required: true
+  permissions:
+    description: Required filesystem, shell, browser, network, and deployment permissions are documented.
+    required: true
+  trust:
+    description: Maintainer, release, dependency, and supply-chain risks are summarized.
+    required: true
+  fit:
+    description: Candidate is classified as runner, tool, skill source, reference, design source, or evidence adapter.
+    required: true
+
+required_artifacts:
+  - integrations/<candidate>/README.md
+  - integrations/<candidate>/mapping.yaml
+  - templates/source-vet-report.md

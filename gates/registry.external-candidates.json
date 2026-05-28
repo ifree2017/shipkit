@@ -1,0 +1,13 @@
+{
+  "aliases": {
+    "source-vet": "check-source-vet.js",
+    "runner-contract": "check-runner-contract.js",
+    "design-spec": "check-design-spec.js",
+    "ui-consistency": "check-ui-consistency.js"
+  },
+  "suites": {
+    "external-candidates": ["source-vet", "runner-contract", "design-spec", "ui-consistency"],
+    "design": ["design-spec", "ui-consistency"],
+    "runner-vet": ["source-vet", "runner-contract"]
+  }
+}

@@ -1,0 +1,16 @@
+name: anomalyco/opencode
+type: runner-adapter
+priority: P1
+shipkit_layer: adapters
+recommended_action: evaluate-as-coding-runner
+required_contract:
+  - protocol/runner-contract.yaml
+outputs:
+  - .shipkit/runs/<run-id>/state.json
+  - .shipkit/runs/<run-id>/events.ndjson
+  - .shipkit/runs/<run-id>/artifacts.json
+  - .shipkit/runs/<run-id>/gate-results.json
+security_notes:
+  - inspect install scripts and extensions before use
+  - require tool allowlist
+  - production deploy requires human approval

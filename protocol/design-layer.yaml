@@ -1,0 +1,21 @@
+version: 0.1
+name: design-layer
+purpose: Add a UI/UX design specification layer to ShipKit for frontend and customer-facing projects.
+
+artifacts:
+  design_root: design/
+  design_md: design/DESIGN.md
+  ui_spec: design/ui-spec.md
+  components: design/components.md
+  visual_review: design/visual-review.md
+
+rules:
+  - DESIGN.md defines visual system, tone, layout, spacing, interaction, accessibility, and component conventions.
+  - UI implementation must trace to PRD and DESIGN.md.
+  - UI review must produce evidence before acceptance.
+  - Brand or third-party design references must be cited or rewritten, not copied blindly.
+  - Customer-facing UI specs must not expose internal implementation shortcuts.
+
+gates:
+  - design-spec
+  - ui-consistency

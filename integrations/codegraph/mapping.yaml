@@ -1,21 +1,23 @@
-name: codegraph
-type: code_evidence
+name: colbymchenry/codegraph
+type: evidence-adapter
+priority: P0
 shipkit_layer: evidence
-import_mode: adapter
-copy_content: false
-
+recommended_action: integrate-as-codegraph-adapter
 outputs:
-  graph: evidence/codegraph/graph.json
-  symbols: evidence/codegraph/symbols.json
-  dependencies: evidence/codegraph/dependencies.json
-  api_map: evidence/codegraph/api-map.json
-  test_map: evidence/codegraph/test-map.json
-  impact_map: evidence/impact/impact-map.json
-
-maps_to:
-  arch: arch
-  plan: plan
-  bug: bug
-  refactor: refactor
-  change: change
-  test: test
+  - evidence/codegraph/graph.json
+  - evidence/codegraph/symbols.json
+  - evidence/codegraph/dependencies.json
+  - evidence/codegraph/api-map.json
+  - evidence/codegraph/test-map.json
+  - evidence/codegraph/impact-map.json
+used_by:
+  - impact
+  - reverse-prd
+  - arch
+  - plan
+  - bug
+  - refactor
+  - release
+risk_notes:
+  - verify freshness before release decisions
+  - do not treat inferred code behavior as customer-confirmed requirements

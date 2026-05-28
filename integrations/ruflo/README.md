@@ -1,6 +1,6 @@
-# codegraph Integration
+# ruflo Integration
 
-This integration records how ShipKit should evaluate and optionally connect the external project `codegraph`.
+This integration records how ShipKit should evaluate and optionally connect the external project `ruflo`.
 
 Status: candidate
 

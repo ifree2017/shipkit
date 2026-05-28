@@ -1,0 +1,12 @@
+name: ruvnet/ruflo
+type: runner-candidate
+priority: P2
+shipkit_layer: adapters
+recommended_action: vet-against-hive-and-openclaw
+comparison_required:
+  - multi-agent orchestration
+  - event stream support
+  - state persistence
+  - human approval support
+  - artifact output contract
+  - permissions model

@@ -1,0 +1,30 @@
+version: 0.1
+name: capability-pack
+purpose: Describe reusable external capability packs such as ECC, Superpowers, and UI/UX skill bundles.
+
+capability_types:
+  - skills-framework
+  - hooks-framework
+  - runner
+  - code-intelligence
+  - design-spec
+  - memory
+  - doctor-repair
+  - status-reporting
+  - security-scanning
+
+integration_modes:
+  reference-only:
+    description: Use ideas and patterns, do not copy content.
+  adapter-only:
+    description: Map external tool behavior into ShipKit runner/tool contract.
+  rewrite-internal:
+    description: Rewrite concepts into ShipKit-native skills with attribution when appropriate.
+  toolmap:
+    description: Allowlisted external invocation through tools/plugin-map.yaml.
+
+rules:
+  - Capability packs must declare license and import policy.
+  - Capability packs must not bypass ShipKit gates.
+  - Capability outputs must land in evidence/ first.
+  - Human approval is required before adopting broad runner or shell capabilities.

@@ -1,0 +1,14 @@
+name: affaan-m/ECC
+type: cross-harness-reference
+priority: P2
+shipkit_layer: methodology
+recommended_action: reference-capability-catalog-and-cross-harness-packaging
+lessons:
+  - doctor/repair/uninstall
+  - status snapshot
+  - cross-harness adapter layout
+  - memory and learning patterns
+  - skills/commands/hooks packaging
+rules:
+  - do not vendor entire ECC into ShipKit
+  - adopt patterns only after license/trust review

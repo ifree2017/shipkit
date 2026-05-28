@@ -1,6 +1,6 @@
-# codegraph Integration
+# ui-ux-pro-max Integration
 
-This integration records how ShipKit should evaluate and optionally connect the external project `codegraph`.
+This integration records how ShipKit should evaluate and optionally connect the external project `ui-ux-pro-max`.
 
 Status: candidate
 

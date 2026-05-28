@@ -1,0 +1,35 @@
+version: 0.1
+name: codegraph-runner
+purpose: Define how ShipKit consumes codegraph outputs as code intelligence evidence.
+
+evidence_root: evidence/codegraph/
+
+expected_outputs:
+  - graph.json
+  - symbols.json
+  - dependencies.json
+  - api-map.json
+  - test-map.json
+  - impact-map.json
+  - freshness.json
+
+usage_by_stage:
+  prd:
+    - reverse existing behavior into evidence, never final requirements without confirmation
+  arch:
+    - map module boundaries and dependencies
+  plan:
+    - estimate affected modules and tasks
+  build:
+    - locate related files and tests
+  bug:
+    - identify candidate root causes and regression tests
+  refactor:
+    - estimate blast radius
+  release:
+    - identify risky changes and required smoke tests
+
+required_principles:
+  - Codegraph evidence is not a substitute for customer-confirmed scope.
+  - Impact analysis must include confidence and unknowns.
+  - Stale codegraph output must not be used for release decisions.

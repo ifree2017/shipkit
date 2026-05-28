@@ -1,0 +1,10 @@
+name: nextlevelbuilder/ui-ux-pro-max-skill
+type: skill-reference
+priority: P2
+shipkit_layer: skills
+recommended_action: rewrite-as-internal-ui-review-skills
+candidate_internal_skills:
+  - ui-spec
+  - ui-review
+  - visual-review
+  - design

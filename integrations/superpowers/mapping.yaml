@@ -1,0 +1,11 @@
+name: obra/superpowers
+type: capability-pack-reference
+priority: P1-P2
+shipkit_layer: methodology
+recommended_action: reference-skills-framework-and-hooks-patterns
+lessons:
+  - skill lifecycle
+  - hook lifecycle
+  - cross-harness packaging
+  - skill tests
+  - status and repair workflows

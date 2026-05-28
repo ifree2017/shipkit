@@ -1,6 +1,6 @@
-# codegraph Integration
+# superpowers Integration
 
-This integration records how ShipKit should evaluate and optionally connect the external project `codegraph`.
+This integration records how ShipKit should evaluate and optionally connect the external project `superpowers`.
 
 Status: candidate
 
