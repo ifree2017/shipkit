@@ -71,6 +71,9 @@ Usage:
   sk classify --project <path> [--features <n>] [--modules <n>] [--contributors <n>]
   sk check [gate|suite] [--to <path>] [--project <name|path>] [--json] [--strict]
   sk check list
+  sk test [suite]
+  sk score [--project <path>] [--json] [--write]
+  sk score stage <stage> [--project <path>] [--json] [--write]
   sk up
 
 Profiles:
@@ -95,6 +98,8 @@ Examples:
   sk new erp --auto --features 18 --modules 8 --contributors 6 --external --data --production
   sk classify --project ~/Projects/crm
   sk check --project ~/Projects/crm
+  sk test
+  sk score --project ~/Projects/crm
 `;
 
 function expandHome(input) {
@@ -663,6 +668,161 @@ function classifyCommand(flags) {
   }
 }
 
+
+function existsAny(target, rels) {
+  return rels.some((rel) => fs.existsSync(path.join(target, rel)));
+}
+
+function scoreDimension(target, name, weight, checks) {
+  const items = checks.map((check) => {
+    const ok = check.paths ? existsAny(target, check.paths) : false;
+    return { id: check.id, label: check.label, ok, points: check.points || 1 };
+  });
+  const totalPoints = items.reduce((sum, item) => sum + item.points, 0) || 1;
+  const earnedPoints = items.filter((item) => item.ok).reduce((sum, item) => sum + item.points, 0);
+  const score = Math.round((earnedPoints / totalPoints) * weight);
+  return { name, weight, score, checks: items };
+}
+
+function gradeFromScore(score) {
+  if (score >= 90) return "A";
+  if (score >= 80) return "B";
+  if (score >= 70) return "C";
+  if (score >= 60) return "D";
+  return "F";
+}
+
+function decisionFromScore(score) {
+  if (score >= 80) return "continue";
+  if (score >= 70) return "continue_with_human_review";
+  if (score >= 60) return "risky_do_not_advance_without_fix";
+  return "blocked";
+}
+
+function buildScore(target, scope = "project") {
+  const dimensions = [
+    scoreDimension(target, "scope_clarity", 15, [
+      { id: "scope_docs", label: "scope documents exist", paths: ["docs/02-scope", "docs/02-scope/module-list.md"] },
+      { id: "acceptance_spec", label: "acceptance spec exists", paths: ["spec/acceptance.yaml", "docs/02-scope/acceptance-criteria.md"] },
+      { id: "open_questions", label: "open questions can be tracked", paths: ["docs/00-intake/open-questions.md", "STATE.md"] }
+    ]),
+    scoreDimension(target, "traceability", 15, [
+      { id: "trace_map", label: "trace map exists", paths: ["trace/trace-map.md"] },
+      { id: "tasks", label: "task board exists", paths: ["tasks/board.yaml", "tasks"] },
+      { id: "handoff", label: "handoff directory exists", paths: ["handoff"] }
+    ]),
+    scoreDimension(target, "execution_readiness", 10, [
+      { id: "shipkit_yaml", label: "shipkit.yaml exists", paths: ["shipkit.yaml"] },
+      { id: "state", label: "STATE.md exists", paths: ["STATE.md"] },
+      { id: "plan_docs", label: "plan documents exist", paths: ["docs/05-plan"] }
+    ]),
+    scoreDimension(target, "team_execution", 15, [
+      { id: "team", label: "team directory exists", paths: ["team"] },
+      { id: "modules", label: "module map exists", paths: ["modules/module-map.yaml", "modules"] },
+      { id: "reports", label: "status reports exist", paths: ["reports/status-report.md", "reports"] }
+    ]),
+    scoreDimension(target, "evidence_quality", 15, [
+      { id: "evidence", label: "evidence directory exists", paths: ["evidence"] },
+      { id: "test_evidence", label: "test evidence directory exists", paths: ["evidence/tests", "docs/07-test"] },
+      { id: "review_evidence", label: "review evidence directory exists", paths: ["evidence/reviews", "review"] }
+    ]),
+    scoreDimension(target, "risk_control", 10, [
+      { id: "risks", label: "risk directory exists", paths: ["risks"] },
+      { id: "blockers", label: "blocker directory exists", paths: ["blockers"] },
+      { id: "dependencies", label: "dependency directory exists", paths: ["dependencies"] }
+    ]),
+    scoreDimension(target, "delivery_readiness", 10, [
+      { id: "delivery", label: "delivery directory exists", paths: ["delivery", "docs/09-delivery"] },
+      { id: "release", label: "release documents exist", paths: ["release", "docs/08-release"] },
+      { id: "audit", label: "audit directory exists", paths: ["audit"] }
+    ]),
+    scoreDimension(target, "document_safety", 10, [
+      { id: "audit", label: "audit directory exists", paths: ["audit"] },
+      { id: "approval", label: "approval directory exists", paths: [".shipkit/approvals", "approvals"] },
+      { id: "client_doc_safety", label: "client-facing docs can be reviewed", paths: ["delivery", "audit", "reports"] }
+    ])
+  ];
+  const total = dimensions.reduce((sum, dim) => sum + dim.score, 0);
+  return {
+    status: "ok",
+    scope,
+    target,
+    score: total,
+    grade: gradeFromScore(total),
+    decision: decisionFromScore(total),
+    dimensions,
+    generated_at: new Date().toISOString()
+  };
+}
+
+function formatScoreReport(payload) {
+  const lines = [];
+  lines.push("# ShipKit Score Report");
+  lines.push("");
+  lines.push("## Summary");
+  lines.push("");
+  lines.push(`- Target: ${payload.target}`);
+  lines.push(`- Scope: ${payload.scope}`);
+  lines.push(`- Score: ${payload.score} / 100`);
+  lines.push(`- Grade: ${payload.grade}`);
+  lines.push(`- Decision: ${payload.decision}`);
+  lines.push(`- Generated at: ${payload.generated_at}`);
+  lines.push("");
+  lines.push("## Dimension Scores");
+  lines.push("");
+  lines.push("| Dimension | Score | Weight | Status |");
+  lines.push("|---|---:|---:|---|");
+  for (const dim of payload.dimensions) {
+    const status = dim.score >= Math.ceil(dim.weight * 0.8) ? "PASS" : (dim.score >= Math.ceil(dim.weight * 0.6) ? "WARN" : "FAIL");
+    lines.push(`| ${dim.name} | ${dim.score} | ${dim.weight} | ${status} |`);
+  }
+  lines.push("");
+  lines.push("## Missing or Weak Signals");
+  lines.push("");
+  let missing = 0;
+  for (const dim of payload.dimensions) {
+    for (const check of dim.checks) {
+      if (!check.ok) {
+        missing += 1;
+        lines.push(`- ${dim.name}: ${check.label}`);
+      }
+    }
+  }
+  if (!missing) lines.push("- None");
+  lines.push("");
+  return lines.join("\n");
+}
+
+function scoreCommand(positional, flags) {
+  let scope = "project";
+  if (positional[1] === "stage") scope = positional[2] || "stage";
+  else if (positional[1]) scope = positional[1];
+  const target = resolveCheckTarget(flags);
+  const payload = buildScore(target, scope);
+  const markdown = formatScoreReport(payload);
+  if (flags.write) {
+    ensureDir(path.join(target, "reports"));
+    fs.writeFileSync(path.join(target, "reports", "score-report.md"), markdown);
+    ensureDir(path.join(target, ".shipkit"));
+    fs.writeFileSync(path.join(target, ".shipkit", "score.json"), JSON.stringify(payload, null, 2));
+  }
+  if (flags.json) console.log(JSON.stringify(payload, null, 2));
+  else console.log(markdown);
+  if (flags.strict && payload.score < 70) process.exit(1);
+}
+
+function testCommand(suite = "all", flags = {}) {
+  const script = path.join(root, "tests", "run-tests.js");
+  if (!fs.existsSync(script)) {
+    console.error("Missing tests/run-tests.js");
+    process.exit(1);
+  }
+  const childArgs = [script, suite];
+  if (flags.json) childArgs.push("--json");
+  const result = spawnSync(process.execPath, childArgs, { cwd: root, stdio: "inherit" });
+  process.exit(result.status ?? 1);
+}
+
 if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
   console.log(help.trim());
   process.exit(0);
@@ -690,6 +850,15 @@ switch (command) {
   case "check": {
     const requested = parsed.positional[1] || "default";
     check(requested, parsed.flags);
+    break;
+  }
+  case "test": {
+    const suite = parsed.positional[1] || "all";
+    testCommand(suite, parsed.flags);
+    break;
+  }
+  case "score": {
+    scoreCommand(parsed.positional, parsed.flags);
     break;
   }
   case "up": {

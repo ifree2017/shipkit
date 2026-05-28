@@ -1,0 +1,17 @@
+test_matrix:
+  package:
+    - syntax
+    - gate-registry
+    - npm-pack
+  project_profiles:
+    - simple-solo
+    - standard-team
+    - complex-team
+  adapters:
+    - codex
+    - openclaw
+  commands:
+    - check
+    - new
+    - classify
+    - score

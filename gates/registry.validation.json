@@ -1,0 +1,13 @@
+{
+  "aliases": {
+    "score": "check-score-threshold.js",
+    "score-threshold": "check-score-threshold.js",
+    "validation": "check-validation-suite.js",
+    "validation-suite": "check-validation-suite.js"
+  },
+  "suites": {
+    "validation": ["validation"],
+    "scoring": ["score"],
+    "score": ["score"]
+  }
+}

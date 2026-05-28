@@ -1,0 +1,19 @@
+validation:
+  purpose: "Verify ShipKit itself and project workspaces before relying on them."
+  selftest_suites:
+    cli:
+      - node --check bin/sk.js
+      - sk check --to . --soft
+    profiles:
+      - sk new simple --profile simple-solo
+      - sk new team --profile standard-team
+      - sk check --project team
+    adapters:
+      - sk init codex
+      - sk init openclaw
+    package:
+      - npm pack --dry-run
+  project_validation:
+    default:
+      - sk check --project .
+      - sk score --project .

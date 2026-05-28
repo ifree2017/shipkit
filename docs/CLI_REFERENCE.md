@@ -131,3 +131,16 @@ sk up
 ```
 
 `sk up` is reserved for future upgrade behavior and is not implemented yet.
+
+## Validation and scoring
+
+```bash
+sk test
+sk test profiles
+sk test gates
+sk score --project ./client-project
+sk score --project ./client-project --write
+sk score stage prd --project ./client-project
+```
+
+`sk test` validates ShipKit itself. `sk score` produces an advisory readiness score for a project workspace. Gates still decide hard progression.

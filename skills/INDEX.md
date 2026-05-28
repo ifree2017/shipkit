@@ -93,3 +93,9 @@ A production-grade skill should include:
 - handoff or evidence expectations
 
 Some skills are still scaffold-level. Deepening the core SDLC skills is a near-term priority.
+
+## Validation and Scoring
+
+- `score` - generate advisory project or stage readiness scores.
+- `validate` - produce validation reports for projects or harness installs.
+- `selftest` - verify ShipKit CLI, profiles, gates, adapters, and package health.

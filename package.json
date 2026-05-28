@@ -22,11 +22,13 @@
     "integrations",
     "tools",
     "spec",
-    ".github"
+    ".github",
+    "tests"
   ],
   "scripts": {
     "check": "node ./bin/sk.js check",
-    "test": "node ./bin/sk.js check"
+    "test": "node tests/run-tests.js",
+    "selftest": "node tests/run-tests.js"
   },
   "keywords": [
     "agent",

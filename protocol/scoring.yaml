@@ -1,0 +1,33 @@
+score_model:
+  total: 100
+  grades:
+    A: "90-100 ready"
+    B: "80-89 good with minor issues"
+    C: "70-79 needs attention and human review"
+    D: "60-69 risky; do not advance without fixes"
+    F: "below 60 blocked"
+  dimensions:
+    scope_clarity:
+      weight: 15
+      purpose: "Scope, acceptance criteria, and open questions are visible."
+    traceability:
+      weight: 15
+      purpose: "Requirements can be traced to tasks, tests, and delivery evidence."
+    execution_readiness:
+      weight: 10
+      purpose: "Project state, planning, and stage artifacts are present."
+    team_execution:
+      weight: 15
+      purpose: "Team, module, workload, and status artifacts are present when needed."
+    evidence_quality:
+      weight: 15
+      purpose: "Commits, tests, reviews, and integration evidence are captured."
+    risk_control:
+      weight: 10
+      purpose: "Risks, blockers, and dependencies are explicit."
+    delivery_readiness:
+      weight: 10
+      purpose: "Release, delivery, audit, and handoff material exists."
+    document_safety:
+      weight: 10
+      purpose: "Client-facing documents are auditable and high-risk claims require approval."

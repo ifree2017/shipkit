@@ -184,3 +184,12 @@ Near-term focus:
 6. improve evidence and traceability automation
 
 See [docs/ROADMAP.md](docs/ROADMAP.md).
+
+## Validation and scoring
+
+```bash
+sk test
+sk score --project ./client-project --write
+```
+
+`sk test` checks ShipKit's own CLI, profiles, gates, adapters, and package build. `sk score` creates an advisory readiness score for a project workspace.
