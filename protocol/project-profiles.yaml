@@ -1,0 +1,187 @@
+profiles:
+  simple-solo:
+    mode: simple
+    team_mode: solo
+    purpose: Lightweight single-person delivery for small tasks.
+    default_suites:
+      - smoke
+      - secrets
+      - profile
+    enabled_layers:
+      - core-lite
+      - task-lite
+      - delivery-lite
+    disabled_layers:
+      - team-execution
+      - heavy-control
+      - incident-governance
+    required_directories:
+      - docs
+      - tasks
+      - handoff
+      - delivery
+      - trace
+      - evidence
+      - .shipkit/runs
+      - spec
+
+  simple-team:
+    mode: simple
+    team_mode: team
+    purpose: Small project with more than one contributor.
+    default_suites:
+      - smoke
+      - secrets
+      - profile
+      - team
+    enabled_layers:
+      - core-lite
+      - team-execution-lite
+      - sync-lite
+    required_directories:
+      - docs
+      - tasks
+      - team
+      - modules
+      - sync
+      - reports
+      - evidence
+      - .shipkit/runs
+      - spec
+
+  standard-solo:
+    mode: standard
+    team_mode: solo
+    purpose: Normal solo client delivery with PRD, planning, change, bug and delivery records.
+    default_suites:
+      - core
+      - changes
+      - profile
+    enabled_layers:
+      - core-sdlc
+      - changes
+      - trace
+      - release-lite
+    required_directories:
+      - docs
+      - tasks
+      - changes
+      - defects
+      - refactors
+      - blockers
+      - dependencies
+      - risks
+      - handoff
+      - reports
+      - evidence
+      - spec
+      - .shipkit/runs
+
+  standard-team:
+    mode: standard
+    team_mode: team
+    purpose: Normal multi-person software delivery with module ownership, workload and integration records.
+    default_suites:
+      - core
+      - changes
+      - team
+      - ops
+      - profile
+    enabled_layers:
+      - core-sdlc
+      - team-execution
+      - changes
+      - trace
+      - release
+    required_directories:
+      - docs
+      - tasks
+      - team
+      - modules
+      - sync
+      - reports
+      - changes
+      - defects
+      - refactors
+      - dependencies
+      - blockers
+      - risks
+      - evidence
+      - spec
+      - .shipkit/runs
+
+  complex-team:
+    mode: complex
+    team_mode: team
+    purpose: High-risk team delivery with control layer, release governance, evidence package and approval gates.
+    default_suites:
+      - core
+      - team
+      - changes
+      - ops
+      - control
+      - harness
+      - delivery
+      - profile
+    enabled_layers:
+      - full-sdlc
+      - team-execution
+      - control-layer
+      - evidence-package
+      - release-governance
+    required_directories:
+      - docs
+      - tasks
+      - team
+      - modules
+      - sync
+      - reports
+      - control
+      - review
+      - changes
+      - defects
+      - refactors
+      - dependencies
+      - blockers
+      - risks
+      - evidence
+      - spec
+      - .shipkit/runs
+      - .shipkit/approvals
+
+  complex-multi:
+    mode: complex
+    team_mode: multi
+    purpose: Multi-team or vendor delivery with strict handoff, dependency and approval governance.
+    default_suites:
+      - core
+      - team
+      - changes
+      - ops
+      - control
+      - harness
+      - delivery
+      - integrations
+      - profile
+    enabled_layers:
+      - full-sdlc
+      - multi-team-governance
+      - control-layer
+      - integration-governance
+      - evidence-package
+      - release-governance
+    required_directories:
+      - docs
+      - tasks
+      - team
+      - modules
+      - sync
+      - reports
+      - vendors
+      - approvals
+      - control
+      - review
+      - evidence
+      - spec
+      - .shipkit/runs
+      - .shipkit/approvals

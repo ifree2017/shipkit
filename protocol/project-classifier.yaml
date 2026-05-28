@@ -1,0 +1,31 @@
+classifier:
+  purpose: Recommend a ShipKit project profile so simple projects stay lightweight and complex projects do not miss governance.
+  dimensions:
+    - features
+    - modules
+    - contributors
+    - external_api_or_third_party
+    - data_migration_or_sync
+    - security_or_sensitive_data
+    - production_release
+    - formal_acceptance
+    - multi_system_integration
+    - duration_weeks
+  thresholds:
+    simple:
+      description: 1-3 features, 1 module, solo or tiny team, no high-risk release, minimal dependencies.
+    standard:
+      description: 4-10 features or 2-5 modules or customer acceptance or moderate dependencies.
+    complex:
+      description: 10+ features, 5+ modules, multi-team delivery, data/security/release risk, or strict contract acceptance.
+  team_modes:
+    solo:
+      contributors: "<= 1"
+    team:
+      contributors: "2-5"
+    multi:
+      contributors: ">= 6 or multiple external teams/vendors"
+  override_policy:
+    - Users may pass --profile to force a profile.
+    - Users may pass --mode and --team to force a profile family.
+    - Auto classification is advisory unless explicitly accepted into shipkit.yaml.

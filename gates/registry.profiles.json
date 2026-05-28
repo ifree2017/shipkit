@@ -1,0 +1,16 @@
+{
+  "aliases": {
+    "profile": "check-profile-consistency.js",
+    "profiles": "check-profile-consistency.js",
+    "profile-consistency": "check-profile-consistency.js"
+  },
+  "suites": {
+    "profiles": ["profile"],
+    "simple-solo": ["smoke", "secrets", "profile"],
+    "simple-team": ["smoke", "secrets", "profile", "team"],
+    "standard-solo": ["core", "changes", "profile"],
+    "standard-team": ["core", "changes", "team", "ops", "profile"],
+    "complex-team": ["core", "team", "changes", "ops", "control", "harness", "delivery", "profile"],
+    "complex-multi": ["core", "team", "changes", "ops", "control", "harness", "delivery", "integrations", "profile"]
+  }
+}

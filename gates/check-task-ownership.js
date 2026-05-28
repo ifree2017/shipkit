@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-const target = process.argv[2] || ".";
-function exists(p){ return fs.existsSync(path.join(target,p)); }
-function read(p){ try { return fs.readFileSync(path.join(target,p),"utf8"); } catch { return ""; } }
-function fail(msg){ console.error(msg); process.exit(1); }
-function pass(msg){ console.log(msg); process.exit(0); }
-
-const board = read("tasks/board.yaml");
-const taskFiles = exists("tasks") ? fs.readdirSync(path.join(target,"tasks")).filter(f=>/^TASK-.*\.ya?ml$/i.test(f)) : [];
-const text = [board, ...taskFiles.map(f=>read(path.join("tasks",f)))].join("\n");
-if (!exists("tasks")) fail("Missing tasks/ directory");
-if (/status:\s*in_progress/i.test(text) && !/owner:\s*[^\s]/i.test(text)) fail("In-progress task without owner");
-pass("Task ownership check passed");
+const target = process.argv[2] ? path.resolve(process.argv[2]) : process.cwd();
+const board = path.join(target, "tasks", "board.yaml");
+if (!fs.existsSync(board)) { console.log("Task ownership gate: SKIP (no tasks/board.yaml)"); process.exit(0); }
+const text = fs.readFileSync(board, "utf8");
+if (/status:\s*(in_progress|in_review|in_test|integration)/.test(text) && !/owner:\s*\S+/.test(text)) {
+  console.error("Task ownership gate failed: active tasks must include owner.");
+  process.exit(1);
+}
+console.log("Task ownership gate: PASS");

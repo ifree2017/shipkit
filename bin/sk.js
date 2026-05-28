@@ -11,15 +11,75 @@ const __dirname = path.dirname(__filename);
 const root = path.resolve(__dirname, "..");
 const args = process.argv.slice(2);
 
+const PROFILES = new Set([
+  "simple-solo",
+  "simple-team",
+  "standard-solo",
+  "standard-team",
+  "complex-team",
+  "complex-multi"
+]);
+
+const PROFILE_SUITES = {
+  "simple-solo": ["smoke", "secrets", "profile"],
+  "simple-team": ["smoke", "secrets", "profile", "team"],
+  "standard-solo": ["core", "changes", "profile"],
+  "standard-team": ["core", "changes", "team", "ops", "profile"],
+  "complex-team": ["core", "team", "changes", "ops", "control", "harness", "delivery", "profile"],
+  "complex-multi": ["core", "team", "changes", "ops", "control", "harness", "delivery", "integrations", "profile"]
+};
+
+const PROFILE_DIRS = {
+  "simple-solo": [
+    "docs", "tasks", "handoff", "audit", "delivery", "trace", "evidence",
+    ".shipkit/runs", ".shipkit/events", ".shipkit/approvals", "spec"
+  ],
+  "simple-team": [
+    "docs", "tasks", "handoff", "audit", "delivery", "trace", "evidence",
+    "team", "modules", "sync", "reports", ".shipkit/runs", ".shipkit/events", ".shipkit/approvals", "spec"
+  ],
+  "standard-solo": [
+    "docs", "tasks", "handoff", "audit", "quote", "delivery", "trace", "evidence",
+    "changes", "defects", "refactors", "decisions", "dependencies", "blockers", "risks", "reports",
+    ".shipkit/runs", ".shipkit/events", ".shipkit/approvals", "spec"
+  ],
+  "standard-team": [
+    "docs", "tasks", "handoff", "audit", "quote", "delivery", "trace", "evidence",
+    "changes", "defects", "refactors", "decisions", "dependencies", "blockers", "risks",
+    "team", "modules", "sync", "reports", ".shipkit/runs", ".shipkit/events", ".shipkit/approvals", "spec"
+  ],
+  "complex-team": [
+    "docs", "tasks", "handoff", "audit", "quote", "delivery", "trace", "evidence",
+    "changes", "defects", "refactors", "decisions", "dependencies", "blockers", "risks",
+    "team", "modules", "sync", "reports", "control", "review", "spec", "release", "security", "data",
+    ".shipkit/runs", ".shipkit/events", ".shipkit/approvals"
+  ],
+  "complex-multi": [
+    "docs", "tasks", "handoff", "audit", "quote", "delivery", "trace", "evidence",
+    "changes", "defects", "refactors", "decisions", "dependencies", "blockers", "risks",
+    "team", "modules", "sync", "reports", "control", "review", "spec", "release", "security", "data",
+    "vendors", "approvals", ".shipkit/runs", ".shipkit/events", ".shipkit/approvals"
+  ]
+};
+
 const help = `
 ShipKit
 
 Usage:
   sk init <platform> --to <path>
-  sk new <project-name> [--to <path>]
+  sk new <project-name> [--to <path>] [--profile <profile>] [--mode <simple|standard|complex>] [--team <solo|team|multi>]
+  sk classify --project <path> [--features <n>] [--modules <n>] [--contributors <n>]
   sk check [gate|suite] [--to <path>] [--project <name|path>] [--json] [--strict]
   sk check list
   sk up
+
+Profiles:
+  simple-solo
+  simple-team
+  standard-solo
+  standard-team
+  complex-team
+  complex-multi
 
 Platforms:
   openclaw
@@ -29,11 +89,12 @@ Platforms:
   hermes
   generic
 
-Check examples:
-  sk check
-  sk check secrets --to .
-  sk check core --project acme-crm --to ~/.openclaw/workspaces/shipkit
-  sk check all --project ~/Projects/acme-crm --json
+Examples:
+  sk new landing-page --profile simple-solo
+  sk new crm --profile standard-team --to ~/Projects/crm
+  sk new erp --auto --features 18 --modules 8 --contributors 6 --external --data --production
+  sk classify --project ~/Projects/crm
+  sk check --project ~/Projects/crm
 `;
 
 function expandHome(input) {
@@ -110,7 +171,6 @@ function init(platform, target) {
   copyDir(path.join(root, "integrations"), path.join(out, "integrations"));
   copyDir(path.join(root, "tools"), path.join(out, "tools"));
   copyDir(path.join(root, "spec"), path.join(out, "spec"));
-  ensureDir(path.join(out, "docs"));
 
   const adapter = path.join(root, "adapters", normalized);
   copyDir(adapter, out);
@@ -129,85 +189,162 @@ function init(platform, target) {
   console.log(JSON.stringify({ status: "ok", platform: normalized, target: out }, null, 2));
 }
 
-function createProject(name, target) {
+function numberFlag(flags, name, fallback = 0) {
+  const raw = flags[name];
+  if (raw === undefined || raw === true || raw === "") return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function boolFlag(flags, name) {
+  return flags[name] === true || flags[name] === "true" || flags[name] === "yes" || flags[name] === "1";
+}
+
+function profileFromModeTeam(mode, team) {
+  const normalizedMode = mode || "standard";
+  let normalizedTeam = team || "solo";
+  if (normalizedTeam === "multi-team") normalizedTeam = "multi";
+  if (normalizedMode === "complex" && normalizedTeam === "multi") return "complex-multi";
+  const candidate = `${normalizedMode}-${normalizedTeam}`;
+  if (PROFILES.has(candidate)) return candidate;
+  if (normalizedMode === "complex" && normalizedTeam === "solo") return "complex-team";
+  return "standard-solo";
+}
+
+function classifyFromSignals(flags = {}) {
+  const features = numberFlag(flags, "features", 0);
+  const modules = numberFlag(flags, "modules", 0);
+  const contributors = numberFlag(flags, "contributors", numberFlag(flags, "people", 1));
+  const durationWeeks = numberFlag(flags, "weeks", numberFlag(flags, "duration", 0));
+  const external = boolFlag(flags, "external") || boolFlag(flags, "api") || boolFlag(flags, "third-party");
+  const data = boolFlag(flags, "data") || boolFlag(flags, "migration") || boolFlag(flags, "sync");
+  const security = boolFlag(flags, "security") || boolFlag(flags, "sensitive") || boolFlag(flags, "permissions");
+  const production = boolFlag(flags, "production") || boolFlag(flags, "release");
+  const acceptance = boolFlag(flags, "acceptance") || boolFlag(flags, "client-acceptance") || boolFlag(flags, "contract");
+  const multiSystem = boolFlag(flags, "multi-system") || boolFlag(flags, "integration");
+
+  let score = 0;
+  const reasons = [];
+  const add = (points, reason) => { score += points; reasons.push(reason); };
+
+  if (features > 10) add(18, `${features} feature points`);
+  else if (features >= 4) add(10, `${features} feature points`);
+  else if (features > 0) add(3, `${features} feature points`);
+
+  if (modules > 5) add(18, `${modules} modules`);
+  else if (modules >= 2) add(10, `${modules} modules`);
+  else if (modules > 0) add(3, `${modules} module`);
+
+  if (contributors >= 6) add(20, `${contributors} contributors`);
+  else if (contributors >= 2) add(12, `${contributors} contributors`);
+  else add(0, "solo contributor");
+
+  if (external) add(10, "external API or third-party dependency");
+  if (data) add(12, "data migration, import, export, or sync");
+  if (security) add(12, "security, sensitive data, or permission model");
+  if (production) add(10, "production release required");
+  if (acceptance) add(8, "formal customer acceptance required");
+  if (multiSystem) add(12, "multi-system integration");
+
+  if (durationWeeks >= 6) add(12, `${durationWeeks} week duration`);
+  else if (durationWeeks >= 2) add(6, `${durationWeeks} week duration`);
+
+  let mode = "simple";
+  if (score >= 50 || features > 10 || modules > 5 || contributors >= 6) mode = "complex";
+  else if (score >= 18 || features >= 4 || modules >= 2 || contributors >= 2 || external || data || acceptance) mode = "standard";
+
+  let team = "solo";
+  if (contributors >= 6) team = "multi";
+  else if (contributors >= 2) team = "team";
+
+  const profile = profileFromModeTeam(mode, team);
+  return { profile, mode, team, score, reasons };
+}
+
+function selectProjectProfile(flags) {
+  if (flags.profile) {
+    const profile = String(flags.profile);
+    if (!PROFILES.has(profile)) {
+      console.error(`Unknown profile: ${profile}`);
+      console.error(`Supported profiles: ${[...PROFILES].join(", ")}`);
+      process.exit(1);
+    }
+    const [mode, teamPart] = profile.split("-");
+    return { profile, mode, team: teamPart === "multi" ? "multi" : teamPart, score: null, reasons: ["explicit profile"] };
+  }
+
+  if (flags.mode || flags.team) {
+    const profile = profileFromModeTeam(flags.mode || "standard", flags.team || "solo");
+    const [mode, teamPart] = profile.split("-");
+    return { profile, mode, team: teamPart === "multi" ? "multi" : teamPart, score: null, reasons: ["explicit mode/team"] };
+  }
+
+  if (flags.auto || flags.features || flags.modules || flags.contributors || flags.people || flags.external || flags.data || flags.security || flags.production || flags.acceptance) {
+    return classifyFromSignals(flags);
+  }
+
+  return { profile: "standard-solo", mode: "standard", team: "solo", score: null, reasons: ["default profile"] };
+}
+
+function yamlList(items, indent = 4) {
+  return items.map((item) => `${" ".repeat(indent)}- ${item}`).join("\n");
+}
+
+function createProject(name, target, flags = {}) {
   if (!name) {
     console.error("Missing project name.");
     process.exit(1);
   }
+
   const out = resolvePath(target || name);
   ensureDir(out);
+  const classification = selectProjectProfile(flags);
 
   const docStages = [
-    "00-intake",
-    "01-discover",
-    "02-scope",
-    "03-prd",
-    "04-arch",
-    "05-plan",
-    "06-build",
-    "07-test",
-    "08-release",
-    "09-delivery",
-    "10-retro"
+    "00-intake", "01-discover", "02-scope", "03-prd", "04-arch", "05-plan",
+    "06-build", "07-test", "08-release", "09-delivery", "10-retro"
   ];
   for (const stage of docStages) ensureDir(path.join(out, "docs", stage));
-  for (const dir of [
-    "handoff",
-    "audit",
-    "quote",
-    "delivery",
-    "trace",
-    "tasks",
-    "control",
-    "review",
-    "evidence",
-    "changes",
-    "defects",
-    "refactors",
-    "decisions",
-    "dependencies",
-    "blockers",
-    "risks",
-    "team",
-    "modules",
-    "sync",
-    "reports",
-    "evidence/commits",
-    "evidence/tests",
-    "evidence/reviews",
-    "evidence/integrations",
-    "spec",
-    "spec/examples",
-    ".shipkit",
-    ".shipkit/runs",
-    ".shipkit/events",
-    ".shipkit/approvals"
-  ]) ensureDir(path.join(out, dir));
 
-  writeIfMissing(path.join(out, "shipkit.yaml"), `project:\n  id: ${name}\n  name: ${name}\n  stage: intake\n\npolicy:\n  require_traceability: true\n  require_handoff: true\n  require_client_doc_audit: true\n`);
+  for (const dir of PROFILE_DIRS[classification.profile] || PROFILE_DIRS["standard-solo"]) {
+    ensureDir(path.join(out, dir));
+  }
+  ensureDir(path.join(out, "evidence", "commits"));
+  ensureDir(path.join(out, "evidence", "tests"));
+  ensureDir(path.join(out, "evidence", "reviews"));
+  ensureDir(path.join(out, "evidence", "integrations"));
+
+  writeIfMissing(path.join(out, "shipkit.yaml"), `project:\n  id: ${name}\n  name: ${name}\n  stage: intake\n  mode: ${classification.mode}\n  team_mode: ${classification.team}\n  profile: ${classification.profile}\n\nclassification:\n  score: ${classification.score === null ? "null" : classification.score}\n  decided_by: ${flags.profile || flags.mode || flags.team ? "manual" : (flags.auto ? "auto" : "default")}\n  reasons:\n${yamlList(classification.reasons.length ? classification.reasons : ["not provided"], 4)}\n\npolicy:\n  require_traceability: true\n  require_handoff: true\n  require_client_doc_audit: true\n  profile_driven_checks: true\n`);
   writeIfMissing(path.join(out, "STATE.md"), `# STATE\n\n## Current goal\n\nTBD\n\n## Confirmed scope\n\nTBD\n\n## Open questions\n\n- TBD\n\n## Open blockers\n\n- None\n\n## Key decisions\n\n- TBD\n\n## Next actions\n\n- TBD\n`);
   writeIfMissing(path.join(out, "trace", "trace-map.md"), `# Trace Map\n\n| Requirement | Module | PRD | Architecture | Task | Test | Delivery Evidence | Status |\n|---|---|---|---|---|---|---|---|\n`);
   writeIfMissing(path.join(out, "spec", "requirements.yaml"), `requirements: []\n`);
   writeIfMissing(path.join(out, "spec", "acceptance.yaml"), `acceptance: []\n`);
-  writeIfMissing(path.join(out, "team", "members.yaml"), `members: []\n`);
-  writeIfMissing(path.join(out, "team", "ownership.yaml"), `ownership: []\n`);
-  writeIfMissing(path.join(out, "team", "workload.yaml"), `workload: []\n`);
-  writeIfMissing(path.join(out, "team", "allocation.md"), `# Team Allocation\n\n| Member | Role | Capacity | Assigned | Load | Risk |\n|---|---|---:|---:|---:|---|\n`);
-  writeIfMissing(path.join(out, "modules", "module-map.yaml"), `modules: []\n`);
-  writeIfMissing(path.join(out, "modules", "progress.md"), `# Module Progress\n\n| Module | Owner | Stage | Progress | Status | Blockers |\n|---|---|---|---:|---|---|\n`);
-  writeIfMissing(path.join(out, "tasks", "board.yaml"), `tasks: []\n`);
-  writeIfMissing(path.join(out, "sync", "integration-plan.md"), `# Integration Plan\n\n## Scope\n\nTBD\n\n## Modules\n\n- TBD\n`);
-  writeIfMissing(path.join(out, "sync", "integration-log.md"), `# Integration Log\n\n| Date | Modules | Participants | Status | Issues | Next Action |\n|---|---|---|---|---|---|\n`);
-  writeIfMissing(path.join(out, "sync", "daily-log.md"), `# Daily Log\n\n| Date | Member | Done | Next | Blockers | Evidence |\n|---|---|---|---|---|---|\n`);
-  writeIfMissing(path.join(out, "reports", "status-report.md"), `# Project Status Report\n\n## Summary\n\n- Overall status: TBD\n- Overall progress: TBD\n- Current stage: TBD\n- Delivery risk: TBD\n\n## Module Progress\n\n| Module | Owner | Stage | Progress | Status | Blockers |\n|---|---|---|---:|---|---|\n\n## Workload\n\n| Member | Role | Capacity | Assigned | Load | Risk |\n|---|---|---:|---:|---:|---|\n\n## Open Risks\n\n| ID | Risk | Owner | Impact | Action |\n|---|---|---|---|---|\n\n## Blockers\n\n| ID | Blocker | Owner | Since | Required Action |\n|---|---|---|---|---|\n\n## Decisions Needed\n\n- TBD\n`);
-  writeIfMissing(path.join(out, "reports", "workload-report.md"), `# Workload Report\n\n| Member | Role | Capacity | Assigned | Available | Load | Risk |\n|---|---|---:|---:|---:|---:|---|\n`);
-  writeIfMissing(path.join(out, "reports", "progress-report.md"), `# Progress Report\n\n| Module | Owner | Stage | Task Progress | Test Progress | Integration | Risk |\n|---|---|---|---:|---:|---|---|\n`);
-  writeIfMissing(path.join(out, ".shipkit", "runs", ".gitkeep"), ``);
-  writeIfMissing(path.join(out, ".shipkit", "events", ".gitkeep"), ``);
-  writeIfMissing(path.join(out, ".shipkit", "approvals", ".gitkeep"), ``);
-  writeIfMissing(path.join(out, "README.md"), `# ${name}\n\nShipKit project workspace.\n`);
+  writeIfMissing(path.join(out, "README.md"), `# ${name}\n\nShipKit project workspace.\n\nProfile: ${classification.profile}\n`);
 
-  console.log(JSON.stringify({ status: "ok", project: name, target: out }, null, 2));
+  if (fs.existsSync(path.join(out, "team"))) {
+    writeIfMissing(path.join(out, "team", "members.yaml"), `members: []\n`);
+    writeIfMissing(path.join(out, "team", "ownership.yaml"), `ownership: []\n`);
+    writeIfMissing(path.join(out, "team", "workload.yaml"), `workload: []\n`);
+  }
+  if (fs.existsSync(path.join(out, "modules"))) {
+    writeIfMissing(path.join(out, "modules", "module-map.yaml"), `modules: []\n`);
+    writeIfMissing(path.join(out, "modules", "progress.md"), `# Module Progress\n\n| Module | Owner | Stage | Progress | Status | Blockers |\n|---|---|---|---:|---|---|\n`);
+  }
+  if (fs.existsSync(path.join(out, "tasks"))) {
+    writeIfMissing(path.join(out, "tasks", "board.yaml"), `tasks: []\n`);
+  }
+  if (fs.existsSync(path.join(out, "sync"))) {
+    writeIfMissing(path.join(out, "sync", "integration-plan.md"), `# Integration Plan\n\nTBD\n`);
+    writeIfMissing(path.join(out, "sync", "integration-log.md"), `# Integration Log\n\n| Date | Module | Participants | Result | Issues | Next Action |\n|---|---|---|---|---|---|\n`);
+    writeIfMissing(path.join(out, "sync", "daily-log.md"), `# Daily Log\n\n| Date | Done | In Progress | Blockers | Next |\n|---|---|---|---|---|\n`);
+  }
+  if (fs.existsSync(path.join(out, "reports"))) {
+    writeIfMissing(path.join(out, "reports", "status-report.md"), `# Project Status Report\n\n## Summary\n\n- Overall status: TBD\n- Overall progress: TBD\n- Current stage: intake\n- Delivery risk: TBD\n`);
+    writeIfMissing(path.join(out, "reports", "workload-report.md"), `# Workload Report\n\n| Member | Role | Capacity | Assigned | Load | Risk |\n|---|---|---:|---:|---:|---|\n`);
+    writeIfMissing(path.join(out, "reports", "progress-report.md"), `# Progress Report\n\nTBD\n`);
+  }
+
+  console.log(JSON.stringify({ status: "ok", project: name, target: out, classification }, null, 2));
 }
 
 function readJson(file, fallback) {
@@ -218,30 +355,17 @@ function readJson(file, fallback) {
   }
 }
 
-function normalizeGateScript(script) {
-  if (!script) return script;
-  return script.replace(/^gates\//, "");
-}
-
 function mergeRegistry(baseRegistry, addon) {
   const out = {
     aliases: { ...(baseRegistry.aliases || {}) },
-    gates: { ...(baseRegistry.gates || {}) },
-    suites: { ...(baseRegistry.suites || {}) }
+    suites: { ...(baseRegistry.suites || {}) },
+    gates: { ...(baseRegistry.gates || {}) }
   };
-
-  for (const [key, value] of Object.entries(addon.aliases || {})) {
-    out.aliases[key] = normalizeGateScript(value);
-  }
-
+  for (const [key, value] of Object.entries(addon.aliases || {})) out.aliases[key] = value;
   for (const [key, value] of Object.entries(addon.gates || {})) {
-    if (typeof value === "string") {
-      out.gates[key] = { script: normalizeGateScript(value) };
-    } else if (value && typeof value === "object") {
-      out.gates[key] = { ...value, script: normalizeGateScript(value.script) };
-    }
+    out.gates[key] = value;
+    if (value && value.script && !out.aliases[key]) out.aliases[key] = value.script.replace(/^gates\//, "");
   }
-
   for (const [suite, gates] of Object.entries(addon.suites || {})) {
     const merged = [...(out.suites[suite] || []), ...(Array.isArray(gates) ? gates : [])];
     out.suites[suite] = [...new Set(merged)];
@@ -249,27 +373,61 @@ function mergeRegistry(baseRegistry, addon) {
   return out;
 }
 
-function loadGateRegistry() {
-  const gatesDir = path.join(root, "gates");
-  const registryPath = path.join(gatesDir, "registry.json");
-  const fallback = {
-    aliases: {},
-    gates: {},
+function defaultRegistry() {
+  return {
+    aliases: {
+      smoke: "check.js",
+      secrets: "check-secret-redlines.js",
+      "secret-redlines": "check-secret-redlines.js",
+      state: "check-state-file.js",
+      tasks: "check-task-registry.js",
+      context: "check-context-fabric.js",
+      trace: "check-traceability.js",
+      handoff: "check-handoff-completeness.js",
+      approval: "check-human-approval.js",
+      delivery: "check-delivery-redlines.js",
+      control: "check-control-loop.js",
+      quality: "check-quality-scorecard.js",
+      legibility: "check-agent-legibility.js",
+      platform: "check-platform-capabilities.js",
+      review: "check-review-artifacts.js",
+      change: "check-change-impact.js",
+      bug: "check-bug-traceability.js",
+      refactor: "check-refactor-approval.js",
+      dependency: "check-dependency-readiness.js",
+      drift: "check-scope-drift.js",
+      env: "check-env-readiness.js",
+      security: "check-security-baseline.js",
+      data: "check-data-readiness.js",
+      incident: "check-incident-postmortem.js",
+      profile: "check-profile-consistency.js",
+      "profile-consistency": "check-profile-consistency.js"
+    },
     suites: {
       default: ["smoke", "secrets"],
       core: ["smoke", "secrets", "state", "tasks", "context"],
+      project: ["state", "tasks", "context", "trace", "handoff"],
+      delivery: ["trace", "handoff", "delivery", "approval"],
+      control: ["control", "quality", "trace", "legibility", "approval"],
+      ops: ["dependency", "drift", "env", "security", "delivery", "data", "incident", "handoff"],
+      changes: ["change", "bug", "refactor"],
+      openclaw: ["platform", "secrets", "state", "tasks", "context", "review"],
+      profiles: ["profile"],
+      ...PROFILE_SUITES,
       all: []
     }
   };
-  let registry = readJson(registryPath, fallback);
-  if (!registry.aliases) registry.aliases = {};
-  if (!registry.gates) registry.gates = {};
-  if (!registry.suites) registry.suites = fallback.suites;
+}
+
+function loadGateRegistry() {
+  const gatesDir = path.join(root, "gates");
+  const registryPath = path.join(gatesDir, "registry.json");
+  let registry = mergeRegistry(defaultRegistry(), readJson(registryPath, { aliases: {}, suites: {}, gates: {} }));
 
   if (fs.existsSync(gatesDir)) {
     for (const file of fs.readdirSync(gatesDir).sort()) {
       if (!/^registry\..+\.json$/.test(file)) continue;
-      registry = mergeRegistry(registry, readJson(path.join(gatesDir, file), { aliases: {}, suites: {} }));
+      registry = mergeRegistry(registry, readJson(path.join(gatesDir, file), { aliases: {}, suites: {}, gates: {} }));
     }
   }
   return registry;
@@ -292,20 +450,15 @@ function resolveGateScript(name, registry) {
   if (!name || name === "default") return null;
   const aliases = registry.aliases || {};
   const gates = registry.gates || {};
-  const normalized = name.replace(/^check-/, "").replace(/\.js$/, "");
-  const mapped = aliases[name] || aliases[normalized];
-  if (mapped) return normalizeGateScript(mapped);
-
-  const gate = gates[name] || gates[normalized];
-  if (gate) {
-    if (typeof gate === "string") return normalizeGateScript(gate);
-    if (gate.script) return normalizeGateScript(gate.script);
-  }
+  const gateMeta = gates[name];
+  if (gateMeta && gateMeta.script) return gateMeta.script.replace(/^gates\//, "");
+  const mapped = aliases[name] || aliases[name.replace(/^check-/, "")];
+  if (mapped) return mapped.replace(/^gates\//, "");
 
   const candidates = [];
   if (name.endsWith(".js")) candidates.push(name);
-  candidates.push(`check-${normalized}.js`);
-  candidates.push(`check${normalized}.js`);
+  candidates.push(`check-${name}.js`);
+  candidates.push(`check${name}.js`);
 
   for (const candidate of candidates) {
     if (fs.existsSync(path.join(root, "gates", candidate))) return candidate;
@@ -313,41 +466,54 @@ function resolveGateScript(name, registry) {
   return null;
 }
 
-function collectCheckItems(requested, registry) {
+function parseSimpleYamlValue(text, key) {
+  const re = new RegExp(`^\\s*${key}:\\s*([^\\n#]+)`, "m");
+  const match = re.exec(text || "");
+  return match ? match[1].trim().replace(/^['\"]|['\"]$/g, "") : null;
+}
+
+function readProjectProfile(projectPath) {
+  const file = path.join(projectPath, "shipkit.yaml");
+  if (!fs.existsSync(file)) return null;
+  const text = fs.readFileSync(file, "utf8");
+  return parseSimpleYamlValue(text, "profile");
+}
+
+function expandCheckItems(names, registry, seen = new Set()) {
   const suites = registry.suites || {};
-  const aliases = registry.aliases || {};
+  const out = [];
+  for (const rawName of names) {
+    const name = String(rawName || "").trim();
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    if (registry.aliases?.[name] || registry.gates?.[name]) {
+      out.push(name.replace(/^check-/, "").replace(/\.js$/, ""));
+    } else if (suites[name]) {
+      out.push(...expandCheckItems(suites[name], registry, seen));
+    } else {
+      out.push(name.replace(/^check-/, "").replace(/\.js$/, ""));
+    }
+  }
+  return [...new Set(out)];
+}
+
+function collectCheckItems(requested, registry, flags, target) {
   const requestedName = requested || "default";
 
   if (requestedName === "list" || requestedName === "ls") return { list: true, items: [] };
   if (requestedName === "suites") return { suites: true, items: [] };
 
-  let items;
-  if (suites[requestedName]) {
-    items = suites[requestedName];
-  } else {
-    items = [requestedName];
+  let effective = requestedName;
+  if ((requestedName === "default" || requestedName === undefined) && flags.project) {
+    const profile = readProjectProfile(target);
+    if (profile && registry.suites?.[profile]) effective = profile;
   }
 
-  if (requestedName === "all" && (!items || items.length === 0)) {
-    const fromRegistry = [
-      ...Object.keys(registry.aliases || {}),
-      ...Object.keys(registry.gates || {})
-    ];
-    items = fromRegistry.length
-      ? [...new Set(fromRegistry)]
-      : listGateFiles().map(gateNameFromFile).filter((name) => name !== "spawn-brief");
+  let items = registry.suites?.[effective] ? registry.suites[effective] : [effective];
+  if (effective === "all" && (!items || items.length === 0)) {
+    items = listGateFiles().map(gateNameFromFile).filter((name) => name !== "spawn-brief");
   }
-
-  const seen = new Set();
-  const out = [];
-  for (const item of items) {
-    const normalized = aliases[item] ? item : item.replace(/^check-/, "").replace(/\.js$/, "");
-    if (!seen.has(normalized)) {
-      seen.add(normalized);
-      out.push(normalized);
-    }
-  }
-  return { items: out };
+  return { items: expandCheckItems(items, registry), effective };
 }
 
 function parseProjectRegistry(workspace, projectName) {
@@ -416,7 +582,8 @@ function printGateResult(result) {
 
 function check(requested, flags) {
   const registry = loadGateRegistry();
-  const collection = collectCheckItems(requested, registry);
+  const target = resolveCheckTarget(flags);
+  const collection = collectCheckItems(requested, registry, flags, target);
 
   if (collection.list || flags.list) {
     const gateFiles = listGateFiles();
@@ -424,8 +591,6 @@ function check(requested, flags) {
     for (const file of gateFiles) console.log(`  ${gateNameFromFile(file)} -> ${file}`);
     console.log("\nAliases:");
     for (const [alias, file] of Object.entries(registry.aliases || {})) console.log(`  ${alias} -> ${file}`);
-    console.log("\nGates:");
-    for (const [id, meta] of Object.entries(registry.gates || {})) console.log(`  ${id} -> ${meta.script || meta}`);
     console.log("\nSuites:");
     for (const [suite, gates] of Object.entries(registry.suites || {})) console.log(`  ${suite}: ${gates.join(", ")}`);
     return;
@@ -436,7 +601,6 @@ function check(requested, flags) {
     return;
   }
 
-  const target = resolveCheckTarget(flags);
   const results = [];
   const missing = [];
 
@@ -453,6 +617,7 @@ function check(requested, flags) {
   const payload = {
     status: ok ? "ok" : "failed",
     requested: requested || "default",
+    effective: collection.effective || requested || "default",
     target,
     missing,
     results
@@ -462,6 +627,7 @@ function check(requested, flags) {
     console.log(JSON.stringify(payload, null, 2));
   } else {
     console.log(`ShipKit check: ${requested || "default"}`);
+    if (payload.effective && payload.effective !== (requested || "default")) console.log(`Effective suite: ${payload.effective}`);
     console.log(`Target: ${target}`);
     if (missing.length) console.error(`Missing gates: ${missing.join(", ")}`);
     for (const result of results) printGateResult(result);
@@ -471,6 +637,30 @@ function check(requested, flags) {
 
   const strict = flags.strict || (!flags.soft && !flags["no-strict"]);
   if (!ok && strict) process.exit(1);
+}
+
+function classifyCommand(flags) {
+  const project = flags.project ? resolvePath(flags.project) : resolvePath(flags.to || ".");
+  let classification;
+  if (fs.existsSync(path.join(project, "shipkit.yaml"))) {
+    const text = fs.readFileSync(path.join(project, "shipkit.yaml"), "utf8");
+    const profile = parseSimpleYamlValue(text, "profile") || "standard-solo";
+    const [mode, teamPart] = profile.split("-");
+    classification = { profile, mode, team: teamPart === "multi" ? "multi" : teamPart, score: null, reasons: ["read from shipkit.yaml"] };
+  } else {
+    classification = classifyFromSignals(flags);
+  }
+  const payload = { status: "ok", project, classification };
+  if (flags.json) console.log(JSON.stringify(payload, null, 2));
+  else {
+    console.log(`Project: ${project}`);
+    console.log(`Recommended profile: ${classification.profile}`);
+    console.log(`Mode: ${classification.mode}`);
+    console.log(`Team: ${classification.team}`);
+    if (classification.score !== null) console.log(`Score: ${classification.score}`);
+    console.log("Reasons:");
+    for (const reason of classification.reasons || []) console.log(`  - ${reason}`);
+  }
 }
 
 if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
@@ -490,7 +680,11 @@ switch (command) {
   case "new": {
     const name = parsed.positional[1];
     const target = parsed.flags.to || parsed.flags.target;
-    createProject(name, target);
+    createProject(name, target, parsed.flags);
+    break;
+  }
+  case "classify": {
+    classifyCommand(parsed.flags);
     break;
   }
   case "check": {
