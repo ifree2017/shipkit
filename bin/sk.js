@@ -106,6 +106,10 @@ function init(platform, target) {
   copyDir(path.join(root, "templates"), path.join(out, "templates"));
   copyDir(path.join(root, "gates"), path.join(out, "gates"));
   copyDir(path.join(root, "agents"), path.join(out, "agents"));
+  copyDir(path.join(root, "docs"), path.join(out, "docs"));
+  copyDir(path.join(root, "integrations"), path.join(out, "integrations"));
+  copyDir(path.join(root, "tools"), path.join(out, "tools"));
+  copyDir(path.join(root, "spec"), path.join(out, "spec"));
   ensureDir(path.join(out, "docs"));
 
   const adapter = path.join(root, "adapters", normalized);
@@ -163,12 +167,23 @@ function createProject(name, target) {
     "decisions",
     "dependencies",
     "blockers",
-    "risks"
+    "risks",
+    "spec",
+    "spec/examples",
+    ".shipkit",
+    ".shipkit/runs",
+    ".shipkit/events",
+    ".shipkit/approvals"
   ]) ensureDir(path.join(out, dir));
 
   writeIfMissing(path.join(out, "shipkit.yaml"), `project:\n  id: ${name}\n  name: ${name}\n  stage: intake\n\npolicy:\n  require_traceability: true\n  require_handoff: true\n  require_client_doc_audit: true\n`);
   writeIfMissing(path.join(out, "STATE.md"), `# STATE\n\n## Current goal\n\nTBD\n\n## Confirmed scope\n\nTBD\n\n## Open questions\n\n- TBD\n\n## Open blockers\n\n- None\n\n## Key decisions\n\n- TBD\n\n## Next actions\n\n- TBD\n`);
   writeIfMissing(path.join(out, "trace", "trace-map.md"), `# Trace Map\n\n| Requirement | Module | PRD | Architecture | Task | Test | Delivery Evidence | Status |\n|---|---|---|---|---|---|---|---|\n`);
+  writeIfMissing(path.join(out, "spec", "requirements.yaml"), `requirements: []\n`);
+  writeIfMissing(path.join(out, "spec", "acceptance.yaml"), `acceptance: []\n`);
+  writeIfMissing(path.join(out, ".shipkit", "runs", ".gitkeep"), ``);
+  writeIfMissing(path.join(out, ".shipkit", "events", ".gitkeep"), ``);
+  writeIfMissing(path.join(out, ".shipkit", "approvals", ".gitkeep"), ``);
   writeIfMissing(path.join(out, "README.md"), `# ${name}\n\nShipKit project workspace.\n`);
 
   console.log(JSON.stringify({ status: "ok", project: name, target: out }, null, 2));
@@ -182,12 +197,30 @@ function readJson(file, fallback) {
   }
 }
 
+function normalizeGateScript(script) {
+  if (!script) return script;
+  return script.replace(/^gates\//, "");
+}
+
 function mergeRegistry(baseRegistry, addon) {
   const out = {
     aliases: { ...(baseRegistry.aliases || {}) },
+    gates: { ...(baseRegistry.gates || {}) },
     suites: { ...(baseRegistry.suites || {}) }
   };
-  for (const [key, value] of Object.entries(addon.aliases || {})) out.aliases[key] = value;
+
+  for (const [key, value] of Object.entries(addon.aliases || {})) {
+    out.aliases[key] = normalizeGateScript(value);
+  }
+
+  for (const [key, value] of Object.entries(addon.gates || {})) {
+    if (typeof value === "string") {
+      out.gates[key] = { script: normalizeGateScript(value) };
+    } else if (value && typeof value === "object") {
+      out.gates[key] = { ...value, script: normalizeGateScript(value.script) };
+    }
+  }
+
   for (const [suite, gates] of Object.entries(addon.suites || {})) {
     const merged = [...(out.suites[suite] || []), ...(Array.isArray(gates) ? gates : [])];
     out.suites[suite] = [...new Set(merged)];
@@ -200,6 +233,7 @@ function loadGateRegistry() {
   const registryPath = path.join(gatesDir, "registry.json");
   const fallback = {
     aliases: {},
+    gates: {},
     suites: {
       default: ["smoke", "secrets"],
       core: ["smoke", "secrets", "state", "tasks", "context"],
@@ -208,6 +242,7 @@ function loadGateRegistry() {
   };
   let registry = readJson(registryPath, fallback);
   if (!registry.aliases) registry.aliases = {};
+  if (!registry.gates) registry.gates = {};
   if (!registry.suites) registry.suites = fallback.suites;
 
   if (fs.existsSync(gatesDir)) {
@@ -235,13 +270,21 @@ function gateNameFromFile(file) {
 function resolveGateScript(name, registry) {
   if (!name || name === "default") return null;
   const aliases = registry.aliases || {};
-  const mapped = aliases[name] || aliases[name.replace(/^check-/, "")];
-  if (mapped) return mapped;
+  const gates = registry.gates || {};
+  const normalized = name.replace(/^check-/, "").replace(/\.js$/, "");
+  const mapped = aliases[name] || aliases[normalized];
+  if (mapped) return normalizeGateScript(mapped);
+
+  const gate = gates[name] || gates[normalized];
+  if (gate) {
+    if (typeof gate === "string") return normalizeGateScript(gate);
+    if (gate.script) return normalizeGateScript(gate.script);
+  }
 
   const candidates = [];
   if (name.endsWith(".js")) candidates.push(name);
-  candidates.push(`check-${name}.js`);
-  candidates.push(`check${name}.js`);
+  candidates.push(`check-${normalized}.js`);
+  candidates.push(`check${normalized}.js`);
 
   for (const candidate of candidates) {
     if (fs.existsSync(path.join(root, "gates", candidate))) return candidate;
@@ -265,7 +308,13 @@ function collectCheckItems(requested, registry) {
   }
 
   if (requestedName === "all" && (!items || items.length === 0)) {
-    items = listGateFiles().map(gateNameFromFile).filter((name) => name !== "spawn-brief");
+    const fromRegistry = [
+      ...Object.keys(registry.aliases || {}),
+      ...Object.keys(registry.gates || {})
+    ];
+    items = fromRegistry.length
+      ? [...new Set(fromRegistry)]
+      : listGateFiles().map(gateNameFromFile).filter((name) => name !== "spawn-brief");
   }
 
   const seen = new Set();
@@ -354,6 +403,8 @@ function check(requested, flags) {
     for (const file of gateFiles) console.log(`  ${gateNameFromFile(file)} -> ${file}`);
     console.log("\nAliases:");
     for (const [alias, file] of Object.entries(registry.aliases || {})) console.log(`  ${alias} -> ${file}`);
+    console.log("\nGates:");
+    for (const [id, meta] of Object.entries(registry.gates || {})) console.log(`  ${id} -> ${meta.script || meta}`);
     console.log("\nSuites:");
     for (const [suite, gates] of Object.entries(registry.suites || {})) console.log(`  ${suite}: ${gates.join(", ")}`);
     return;

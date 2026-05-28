@@ -17,7 +17,12 @@
     "agents",
     "examples",
     "README.md",
-    "HARNESS.md"
+    "HARNESS.md",
+    "docs",
+    "integrations",
+    "tools",
+    "spec",
+    ".github"
   ],
   "scripts": {
     "check": "node ./bin/sk.js check",

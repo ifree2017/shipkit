@@ -1,0 +1,108 @@
+{
+  "aliases": {
+    "smoke": "check.js",
+    "secrets": "check-secret-redlines.js",
+    "secret-redlines": "check-secret-redlines.js",
+    "state": "check-state-file.js",
+    "state-file": "check-state-file.js",
+    "tasks": "check-task-registry.js",
+    "task-registry": "check-task-registry.js",
+    "context": "check-context-fabric.js",
+    "context-fabric": "check-context-fabric.js",
+    "trace": "check-traceability.js",
+    "traceability": "check-traceability.js",
+    "handoff": "check-handoff-completeness.js",
+    "handoff-completeness": "check-handoff-completeness.js",
+    "approval": "check-human-approval.js",
+    "human-approval": "check-human-approval.js",
+    "delivery": "check-delivery-redlines.js",
+    "delivery-redlines": "check-delivery-redlines.js",
+    "review": "check-review-artifacts.js",
+    "review-artifacts": "check-review-artifacts.js",
+    "quality": "check-quality-scorecard.js",
+    "quality-scorecard": "check-quality-scorecard.js",
+    "legibility": "check-agent-legibility.js",
+    "agent-legibility": "check-agent-legibility.js",
+    "platform": "check-platform-capabilities.js",
+    "platform-capabilities": "check-platform-capabilities.js",
+    "control": "check-control-loop.js",
+    "control-loop": "check-control-loop.js",
+    "change": "check-change-impact.js",
+    "change-impact": "check-change-impact.js",
+    "bug": "check-bug-traceability.js",
+    "bug-traceability": "check-bug-traceability.js",
+    "refactor": "check-refactor-approval.js",
+    "refactor-approval": "check-refactor-approval.js",
+    "dependency": "check-dependency-readiness.js",
+    "dependency-readiness": "check-dependency-readiness.js",
+    "drift": "check-scope-drift.js",
+    "scope-drift": "check-scope-drift.js",
+    "env": "check-env-readiness.js",
+    "env-readiness": "check-env-readiness.js",
+    "security": "check-security-baseline.js",
+    "security-baseline": "check-security-baseline.js",
+    "data": "check-data-readiness.js",
+    "data-readiness": "check-data-readiness.js",
+    "incident": "check-incident-postmortem.js",
+    "incident-postmortem": "check-incident-postmortem.js",
+    "spawn": "check-spawn-brief.js",
+    "spawn-brief": "check-spawn-brief.js"
+  },
+  "suites": {
+    "default": [
+      "smoke",
+      "secrets"
+    ],
+    "core": [
+      "smoke",
+      "secrets",
+      "state",
+      "tasks",
+      "context"
+    ],
+    "project": [
+      "state",
+      "tasks",
+      "context",
+      "trace",
+      "handoff"
+    ],
+    "delivery": [
+      "trace",
+      "handoff",
+      "delivery",
+      "approval"
+    ],
+    "control": [
+      "control",
+      "quality",
+      "trace",
+      "legibility",
+      "approval"
+    ],
+    "ops": [
+      "dependency",
+      "drift",
+      "env",
+      "security",
+      "delivery",
+      "data",
+      "incident",
+      "handoff"
+    ],
+    "changes": [
+      "change",
+      "bug",
+      "refactor"
+    ],
+    "openclaw": [
+      "platform",
+      "secrets",
+      "state",
+      "tasks",
+      "context",
+      "review"
+    ],
+    "all": []
+  }
+}
