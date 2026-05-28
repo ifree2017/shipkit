@@ -1,11 +1,11 @@
 modules:
   - id: MOD-001
-    name: Customer Portal
+    name: CRM Dashboard
     owner: alice
     status: building
-    progress: 40
+    progress: 60
   - id: MOD-002
-    name: API Service
+    name: Automation API
     owner: bob
-    status: ready_for_test
-    progress: 70
+    status: building
+    progress: 50

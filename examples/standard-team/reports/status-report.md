@@ -1,11 +1,17 @@
 # Status Report
 
-## Summary
+Overall status: on track
+Overall progress: 55%
+Current stage: build
+Delivery risk: medium
 
-- Overall status: on track
-- Current stage: plan/build
-- Delivery risk: medium
+## Module Progress
 
-## Blockers
+| Module | Owner | Stage | Progress | Status | Blockers |
+|---|---|---:|---:|---|---|
+| CRM Dashboard | Alice | build | 60% | in progress | none |
+| Automation API | Bob | build | 50% | in progress | none |
 
-- Test data is not confirmed.
+## Decisions Needed
+
+- Confirm final automation trigger copy.

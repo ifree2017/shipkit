@@ -2,6 +2,6 @@
 
 | Member | Capacity | Assigned | Load |
 |---|---:|---:|---:|
-| Alice | 24 | 12 | 50% |
-| Bob | 24 | 14 | 58% |
-| Carol | 16 | 6 | 38% |
+| Alice | 24 | 18 | 75% |
+| Bob | 24 | 20 | 83% |
+| Cara | 16 | 10 | 62% |

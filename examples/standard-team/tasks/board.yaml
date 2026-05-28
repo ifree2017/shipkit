@@ -1,13 +1,22 @@
 tasks:
   - id: TASK-0001
-    title: Build customer list page
+    title: Build dashboard shell
     module: MOD-001
     owner: alice
     status: in_progress
     estimate_hours: 8
+    related_requirement: REQ-001
   - id: TASK-0002
-    title: Implement customer API
+    title: Implement automation API endpoint
     module: MOD-002
     owner: bob
-    status: in_test
+    status: in_progress
     estimate_hours: 10
+    related_requirement: REQ-002
+  - id: TASK-0003
+    title: Prepare UAT test cases
+    module: MOD-001
+    owner: cara
+    status: todo
+    estimate_hours: 4
+    related_requirement: REQ-001

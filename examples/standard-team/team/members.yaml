@@ -7,7 +7,7 @@ members:
     name: Bob
     role: backend
     capacity_per_week: 24
-  - id: carol
-    name: Carol
+  - id: cara
+    name: Cara
     role: qa
     capacity_per_week: 16

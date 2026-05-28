@@ -1,20 +1,7 @@
 project:
   id: simple-solo-example
   name: Simple Solo Example
-  stage: intake
+  profile: simple-solo
   mode: simple
   team_mode: solo
-  profile: simple-solo
-
-classification:
-  decided_by: example
-  reasons:
-    - one owner
-    - low module count
-    - low delivery risk
-
-policy:
-  require_traceability: true
-  require_handoff: true
-  require_client_doc_audit: true
-  profile_driven_checks: true
+  stage: plan

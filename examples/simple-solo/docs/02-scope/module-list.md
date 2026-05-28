@@ -1,13 +1,7 @@
 # Module List
 
-## Status Page
+## MOD-001 CSV Export
 
-- Show project status.
-- Show blockers.
-- Show last update time.
-
-Out of scope:
-
-- Authentication
-- Database persistence
-- Realtime notifications
+- Input: local CSV file
+- Output: filtered CSV report
+- Acceptance: generated file contains only selected rows and columns

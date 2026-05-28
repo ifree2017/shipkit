@@ -2,66 +2,50 @@
 
 Portable SDLC agent harness for moving software projects from requirements to shipped delivery.
 
-ShipKit provides protocols, skills, gates, evidence tracking, project profiles, team execution patterns, and platform adapters for agent-assisted software delivery.
+ShipKit provides protocols, skills, gates, evidence tracking, project profiles, and platform adapters for agent-assisted software delivery. It is designed for workflows such as:
 
 ```text
 requirements -> PRD -> architecture -> planning -> development -> testing -> release -> delivery
 ```
 
-ShipKit is designed for teams that want agents to help execute software projects while keeping project facts, decisions, evidence, and approvals visible in files.
-
----
-
 ## Current Status
 
-**Alpha.** ShipKit is currently focused on stabilization, examples, tests, and the first public alpha release.
+**Alpha. Not production-ready.**
 
-What exists today:
+ShipKit is intended for internal pilots, harness design research, and early agent-assisted SDLC experiments. It is not yet recommended for production-critical delivery automation.
 
-- Project scaffolding through `sk new`
-- Project profiles from `simple-solo` to `complex-multi`
-- A gate runner through `sk check`
-- SDLC skills and workflows for requirements, PRD, architecture, planning, build, test, release, and delivery
-- Team execution layer for tasks, modules, workload, progress, sync, and status reports
-- Change / bug / refactor / risk / blocker / dependency flows
-- Control, evidence, traceability, permission, and human-approval layers
-- Integration mappings for external tools, skills, runners, and code intelligence systems
-- Platform adapters for OpenClaw, Codex, Claude, Cursor, Hermes, and generic workspaces
+Current stabilization focus:
 
-What is still stabilizing:
+- publish the first alpha release (`v0.2.0-alpha`)
+- keep `sk check`, profiles, and examples stable
+- expand realistic examples
+- split the CLI into `commands/` and `lib/`
+- add the first real runner adapter
 
-- CLI modularization into `commands/` and `lib/`
-- Test coverage for core CLI and gates
-- Runner adapters for Hive, CodeGraph, OpenSpec, and other execution backends
-- Deeper implementation of several stage skills and workflow files
-- Real-world examples and case studies
-- First npm / GitHub alpha release
+> Name note: this repository is `ifree2017/shipkit`, a portable SDLC agent harness. It is unrelated to other projects named ShipKit in Maven publishing, SaaS scaffolding, app store automation, or package release tooling.
 
-See [Alpha Stabilization Roadmap](docs/ALPHA_STABILIZATION_ROADMAP.md).
+ShipKit currently provides:
 
----
+- project profiles and project scaffolding
+- a gate runner (`sk check`) with profile-aware checks
+- SDLC skills and workflows
+- team execution, workload, progress, and sync tracking
+- change / bug / refactor / risk / blocker / dependency flows
+- control, evidence, traceability, and permission layers
+- integration mappings for external tools and skill sources
+- adapters for OpenClaw, Codex, Claude, Cursor, Hermes, and generic workspaces
 
-## Core Model
+Runner integrations such as Hive, CodeGraph, OpenSpec, and deeper platform execution loops are evolving.
 
-ShipKit separates project delivery into five layers:
+## Why ShipKit
 
-```text
-protocols  -> define stage, artifact, profile, gate, handoff, and evidence contracts
-skills     -> guide agents through specific delivery tasks
-gates      -> verify whether artifacts are ready to move forward
-evidence   -> records what happened and why it is trustworthy
-adapters   -> map ShipKit into different agent runtimes and workspaces
-```
-
-Every meaningful stage should follow:
+ShipKit is not a general agent framework, not a coding agent, and not a prompt collection. It is an SDLC delivery control layer.
 
 ```text
-Plan -> Execute -> Verify -> Handoff
+Runner executes. ShipKit controls.
 ```
 
-Project facts live in repository files, not chat history. Gates decide progression, not agent confidence.
-
----
+Use OpenClaw, Codex, Claude Code, Cursor, Hive, OpenCode, or another runner to execute work. Use ShipKit to define project stages, artifacts, evidence, gates, scores, approvals, and handoffs.
 
 ## Core Flow
 
@@ -69,16 +53,13 @@ Project facts live in repository files, not chat history. Gates decide progressi
 intake -> discover -> scope -> prd -> arch -> plan -> build -> test -> release -> delivery
 ```
 
-ShipKit also models non-linear project work:
+Every stage should follow:
 
 ```text
-change request -> impact analysis -> decision -> update affected artifacts -> verify
-bug             -> triage -> root cause -> fix -> regression evidence
-refactor        -> impact analysis -> approval -> implementation -> regression evidence
-risk/blocker    -> owner -> action -> status report -> escalation when needed
+Plan -> Execute -> Verify -> Handoff
 ```
 
----
+Project facts live in repository files, not chat history. Gates decide progression, not agent confidence.
 
 ## Install
 
@@ -92,28 +73,17 @@ Or run directly:
 npx @ifree2017/shipkit --help
 ```
 
-For local development:
-
-```bash
-npm link
-sk --help
-```
-
----
-
 ## Quick Start
 
-Create a lightweight solo project:
-
-```bash
-sk new landing-page --profile simple-solo --to ./landing-page
-sk check --project ./landing-page
-```
-
-Create a standard team project:
+Create a project:
 
 ```bash
 sk new crm --profile standard-team --to ./crm
+```
+
+Run checks for that project:
+
+```bash
 sk check --project ./crm
 ```
 
@@ -131,8 +101,6 @@ sk init openclaw --to ~/.openclaw/workspaces/shipkit
 sk init claude --to .
 sk init cursor --to .
 ```
-
----
 
 ## Project Profiles
 
@@ -155,10 +123,6 @@ sk new crm --profile standard-team --to ~/Projects/crm
 sk new migration --profile complex-team --to ~/Projects/migration
 ```
 
-See [Project Profiles](docs/PROJECT_PROFILES.md).
-
----
-
 ## CLI
 
 ```bash
@@ -171,47 +135,7 @@ sk check list
 
 `sk up` exists as a placeholder for future upgrade behavior and should be treated as experimental.
 
-See [CLI Reference](docs/CLI_REFERENCE.md).
-
----
-
-## Testing and Validation
-
-The alpha stabilization target is that these commands should stay healthy:
-
-```bash
-node --check bin/sk.js
-sk check --to .
-sk new demo --profile standard-team --to /tmp/shipkit-demo
-sk check --project /tmp/shipkit-demo
-npm pack --dry-run
-```
-
-Upcoming or optional validation commands may include:
-
-```bash
-sk test
-sk score --project ./client-project
-sk check release-readiness --to .
-```
-
-See [Testing](docs/TESTING.md).
-
----
-
-## Examples
-
-Initial examples are provided under `examples/`:
-
-- [Simple solo project](examples/simple-solo/README.md)
-- [Standard team project](examples/standard-team/README.md)
-- [Change / bug / refactor flow](examples/change-bug-refactor/README.md)
-
-The next milestone is to expand these into complete example projects with `shipkit.yaml`, docs, tasks, evidence, reports, and score outputs.
-
-See [Examples](docs/EXAMPLES.md).
-
----
+See [docs/CLI_REFERENCE.md](docs/CLI_REFERENCE.md).
 
 ## Supported Platform Adapters
 
@@ -223,8 +147,6 @@ See [Examples](docs/EXAMPLES.md).
 - `generic`
 
 Adapters install the same ShipKit core into different agent workspaces. ShipKit core stays platform-neutral.
-
----
 
 ## Repository Layout
 
@@ -243,24 +165,21 @@ shipkit/
 └── examples/         # example project materials
 ```
 
----
-
 ## Documentation
 
 Start here:
 
 - [Harness model](HARNESS.md)
 - [Documentation index](docs/README.md)
-- [Alpha Stabilization Roadmap](docs/ALPHA_STABILIZATION_ROADMAP.md)
+- [CLI reference](docs/CLI_REFERENCE.md)
+- [Project profiles](docs/PROJECT_PROFILES.md)
+- [Team execution](docs/TEAM_EXECUTION.md)
+- [Integrations](docs/INTEGRATIONS_ADDON.md)
 - [Roadmap](docs/ROADMAP.md)
-- [CLI Reference](docs/CLI_REFERENCE.md)
-- [Project Profiles](docs/PROJECT_PROFILES.md)
-- [Team Execution](docs/TEAM_EXECUTION.md)
-- [Validation and Scoring](docs/VALIDATION_AND_SCORING.md)
-- [Publishing](docs/PUBLISHING.md)
+- [Alpha stabilization roadmap](docs/ALPHA_STABILIZATION_ROADMAP.md)
+- [Release notes for v0.2.0-alpha](docs/RELEASE_NOTES_V0_2_ALPHA.md)
+- [Not production-ready note](docs/NOT_PRODUCTION_READY.md)
 - [Examples](docs/EXAMPLES.md)
-
----
 
 ## Design Principles
 
@@ -271,30 +190,26 @@ Start here:
 - Third-party tools write evidence first; gates decide whether it can advance.
 - High-risk actions require human approval.
 - Client-facing artifacts must be audited before delivery.
-- Small projects should stay light; complex projects should not skip governance.
-
----
-
-## Roadmap
-
-Near-term focus for `v0.2.0-alpha`:
-
-1. stabilize `sk check`, project profiles, examples, and package checks
-2. expand tests for CLI and gate registry behavior
-3. split the CLI implementation into `commands/` and `lib/`
-4. publish the first GitHub/npm alpha release
-5. add one runnable agent runner adapter, starting with Hive or OpenClaw
-6. expand example projects into complete case studies
-7. connect CodeGraph and OpenSpec through evidence-first adapters
-
-See [Roadmap](docs/ROADMAP.md) and [Release v0.2.0 Alpha](docs/RELEASE_V0_2_ALPHA.md).
-
----
 
 ## Current Limitations
 
-- Some skills and workflows are still scaffold-level and need deeper stage-specific guidance.
+- ShipKit is alpha-stage software and not production-ready.
+- The CLI is still being modularized; avoid adding large runner implementations directly into `bin/sk.js`.
+- Some skills and workflows are scaffold-level and need deeper stage-specific guidance.
 - Runner adapters are mostly file/workspace adapters; long-running execution adapters are planned.
 - License and vendor checks currently validate structure, not full legal/compliance policy.
-- Real-world case studies are still being built.
-- `sk up` is experimental and not implemented yet.
+- Examples are illustrative and should not be treated as production delivery records.
+
+## Roadmap
+
+Near-term focus:
+
+1. ship `v0.2.0-alpha` with release-readiness checks
+2. stabilize `sk check`, examples, and npm packaging
+3. split the CLI implementation
+4. deepen core SDLC skills and workflows
+5. add Hive runner adapter
+6. add CodeGraph and OpenSpec execution adapters
+7. improve evidence and traceability automation
+
+See [docs/ROADMAP.md](docs/ROADMAP.md).

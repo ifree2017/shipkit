@@ -1,0 +1,30 @@
+name: Integration candidate
+description: Propose an external tool, runner, skill source, or reference for ShipKit
+title: "integration: "
+labels: ["integration", "source-vet"]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+      description: GitHub repo, npm package, paper, or tool URL
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: Value to ShipKit
+      description: What layer should it improve?
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Suggested mode
+      options:
+        - reference-only
+        - rewrite-internal-skill
+        - runner-adapter
+        - evidence-adapter
+        - tool-mapping
+        - reject / unsure

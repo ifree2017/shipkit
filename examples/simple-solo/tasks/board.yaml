@@ -1,6 +1,7 @@
 tasks:
   - id: TASK-0001
-    title: Build static status page
-    owner: solo
+    title: Implement CSV filter
     status: todo
-    estimate_hours: 4
+    owner: solo
+    module: MOD-001
+    estimate_hours: 2

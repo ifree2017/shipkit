@@ -3,7 +3,6 @@
     "release-readiness": "check-release-readiness.js"
   },
   "suites": {
-    "release-readiness": ["release-readiness"],
-    "release-check": ["release-readiness"]
+    "release-check": ["release-readiness", "secrets", "integrations"]
   }
 }

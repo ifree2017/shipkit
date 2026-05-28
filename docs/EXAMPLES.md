@@ -1,84 +1,36 @@
 # Examples
 
-ShipKit examples are intended to show how different project profiles affect workflow weight, directory structure, checks, and evidence expectations.
+ShipKit examples are illustrative project workspaces for testing profiles, gates, evidence, and reports.
 
 ## Available Examples
 
-### Simple Solo
+### `examples/simple-solo`
 
-Path:
+A one-person feature delivery example.
 
-```text
-examples/simple-solo/
-```
-
-Use this profile for a small single-owner project such as a landing page, script, internal utility, or one-off automation.
-
-Expected command:
+Use for:
 
 ```bash
-sk new landing-page --profile simple-solo --to ./landing-page
-sk check --project ./landing-page
+sk check --project examples/simple-solo
 ```
 
-### Standard Team
+### `examples/standard-team`
 
-Path:
+A multi-person standard project example with modules, tasks, team ownership, sync notes, and reports.
 
-```text
-examples/standard-team/
-```
-
-Use this profile for a normal team project with multiple modules, shared ownership, task tracking, sync logs, and status reports.
-
-Expected command:
+Use for:
 
 ```bash
-sk new crm --profile standard-team --to ./crm
-sk check --project ./crm
+sk check --project examples/standard-team
 ```
 
-### Change / Bug / Refactor
+## Example Goals
 
-Path:
+Examples should show:
 
-```text
-examples/change-bug-refactor/
-```
-
-Use this example to understand how non-linear project work should be captured.
-
-## Example Expansion Plan
-
-Each example should eventually include:
-
-```text
-shipkit.yaml
-docs/
-tasks/
-evidence/
-handoff/
-reports/
-README.md
-```
-
-For richer examples, also include:
-
-```text
-changes/
-defects/
-refactors/
-team/
-modules/
-sync/
-```
-
-## Example Quality Bar
-
-An example is useful when a user can answer:
-
-- what profile is this using?
-- what kind of project does it represent?
-- what should `sk check` verify?
-- what artifacts should agents update?
-- what would make this project ready to ship?
+- why a profile was chosen
+- which directories matter
+- how tasks and modules are tracked
+- how evidence is recorded
+- what `sk check` means
+- what is still intentionally incomplete

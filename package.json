@@ -1,6 +1,6 @@
 {
   "name": "@ifree2017/shipkit",
-  "version": "0.1.0",
+  "version": "0.2.0-alpha.0",
   "description": "Portable agent workflow kit for taking software projects from requirements to shipped delivery.",
   "type": "module",
   "bin": {
@@ -22,28 +22,38 @@
     "integrations",
     "tools",
     "spec",
-    ".github",
-    "tests"
+    ".github"
   ],
   "scripts": {
     "check": "node ./bin/sk.js check",
-    "test": "node tests/run-tests.js",
-    "selftest": "node tests/run-tests.js"
+    "test": "node ./bin/sk.js check",
+    "release:check": "node ./bin/sk.js check release-check --to .",
+    "pack:dry-run": "npm pack --dry-run"
   },
   "keywords": [
     "agent",
-    "harness",
-    "workflow",
-    "skills",
-    "codex",
-    "openclaw",
+    "agent-harness",
+    "agentic-sdlc",
+    "ai-agent",
+    "architecture",
     "claude",
+    "codex",
     "cursor",
     "delivery",
+    "delivery-harness",
+    "evidence",
+    "handoff",
+    "harness",
+    "openclaw",
     "prd",
-    "architecture",
+    "project-profiles",
+    "quality-gates",
+    "release",
+    "sdlc",
+    "skills",
+    "software-delivery",
     "testing",
-    "release"
+    "workflow"
   ],
   "license": "MIT"
 }

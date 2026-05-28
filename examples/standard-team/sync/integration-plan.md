@@ -1,11 +1,9 @@
 # Integration Plan
 
-## Modules
-
-- MOD-001 Customer Portal
-- MOD-002 API Service
+Frontend dashboard depends on Automation API contract.
 
 ## Readiness
 
-- API contract drafted.
-- Test data pending.
+- API contract: draft
+- Test environment: ready
+- Sample data: ready

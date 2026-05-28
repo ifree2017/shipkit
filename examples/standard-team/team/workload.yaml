@@ -1,7 +1,10 @@
 workload:
-  - member: alice
-    assigned_hours: 12
-  - member: bob
-    assigned_hours: 14
-  - member: carol
-    assigned_hours: 6
+  alice:
+    capacity: 24
+    assigned: 18
+  bob:
+    capacity: 24
+    assigned: 20
+  cara:
+    capacity: 16
+    assigned: 10

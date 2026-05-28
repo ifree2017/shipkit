@@ -1,0 +1,33 @@
+name: Feature request
+description: Suggest a ShipKit feature, gate, skill, adapter, or workflow
+title: "feature: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What SDLC or harness problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should ShipKit add or change?
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: ShipKit layer
+      options:
+        - protocol
+        - skill
+        - gate
+        - workflow
+        - adapter
+        - integration
+        - CLI
+        - docs
+        - examples
