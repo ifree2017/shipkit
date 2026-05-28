@@ -1,0 +1,13 @@
+project:
+  id: simple-solo-example
+  name: Simple Solo Example
+  profile: simple-solo
+  mode: simple
+  team_mode: solo
+  stage: scope
+classification:
+  decided_by: example
+  reasons:
+    - one contributor
+    - small scope
+    - no external dependency

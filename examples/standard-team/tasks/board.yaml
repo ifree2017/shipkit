@@ -1,0 +1,13 @@
+tasks:
+  - id: TASK-0001
+    title: Build customer list page
+    module: MOD-001
+    owner: alice
+    status: in_progress
+    estimate_hours: 8
+  - id: TASK-0002
+    title: Implement customer API
+    module: MOD-002
+    owner: bob
+    status: in_test
+    estimate_hours: 10

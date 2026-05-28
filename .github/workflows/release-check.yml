@@ -1,0 +1,34 @@
+name: ShipKit Release Check
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check CLI syntax
+        run: node --check bin/sk.js
+
+      - name: Run package checks
+        run: |
+          node bin/sk.js check --to .
+          node bin/sk.js check release-readiness --to .
+          node bin/sk.js check integrations --to . --soft
+          node bin/sk.js check harness --to . --soft
+
+      - name: Smoke create project
+        run: |
+          node bin/sk.js new release-smoke --to /tmp/shipkit-release-smoke --profile standard-team
+          node bin/sk.js check --project /tmp/shipkit-release-smoke
+
+      - name: Dry run npm package
+        run: npm pack --dry-run

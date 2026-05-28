@@ -1,0 +1,6 @@
+tasks:
+  - id: TASK-0001
+    title: Build static status page
+    owner: solo
+    status: todo
+    estimate_hours: 4

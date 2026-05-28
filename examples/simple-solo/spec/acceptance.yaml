@@ -1,0 +1,3 @@
+acceptance:
+  - requirement: REQ-001
+    criteria: Page shows status, blockers, and last updated time.

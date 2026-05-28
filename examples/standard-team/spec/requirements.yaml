@@ -1,0 +1,5 @@
+requirements:
+  - id: REQ-001
+    title: Customer list page
+  - id: REQ-002
+    title: Customer API service

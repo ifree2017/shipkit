@@ -1,0 +1,19 @@
+project:
+  id: standard-team-example
+  name: Standard Team Example
+  profile: standard-team
+  mode: standard
+  team_mode: team
+  stage: plan
+classification:
+  decided_by: example
+  reasons:
+    - multiple contributors
+    - multiple modules
+    - customer acceptance required
+enabled_layers:
+  - core
+  - team
+  - changes
+  - dependency
+  - trace

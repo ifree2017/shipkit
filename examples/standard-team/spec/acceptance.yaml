@@ -1,0 +1,5 @@
+acceptance:
+  - requirement: REQ-001
+    criteria: Customer list renders expected fields.
+  - requirement: REQ-002
+    criteria: API returns customer records.

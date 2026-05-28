@@ -1,0 +1,28 @@
+release_readiness:
+  package_root_required:
+    - package.json
+    - README.md
+    - HARNESS.md
+    - bin/sk.js
+    - gates/registry.json
+    - docs/README.md
+    - docs/PUBLISHING.md
+  package_root_recommended:
+    - docs/ALPHA_STABILIZATION_PLAN.md
+    - docs/DIFFERENTIATION.md
+    - docs/EXAMPLES.md
+    - examples/simple-solo/README.md
+    - examples/standard-team/README.md
+  project_required:
+    - shipkit.yaml
+    - README.md
+  project_recommended:
+    - reports/status-report.md
+    - reports/score-report.md
+    - .shipkit/score.json
+    - handoff/
+    - evidence/
+  decision:
+    pass: All required files exist.
+    warn: Required files exist but recommended files are missing.
+    fail: One or more required files are missing.

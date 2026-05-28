@@ -1,0 +1,11 @@
+modules:
+  - id: MOD-001
+    name: Customer Portal
+    owner: alice
+    status: building
+    progress: 40
+  - id: MOD-002
+    name: API Service
+    owner: bob
+    status: ready_for_test
+    progress: 70

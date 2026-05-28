@@ -1,0 +1,13 @@
+members:
+  - id: alice
+    name: Alice
+    role: frontend
+    capacity_per_week: 24
+  - id: bob
+    name: Bob
+    role: backend
+    capacity_per_week: 24
+  - id: carol
+    name: Carol
+    role: qa
+    capacity_per_week: 16
