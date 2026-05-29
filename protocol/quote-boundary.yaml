@@ -1,0 +1,42 @@
+version: 1
+name: quote-boundary
+purpose: Prevent internal pricing logic and unconfirmed commitments from appearing in client-facing quote documents.
+client_facing_allowed:
+  - project_overview
+  - module_list
+  - deliverables
+  - acceptance_criteria
+  - timeline_by_phase
+  - quote_range_or_total_price
+  - payment_milestones
+  - validity_period
+  - client_prerequisites
+  - exclusions
+  - change_request_rule
+  - confirmation_items
+client_facing_forbidden:
+  - man_days
+  - daily_rate
+  - salary
+  - headcount_cost
+  - internal_cost_structure
+  - margin
+  - buffer
+  - internal_pricing_logic
+  - developer_allocation
+  - technical_stack_cost_explanation
+  - informal_promises
+readiness:
+  ready:
+    requires:
+      - all_modules_quote_ready
+      - no_blocking_open_questions
+      - prerequisites_listed
+      - exclusions_listed
+      - human_review_required
+  blocked:
+    reasons:
+      - scope_not_ready
+      - unresolved_dependency
+      - missing_acceptance_criteria
+      - unconfirmed_third_party_capability

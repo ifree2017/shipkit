@@ -1,20 +1,24 @@
 # ShipKit Skills Index
 
-ShipKit skills are small reusable instructions used by agent platforms. They are intentionally kept as directories with `SKILL.md` so they can be loaded by different runners and adapters.
+ShipKit skills are reusable instructions for agent platforms. They are directories with `SKILL.md` so they can be loaded by OpenClaw, Codex, Claude, Cursor, Hermes-compatible runners, or generic markdown-based agents.
 
 ## Core SDLC
 
-- `intake` - capture raw project input and initial context
-- `discover` - clarify requirements and business scenarios
-- `scope` - define project/module boundaries and acceptance scope
+- `intake` - capture raw project input, missing information, clarification questions, and pre-quote risks
+- `discover` - clarify requirements, business scenarios, roles, data flow, exception paths, and acceptance evidence
+- `chain` - close a business chain before scope, quote, PRD, or build
+- `scope` - define module boundaries, deliverables, exclusions, prerequisites, dependencies, and quote readiness
+- `quote` - create client-facing quote structure without internal pricing leakage
+- `contract` - check contract/SOW boundaries before signing
 - `prd` - create product requirements and user stories
 - `arch` - architecture and technical design
 - `plan` - implementation planning and task breakdown
 - `build` - implementation guidance
 - `test` - test planning and verification
+- `acceptance` - acceptance matrix and UAT records
 - `release` - release readiness and deployment planning
 - `delivery` - delivery package and handoff
-- `audit` - client-facing document and redline checks
+- `audit` - client-facing document, redline, and leakage checks
 
 ## Change and Ops Flows
 
@@ -74,11 +78,14 @@ ShipKit skills are small reusable instructions used by agent platforms. They are
 - `spec` - spec layer creation and review
 - `spec-diff` - detect changes between spec versions
 - `spec-test` - test/spec consistency guidance
+- `source-vet` - vet external repositories before adoption
+- `runner-vet` - vet external agent runners before adapter use
 
 ## Platform Setup
 
 - `shipkit-init` - install or bootstrap ShipKit into a supported platform workspace
 - `classify` - classify project complexity and recommend a profile
+- `openclaw` - guide OpenClaw workspace/project usage where installed
 
 ## Skill Quality Expectations
 
@@ -92,10 +99,4 @@ A production-grade skill should include:
 - completion criteria
 - handoff or evidence expectations
 
-Some skills are still scaffold-level. Deepening the core SDLC skills is a near-term priority.
-
-## Validation and Scoring
-
-- `score` - generate advisory project or stage readiness scores.
-- `validate` - produce validation reports for projects or harness installs.
-- `selftest` - verify ShipKit CLI, profiles, gates, adapters, and package health.
+The most critical skills for client delivery are `intake`, `discover`, `chain`, `scope`, `quote`, `contract`, `acceptance`, and `audit`.

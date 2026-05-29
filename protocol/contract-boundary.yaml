@@ -1,0 +1,36 @@
+version: 1
+name: contract-boundary
+purpose: Ensure quote and scope can safely become contract/SOW terms.
+checks:
+  deliverables:
+    - clearly_defined
+    - acceptance_criteria
+    - owner
+  time:
+    - milestones
+    - client_cooperation_deadlines
+    - delay_responsibility
+  change:
+    - change_request_process
+    - price_timeline_impact_process
+    - out_of_scope_definition
+  risk:
+    - known_risks_listed
+    - third_party_responsibility
+    - data_security_responsibility
+  acceptance:
+    - acceptance_cycle
+    - sign_off_owner
+    - non_response_rule
+  termination:
+    - termination_conditions
+    - payment_settlement
+    - artifact_ownership
+requires_legal_review:
+  - intellectual_property
+  - data_security_liability
+  - confidentiality
+  - non_compete_or_exclusivity
+  - unlimited_liability
+  - indemnification
+  - unreasonable_penalty

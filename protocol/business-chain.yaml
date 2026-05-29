@@ -1,0 +1,30 @@
+version: 1
+name: business-chain
+purpose: Ensure feature requests are traced to complete business scenarios before scope, PRD, quote, or build.
+required_fields:
+  - trigger_event
+  - initiating_actor
+  - user_roles
+  - current_workflow
+  - target_workflow
+  - input_data
+  - processing_steps
+  - output_data
+  - downstream_actions
+  - external_dependencies
+  - normal_path
+  - exception_paths
+  - acceptance_owner
+  - acceptance_evidence
+status:
+  closed:
+    meaning: All required fields are present and confirmed.
+  open:
+    meaning: One or more required fields are missing or unconfirmed.
+  assumed:
+    meaning: Flow may proceed only with explicit assumptions.
+routing:
+  missing_requirement: clarify
+  external_dependency: dependency
+  high_uncertainty: risk
+  scope_change: change

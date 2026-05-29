@@ -1,0 +1,20 @@
+{
+  "aliases": {
+    "business-chain": "check-business-chain.js",
+    "chain": "check-business-chain.js",
+    "quote-redlines": "check-quote-redlines.js",
+    "quote": "check-quote-redlines.js",
+    "contract-boundary": "check-contract-boundary.js",
+    "contract": "check-contract-boundary.js",
+    "acceptance-matrix": "check-acceptance-matrix.js",
+    "acceptance": "check-acceptance-matrix.js",
+    "document-redaction": "check-document-redaction.js",
+    "redaction": "check-document-redaction.js"
+  },
+  "suites": {
+    "preflight": ["business-chain", "quote-redlines", "contract-boundary", "acceptance-matrix", "document-redaction"],
+    "presales": ["business-chain", "quote-redlines", "contract-boundary", "document-redaction"],
+    "client-docs": ["quote-redlines", "document-redaction"],
+    "signoff": ["acceptance-matrix", "contract-boundary", "document-redaction"]
+  }
+}
